@@ -36,9 +36,15 @@ public class Servidor {
               
             //Cria um BufferedReader para o canal da stream de entrada de dados do socket s  
             entrada = new BufferedReader(new InputStreamReader(s.getInputStream()));  
-              
+            String mensagem ="";
+            
             //Aguarda por algum dado e imprime a linha recebida quando recebe  
-            System.out.println(entrada.readLine());   
+            mensagem = entrada.readLine();
+            System.out.println(mensagem);
+            while(!mensagem.equals("exit")){
+            	mensagem = entrada.readLine();
+            	System.out.println(mensagem);
+            }
               
         //trata possíveis excessões de input/output. Note que as excessões são as mesmas utilizadas para as classes de java.io    
         }catch(IOException e){  
