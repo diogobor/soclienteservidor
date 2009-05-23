@@ -13,9 +13,11 @@
  *
  * @author alunos
  */
-import java.io.IOException;  
-import java.io.PrintStream;  
-import java.net.Socket;  
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
   
 public class Cliente {  
   
@@ -35,8 +37,16 @@ public class Cliente {
             //Cria a Stream de saida de dados  
             ps = new PrintStream(s.getOutputStream());  
               
-            //Imprime uma linha para a stream de saída de dados  
-            ps.println("Estou enviando dados para o servidor");  
+            //Imprime uma linha para a stream de saída de dados 
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
+           
+            String mensagem = "";
+            while(!mensagem.equals("exit")){
+            	
+            	mensagem = in.readLine();
+            	ps.println(mensagem);
+            }
+              
               
         //Trata possíveis exceções  
         }catch(IOException e){  
