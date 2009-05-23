@@ -30,7 +30,7 @@ public class Cliente {
         try{  
               
             //Cria o socket com o recurso desejado na porta especificada  
-            s = new Socket("127.0.0.1",7000);  
+            s = new Socket("localhost",7000);  
               
             //Cria a Stream de saida de dados  
             ps = new PrintStream(s.getOutputStream());  
