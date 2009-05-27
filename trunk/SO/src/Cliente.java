@@ -30,25 +30,40 @@ public class Cliente {
         PrintStream ps = null;  
           
         try{  
-              
+        	              
             //Cria o socket com o recurso desejado na porta especificada  
-            s = new Socket("localhost",7000);  
+            s = new Socket("localhost",7000); 
+            
+            
+            //bem-vindo cliente
+            
+            BufferedReader entrada=null;  
+			//Cria um BufferedReader para o canal da stream de entrada de dados do socket s  
+			entrada = new BufferedReader(new InputStreamReader(s.getInputStream()));  
+			String bemVindo ="";
+            
+            
+            
+            
               
             //Cria a Stream de saida de dados  
             ps = new PrintStream(s.getOutputStream());  
               
-            //Imprime uma linha para a stream de saída de dados 
+            //Imprime uma linha para a stream de saï¿½da de dados 
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
            
             String mensagem = "";
             while(!mensagem.equals("exit")){
             	
+            	bemVindo = entrada.readLine();
+                
+                System.out.println("Servidor: " + bemVindo);
             	mensagem = in.readLine();
             	ps.println(mensagem);
             }
               
               
-        //Trata possíveis exceções  
+        //Trata possï¿½veis exceï¿½ï¿½es  
         }catch(IOException e){  
               
             System.out.println("Algum problema ocorreu ao criar ou enviar dados pelo socket.");  
