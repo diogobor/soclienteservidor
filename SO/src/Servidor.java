@@ -8,6 +8,7 @@
  */
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -68,8 +69,18 @@ public class Servidor extends Thread{
     // execução da thread
 	public void run() {
 		
+		
 		try {
-			  
+			
+
+			PrintStream ps = null; 
+			//enviar uma msg para o cliente 
+			
+			 ps = new PrintStream(conexao.getOutputStream());  
+			 ps.println("Conexao estabelecida com o Cliente !");
+			 ps.println("Oiiii...");
+			
+			
 			//Declaro o leitor para a entrada de dados  
 			BufferedReader entrada=null;  
 			//Cria um BufferedReader para o canal da stream de entrada de dados do socket s  
@@ -83,6 +94,8 @@ public class Servidor extends Thread{
 				mensagem = entrada.readLine();
 				System.out.println(mensagem);
 			}
+			
+			
      
 			//Encerro o socket de comunica��o  
 			conexao.close();  
