@@ -1,15 +1,6 @@
 package br.ufrj.dcc.so.controle;
-/*
- * Servidor.java
- *
- * Created on 19 de Maio de 2009, 10:18
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -18,9 +9,14 @@ import java.net.Socket;
   
 public class Servidor extends Thread{  
   
-//	 socket deste um cliente
+/**
+ * Classe do Servidor
+ */
 	private Socket conexao;
-
+	/**
+	 * construtor da classe
+	 * @param s
+	 */
 	public Servidor(Socket s) {
 		  conexao = s;
 		}
@@ -48,16 +44,16 @@ public class Servidor extends Thread{
 	            
             }
               
-        //trata possï¿½veis excessï¿½es de input/output. Note que as excessï¿½es sï¿½o as mesmas utilizadas para as classes de java.io    
+        //trata possiveis excecoes de input/output.    
         }catch(IOException e){  
           
-            //Imprime uma notificaï¿½ï¿½o na saï¿½da padrï¿½o caso haja algo errado.  
+            //Imprime uma notificacaoo na saida padrao caso haja algo errado.  
             System.out.println("O cliente encerrou de forma inesperada.");  
           
         }finally{  
         	 try{  
                                   
-                 //Encerro o ServerSocket  
+                 //Encerra-se o ServerSocket  
                  serv.close();  
                    
              }catch(IOException e){  
@@ -96,7 +92,7 @@ public class Servidor extends Thread{
 				System.out.println(mensagem);
 				if (mensagem.equals("listarDir")){
 					System.out.println("==== Lista Diretorio Servidor ====");
-					listarDiretorio();
+					Funcoes.listarDiretorio("F:\\DVD");
 					System.out.println("==== Término ====");
 				}
 				
@@ -113,28 +109,4 @@ public class Servidor extends Thread{
 			}
 			
 	}
-	
-	public static void listarDiretorio(){
-        
-        File diretorio = new File("F:\\DVD"); 
-        File[] arquivos = diretorio.listFiles(); 
-  
-        if(arquivos != null){ 
-            int length = arquivos.length; 
-  
-            for(int i = 0; i < length; ++i){ 
-                File f = arquivos[i]; 
-            
-                if(f.isFile()){ 
-                    System.out.println(f.getName()); 
-                } 
-                else if(f.isDirectory()){ 
-                    System.out.println("Diretorio: " + f.getName()); 
-                } 
-            } 
-        }    
-    }
-	
-	
-    
 } 
