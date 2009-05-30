@@ -1,7 +1,9 @@
 package br.ufrj.dcc.so.controle;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -14,7 +16,6 @@ import java.net.Socket;
 
 public class Cliente {  
 
-	
 	public void Cliente(){
 	
     }
@@ -107,6 +108,28 @@ public class Cliente {
 			        ps.println(mensagem);
 					ps.println("teste.fla");
 					ps.println("funcionaaaaa.fla");
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("receberArquivo")){
+					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					ps.println("receberArquivo"); 
+					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
+					ps.println(mensagem);
+					
+					ps.println("diogo.txt");
+					
+					InputStream in2 = s.getInputStream();  
+					            
+					           
+					         FileOutputStream fileOut = new FileOutputStream("F:\\Diogo\\so.txt");  
+					         byte data[] = new byte[1024]; 
+					         int size;  
+					         while ((size = in2.read(data)) != -1)  
+					         {  
+					             fileOut.write(data, 0, size);  
+					             fileOut.flush();
+					         }  
+					         fileOut.close();
 					System.out.println("==== Término ====");
 				}
 				mensagem = in.readLine();
