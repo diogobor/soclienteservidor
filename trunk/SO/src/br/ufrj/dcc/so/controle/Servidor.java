@@ -6,12 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-  
-public class Servidor extends Thread{  
-  
+ 
 /**
  * Classe do Servidor
+ * @author Diogo e Aline
+ *
  */
+public class Servidor extends Thread{  
+	
 	private Socket conexao;
 	/**
 	 * construtor da classe
@@ -87,21 +89,29 @@ public class Servidor extends Thread{
 			System.out.println(mensagem);
 			while(!mensagem.equals("exit")){
 				
-				
-				mensagem = entrada.readLine();
-				System.out.println(mensagem);
 				if (mensagem.equals("listarDir")){
 					System.out.println("==== Lista Diretorio Servidor ====");
-					Funcoes.listarDiretorio("F:\\DVD");
+					Funcoes.detectarFuncao(0, Funcoes.ENDERECOSERVIDOR);
 					System.out.println("==== Término ====");
 				}
-				
+				else if (mensagem.equals("apagarArquivo")){
+					System.out.println("==== Apaga arquivo no Servidor ====");
+					Funcoes.detectarFuncao(4, entrada.readLine());
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("apagarArquivoExtensao")){
+					System.out.println("==== Apaga arquivo no Servidor ====");
+					Funcoes.detectarFuncao(5, entrada.readLine());
+					System.out.println("==== Término ====");
+				}
+				mensagem = entrada.readLine();
+				System.out.println(mensagem);
 				
 			}
 			
 			
      
-			//Encerro o socket de comunicaï¿½ï¿½o  
+			//Encerro o socket de comunicacao  
 			conexao.close();  
 			                       
 			}catch(IOException e){  
