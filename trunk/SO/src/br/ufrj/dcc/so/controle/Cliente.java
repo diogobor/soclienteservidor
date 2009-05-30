@@ -31,7 +31,7 @@ public class Cliente {
         try{  
         	              
             //Cria o socket com o recurso desejado na porta especificada  
-            s = new Socket("192.168.254.1",7000); 
+            s = new Socket("localhost",7000); 
             
             
             //bem-vindo cliente
