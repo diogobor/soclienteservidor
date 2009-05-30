@@ -1,27 +1,18 @@
 package br.ufrj.dcc.so.controle;
-/*
- * Cliente.java
- *
- * Created on 19 de Maio de 2009, 10:21
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
-
-
-/**
- *
- * @author alunos
- */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
-  
+
+/**
+ * Classe do Cliente
+ * @author SO
+ *
+ */
 public class Cliente {  
-  
+ 
     public static void main(String[] args) {  
           
         //Declaro o socket cliente  
@@ -52,25 +43,48 @@ public class Cliente {
             //Imprime uma linha para a stream de saï¿½da de dados 
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
            
-            System.out.println("==== Arquivos em F:\\Dioog ======");
-            Funcoes.listarDiretorio("F:\\Diogo");
-            System.out.println("===== Termino =====");
             
             String mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
             ps.println(mensagem);
             
             mensagem = in.readLine();
-            ps.println(mensagem);
-            while(!mensagem.equals("exit")){
-            	
-            	mensagem = in.readLine();
-            	ps.println(mensagem);
+            //ps.println(mensagem);
             
-            	
-            }
+            
+            while(!mensagem.equals("exit")){
+				
+				if (mensagem.equals("listarDir")){
+					System.out.println("==== Lista Diretorio Local ====");
+					Funcoes.detectarFuncao(0, "F:\\Diogo");
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("listarDirServ")){
+					System.out.println("==== Lista Diretorio do Servidor ====");
+					ps.println("listarDir");
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("enviarArquivo")){
+					System.out.println("==== Envia arquivo para Servidor ====");
+					Funcoes.detectarFuncao(1, "F:\\DVD");
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("apagarArquivo")){
+					System.out.println("==== Apaga arquivo no Servidor ====");
+					ps.println("apagarArquivo");
+					ps.println("teste2.txt");
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("apagarArquivoExtensao")){
+					System.out.println("==== Apaga arquivo no Servidor ====");
+					ps.println("apagarArquivoExtensao");
+					ps.println("txt");
+					System.out.println("==== Término ====");
+				}
+				mensagem = in.readLine();
+				//ps.println(mensagem);
+			}            
               
-              
-        //Trata possï¿½veis exceï¿½ï¿½es  
+        //Trata possiveis excecoes  
         }catch(IOException e){  
               
             System.out.println("Algum problema ocorreu ao criar ou enviar dados pelo socket.");  
