@@ -91,17 +91,27 @@ public class Servidor extends Thread{
 				
 				if (mensagem.equals("listarDir")){
 					System.out.println("==== Lista Diretorio Servidor ====");
-					Funcoes.detectarFuncao(0, Funcoes.ENDERECOSERVIDOR);
+					Funcoes.detectarFuncao(0, Funcoes.ENDERECOSERVIDOR, null);
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("apagarArquivo")){
 					System.out.println("==== Apaga arquivo no Servidor ====");
-					Funcoes.detectarFuncao(4, entrada.readLine());
+					Funcoes.detectarFuncao(4, entrada.readLine(), null);
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("apagarArquivoExtensao")){
-					System.out.println("==== Apaga arquivo no Servidor ====");
-					Funcoes.detectarFuncao(5, entrada.readLine());
+					System.out.println("==== Apaga arquivo por Extensao no Servidor ====");
+					Funcoes.detectarFuncao(5, entrada.readLine(), null);
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("infArquivo")){
+					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					Funcoes.detectarFuncao(6, entrada.readLine(), null);
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("renomearArquivo")){
+					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					Funcoes.detectarFuncao(3, entrada.readLine(), entrada.readLine());
 					System.out.println("==== Término ====");
 				}
 				mensagem = entrada.readLine();

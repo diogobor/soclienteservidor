@@ -1,12 +1,16 @@
 package br.ufrj.dcc.so.controle;
 
 import java.io.File;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.lang.String;
 
 public class Funcoes {	
 	
 	public static final String ENDERECOSERVIDOR = "F:\\DVD";
 	
-	public static void detectarFuncao(int funcao, String secParameter){
+	public static void detectarFuncao(int funcao, String secParameter, String thParameter){
 		
 		switch(funcao) {
 			// ------ Lista diretorio -----
@@ -16,13 +20,13 @@ public class Funcoes {
 			// ------ Receber arquivo -----
 			case   2: { receberArquivo(); break; }
 			// ------ Renomear arquivo ----
-			case   3: { renomearArquivo(); break; }
+			case   3: { renomearArquivo(secParameter,thParameter); break; }
 			// ------ Apagar Arquivo ------
 			case   4: { apagarArquivo(secParameter); break; }
 			
 			case   5: { deleteExtensao(secParameter); break; }
 			// ------ Pegar dados do arquivo -----
-			case   6: { infArquivo(); break; }				
+			case   6: { infArquivo(secParameter); break; }				
 			}
 	}
 	
@@ -55,8 +59,19 @@ public class Funcoes {
 		
 	}
 	
-	public static void renomearArquivo(){
-		
+	public static void renomearArquivo(String nomeAntigo, String nomeNovo){
+
+        File arquivo1 = new File(ENDERECOSERVIDOR + "\\" + nomeAntigo);
+    
+        File arquivo2 = new File(ENDERECOSERVIDOR + "\\" + nomeNovo);
+    
+        boolean ok = arquivo1.renameTo(arquivo2);
+        if(ok){
+            System.out.println("Arquivo renomeado com sucesso.");
+        }
+        else{
+            System.out.println("Nao foi possivel renomear o arquivo.");
+        }
 	}
 	
 	public static void apagarArquivo(String nomeArquivo){
@@ -71,11 +86,6 @@ public class Funcoes {
 		}
 	}
 	
-	public static void infArquivo(){
-		
-	}
-	 
-		
 	public static void deleteExtensao(String extensao){
 		File diretorio = new File(ENDERECOSERVIDOR); 
         File[] arquivos = diretorio.listFiles(); 
@@ -94,18 +104,22 @@ public class Funcoes {
                 } 
             } 
         }   
+	}	
+	
+	public static void infArquivo(String nomeArquivo){
+		String completePath = ENDERECOSERVIDOR + "\\" + nomeArquivo;
+		File arquivo = new File(completePath);
+		long tamanho = arquivo.length();
+		if (arquivo.exists()){
+			DateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");  
+			String data = formatData.format(new Date(arquivo.lastModified()));  
+			System.out.println("Nome do Arquivo: " + arquivo.getName());
+			System.out.println("Data da ultima modificacao: " + data);  
+			System.out.println("O arquivo " + nomeArquivo + " tem " + tamanho/1024 + " KB.");
+		}
+		else{
+			System.out.println("Não foi possível deletar o arquivo !");
+		}
 	}
-	public static void deleteTree(File inFile) {    
-       if (inFile.isFile()) {    
-           inFile.delete();    
-       } else {    
-            File files[] = inFile.listFiles();    
-            for (int i=0;i< files.length; i ++) {    
-            deleteTree(files[i]);  
-            }    
-       }    
-	}    
-	
-	
 
 }
