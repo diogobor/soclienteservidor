@@ -1,8 +1,10 @@
 package br.ufrj.dcc.so.controle;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,7 +15,7 @@ import java.net.Socket;
  *
  */
 public class Servidor extends Thread{  
-	
+	private byte data[] = new byte[1024]; 
 	private Socket conexao;
 	/**
 	 * construtor da classe
@@ -119,6 +121,25 @@ public class Servidor extends Thread{
 					Funcoes.detectarFuncao(3, entrada.readLine(), entrada.readLine());
 					System.out.println("==== Término ====");
 				}
+				else if (mensagem.equals("receberArquivo")){
+					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					System.out.println(entrada.readLine());
+					
+					 FileInputStream fileIn = new FileInputStream(Funcoes.ENDERECOSERVIDOR + "\\" + entrada.readLine());                      
+					 OutputStream out = conexao.getOutputStream();  
+           
+			         int size;  
+			         while ((size = fileIn.read(data)) != -1)  
+			         {  
+			             out.write(data, 0, size);  
+			             out.flush();  
+			         }   
+			         fileIn.close(); 
+			         out.close();  
+			        
+	
+					System.out.println("==== Término ====");
+				}
 				mensagem = entrada.readLine();
 				System.out.println(mensagem);
 				
@@ -130,7 +151,7 @@ public class Servidor extends Thread{
 			conexao.close();  
 			                       
 			}catch(IOException e){  
-				System.out.println(e);
+				//System.out.println(e);
 			}
 			
 	}
