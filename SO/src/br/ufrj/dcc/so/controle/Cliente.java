@@ -15,7 +15,6 @@ package br.ufrj.dcc.so.controle;
  * @author alunos
  */
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -54,7 +53,7 @@ public class Cliente {
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
            
             System.out.println("==== Arquivos em F:\\Dioog ======");
-            listarDiretorio();
+            Funcoes.listarDiretorio("F:\\Diogo");
             System.out.println("===== Termino =====");
             
             String mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
@@ -85,31 +84,7 @@ public class Cliente {
                   
             }catch(Exception e){
             	System.out.println("Erro ao fechar o arquivo !");
-            }  
-            	
+            }   	
         }  
-  
     }  
-    
-        public static void listarDiretorio(){
-            
-            File diretorio = new File("F:\\Diogo"); 
-            File[] arquivos = diretorio.listFiles(); 
-      
-            if(arquivos != null){ 
-                int length = arquivos.length; 
-      
-                for(int i = 0; i < length; ++i){ 
-                    File f = arquivos[i]; 
-                
-                    if(f.isFile()){ 
-                        System.out.println(f.getName()); 
-                    } 
-                    else if(f.isDirectory()){ 
-                        System.out.println("Diretorio: " + f.getName()); 
-                    } 
-                } 
-            }    
-        }
-
 }
