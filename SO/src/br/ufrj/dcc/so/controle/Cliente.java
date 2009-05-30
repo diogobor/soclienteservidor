@@ -31,7 +31,7 @@ public class Cliente {
         try{  
         	              
             //Cria o socket com o recurso desejado na porta especificada  
-            s = new Socket("localhost",7000); 
+            s = new Socket("192.168.254.1",7000); 
             
             
             //bem-vindo cliente
@@ -68,8 +68,6 @@ public class Cliente {
 				else if (mensagem.equals("listarDirServ")){
 					System.out.println("==== Lista Diretorio do Servidor ====");
 					ps.println("listarDir");
-					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
-			        ps.println(mensagem);
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("enviarArquivo")){
@@ -80,41 +78,31 @@ public class Cliente {
 				else if (mensagem.equals("apagarArquivo")){
 					System.out.println("==== Apaga arquivo no Servidor ====");
 					ps.println("apagarArquivo");
-					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
-			        ps.println(mensagem);
 					ps.println("teste2.txt");
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("apagarArquivoExtensao")){
 					System.out.println("==== Apaga arquivo no Servidor ====");
 					ps.println("apagarArquivoExtensao");
-					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
-			        ps.println(mensagem);
 					ps.println("txt");
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("infArquivo")){
 					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
 					ps.println("infArquivo");
-					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
-			        ps.println(mensagem);
 					ps.println("teste.fla");
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("renomearArquivo")){
 					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
 					ps.println("renomearArquivo");
-					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
-			        ps.println(mensagem);
 					ps.println("teste.fla");
 					ps.println("funcionaaaaa.fla");
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("receberArquivo")){
 					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
-					ps.println("receberArquivo"); 
-					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
-					ps.println(mensagem);
+					ps.println("receberArquivo");
 					
 					ps.println("diogo.txt");
 					
