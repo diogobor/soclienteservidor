@@ -11,11 +11,17 @@ import java.net.Socket;
  * @author SO
  *
  */
+
 public class Cliente {  
- 
-    public static void main(String[] args) {  
-          
-        //Declaro o socket cliente  
+
+	
+	public void Cliente(){
+	
+    }
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//Declaro o socket cliente  
         Socket s = null;  
           
         //Declaro a Stream de saida de dados  
@@ -43,9 +49,9 @@ public class Cliente {
             //Imprime uma linha para a stream de saï¿½da de dados 
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
            
-            
             String mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
             ps.println(mensagem);
+            ps.println("Conectado !");
             
             mensagem = in.readLine();
             //ps.println(mensagem);
@@ -61,6 +67,8 @@ public class Cliente {
 				else if (mensagem.equals("listarDirServ")){
 					System.out.println("==== Lista Diretorio do Servidor ====");
 					ps.println("listarDir");
+					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
+			        ps.println(mensagem);
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("enviarArquivo")){
@@ -71,24 +79,32 @@ public class Cliente {
 				else if (mensagem.equals("apagarArquivo")){
 					System.out.println("==== Apaga arquivo no Servidor ====");
 					ps.println("apagarArquivo");
+					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
+			        ps.println(mensagem);
 					ps.println("teste2.txt");
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("apagarArquivoExtensao")){
 					System.out.println("==== Apaga arquivo no Servidor ====");
 					ps.println("apagarArquivoExtensao");
+					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
+			        ps.println(mensagem);
 					ps.println("txt");
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("infArquivo")){
 					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
 					ps.println("infArquivo");
+					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
+			        ps.println(mensagem);
 					ps.println("teste.fla");
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("renomearArquivo")){
 					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
 					ps.println("renomearArquivo");
+					mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
+			        ps.println(mensagem);
 					ps.println("teste.fla");
 					ps.println("funcionaaaaa.fla");
 					System.out.println("==== Término ====");
@@ -113,5 +129,6 @@ public class Cliente {
             	System.out.println("Erro ao fechar o arquivo !");
             }   	
         }  
-    }  
+	}
+
 }
