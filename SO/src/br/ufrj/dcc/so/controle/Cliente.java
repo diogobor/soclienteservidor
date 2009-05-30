@@ -55,7 +55,7 @@ public class Cliente {
 				
 				if (mensagem.equals("listarDir")){
 					System.out.println("==== Lista Diretorio Local ====");
-					Funcoes.detectarFuncao(0, "F:\\Diogo");
+					Funcoes.detectarFuncao(0, "F:\\Diogo", null);
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("listarDirServ")){
@@ -65,7 +65,7 @@ public class Cliente {
 				}
 				else if (mensagem.equals("enviarArquivo")){
 					System.out.println("==== Envia arquivo para Servidor ====");
-					Funcoes.detectarFuncao(1, "F:\\DVD");
+					Funcoes.detectarFuncao(1, "F:\\DVD", null);
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("apagarArquivo")){
@@ -78,6 +78,19 @@ public class Cliente {
 					System.out.println("==== Apaga arquivo no Servidor ====");
 					ps.println("apagarArquivoExtensao");
 					ps.println("txt");
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("infArquivo")){
+					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					ps.println("infArquivo");
+					ps.println("teste.fla");
+					System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("renomearArquivo")){
+					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					ps.println("renomearArquivo");
+					ps.println("teste.fla");
+					ps.println("funcionaaaaa.fla");
 					System.out.println("==== Término ====");
 				}
 				mensagem = in.readLine();
