@@ -8,9 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+
+import br.ufrj.dcc.so.vista.BarraDeMenu;
 
 /**
  * Classe do Cliente
@@ -18,24 +19,29 @@ import java.net.Socket;
  *
  */
 
-public class Cliente {  
+public class Cliente extends Thread {  
 
-	public void Cliente(){
-	
+	public Cliente(){
+		
     }
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//Declaro o socket cliente  
-        Socket s = null;  
-          
+	public void run() {
+		executaCliente();
+	}
+	
+	public static void executaCliente(){
+		//Thread startCliente = new Cliente();
+		//startCliente.start();
+		//Declaro o socket cliente
+		Socket s = null;  
+        
         //Declaro a Stream de saida de dados  
         PrintStream ps = null;  
           
         try{  
         	              
             //Cria o socket com o recurso desejado na porta especificada  
-            s = new Socket("localhost",7000); 
+            s = new Socket(BarraDeMenu.nomeServidor,7000); 
             
             
             //bem-vindo cliente
@@ -167,5 +173,11 @@ public class Cliente {
             }   	
         }  
 	}
+	
+//	public static void main(String[] args) {
+//		// TODO Auto-generated method stub
+//		  
+//        Cliente inicia = new Cliente();
+//	}
 
 }
