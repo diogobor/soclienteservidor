@@ -1,9 +1,14 @@
 package br.ufrj.dcc.so.controle;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
@@ -14,9 +19,10 @@ import java.net.Socket;
  * @author Diogo e Aline
  *
  */
-public class Servidor extends Thread{  
-	private byte data[] = new byte[1024]; 
+public class Servidor extends Thread{
 	private Socket conexao;
+	private ObjectOutputStream saida_arquivo ;  
+	private ObjectInputStream entrada_arquivo ; 
 	/**
 	 * construtor da classe
 	 * @param s
@@ -78,11 +84,11 @@ public class Servidor extends Thread{
 			//enviar uma msg para o cliente 
 			
 			 ps = new PrintStream(conexao.getOutputStream());  
-			 ps.println("Conexao estabelecida com o Cliente !");			
+			 ps.println("Conexao estabelecida com o Cliente !");
 			
 			//Declaro o leitor para a entrada de dados  
 			BufferedReader entrada=null;  
-			//Cria um BufferedReader para o canal da stream de entrada de dados do socket s  
+			//Cria um BufferedReader para o canal da stream de entrada de dados do socket s (conexao) 
 			entrada = new BufferedReader(new InputStreamReader(conexao.getInputStream()));  
 			String mensagem ="";
 			  
@@ -90,7 +96,6 @@ public class Servidor extends Thread{
 			mensagem = entrada.readLine();
 			System.out.println(mensagem);
 			while(!mensagem.equals("exit")){
-				
 				if (mensagem.equals("listarDir")){
 					System.out.println("==== Lista Diretorio Servidor ====");
 					System.out.println("Cliente: " + conexao.getInetAddress());
@@ -116,35 +121,56 @@ public class Servidor extends Thread{
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("renomearArquivo")){
-					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					System.out.println("==== Renomeia arquivo no Servidor ====");
 					System.out.println("Cliente: " + conexao.getInetAddress());
 					Funcoes.detectarFuncao(3, entrada.readLine(), entrada.readLine());
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("receberArquivo")){
-					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					System.out.println("==== Recebe arquivo do Servidor ====");
 					System.out.println("Cliente: " + conexao.getInetAddress());
 					
-					 FileInputStream fileIn = new FileInputStream(Funcoes.ENDERECOSERVIDOR + "\\" + entrada.readLine());                      
-					 OutputStream out = conexao.getOutputStream();  
-           
-			         int size;  
-			         while ((size = fileIn.read(data)) != -1)  
-			         {  
-			             out.write(data, 0, size);  
-			             out.flush();  
-			         }   
-			         fileIn.close(); 
-			         out.close();  
-			        
-	
+					FileInputStream fileIn = new FileInputStream(Funcoes.ENDERECOSERVIDOR + "\\" + entrada.readLine());                      
+					OutputStream out = conexao.getOutputStream();  
+					byte data[] = new byte[1024]; 
+					int size;  
+			        while ((size = fileIn.read(data)) != -1)  
+			        {  
+			            out.write(data, 0, size);  
+			            out.flush();  
+			        }   
+			        fileIn.close(); 
+			        out.close();  
+			      
 					System.out.println("==== Término ====");
 				}
-				mensagem = entrada.readLine();
-				System.out.println(mensagem);
+				else if (mensagem.equals("enviarArquivoServ")){
+					System.out.println("==== Envia arquivo para o Servidor ====");	
+					
+					
+					DataInputStream dadoEntrada = new DataInputStream (conexao.getInputStream());
+					 /* abrir arquivo para o envio  */
+	                FileOutputStream arquivoSaida = new FileOutputStream ("F:\\DVD\\soAgora.txt");
+	                DataOutputStream dadoSaida = new DataOutputStream (arquivoSaida);
+
+	                /* cria um buffer de 1024 bytes para o envio */
+	                byte buffer[] = new byte[1024];            
+
+	                /* envia os dados :) */
+	                while (dadoEntrada.read(buffer) != -1)
+	                	dadoSaida.write(buffer,0,buffer.length);
+					//dadoSaida.close();
+	                dadoEntrada.close();
+	                arquivoSaida.close();
+					
+					
+					System.out.println("==== Término ====");
+					entrada = null;
+					}
 				
-			}
-			
+					mensagem = entrada.readLine();
+					System.out.println(mensagem);
+			}		
 			
      
 			//Encerro o socket de comunicacao  
@@ -154,5 +180,5 @@ public class Servidor extends Thread{
 				//System.out.println(e);
 			}
 			
-	}
+	}  
 } 
