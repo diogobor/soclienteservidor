@@ -32,7 +32,7 @@ public class BarraDeMenu implements ActionListener {
 
 	private JMenu menuPrograma = new JMenu();
 	
-	private JMenuItem menuConectarServidor = new JMenuItem();
+	public static JMenuItem menuConectarServidor = new JMenuItem();
 
 	private JMenuItem menuNovoPrograma = new JMenuItem();
 	
@@ -76,6 +76,7 @@ public class BarraDeMenu implements ActionListener {
 				System.out.println(nomeServidor);
 				inicia = new Cliente();
 				inicia.start();
+				
 			}
 			catch(Exception e){
 				System.out.println("Ação Cancelar acionada !");
