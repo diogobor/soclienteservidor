@@ -10,6 +10,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
+import br.ufrj.dcc.so.controle.Cliente;
+
 public class BarraDeMenu implements ActionListener {
 
 	/**
@@ -23,6 +25,8 @@ public class BarraDeMenu implements ActionListener {
 	public static CriaPrograma clicaNovoPrograma = null;
 	
 	public static JFileChooser escolhePrograma = null;
+	
+	private Cliente inicia = null;
 
 	// MENU PROGRAMA
 
@@ -54,7 +58,7 @@ public class BarraDeMenu implements ActionListener {
 
 	private JMenuItem menuSobre = new JMenuItem();
 	
-	private String nomeServidor = "";
+	public static String nomeServidor = "";
 
 
 	/**
@@ -70,7 +74,9 @@ public class BarraDeMenu implements ActionListener {
 					nomeServidor = "localhost";
 				}
 				System.out.println(nomeServidor);
-				}
+				inicia = new Cliente();
+				inicia.start();
+			}
 			catch(Exception e){
 				System.out.println("Ação Cancelar acionada !");
 			}
