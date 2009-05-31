@@ -1,10 +1,14 @@
 package br.ufrj.dcc.so.controle;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
@@ -101,24 +105,46 @@ public class Cliente {
 					System.out.println("==== Término ====");
 				}
 				else if (mensagem.equals("receberArquivo")){
-					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
+					System.out.println("==== Recebe arquivo do Servidor ====");
 					ps.println("receberArquivo");
 					
 					ps.println("diogo.txt");
 					
 					InputStream in2 = s.getInputStream();  
-					            
-					           
-					         FileOutputStream fileOut = new FileOutputStream("F:\\Diogo\\so.txt");  
-					         byte data[] = new byte[1024]; 
-					         int size;  
-					         while ((size = in2.read(data)) != -1)  
-					         {  
-					             fileOut.write(data, 0, size);  
-					             fileOut.flush();
-					         }  
-					         fileOut.close();
+			        FileOutputStream fileOut = new FileOutputStream("F:\\Diogo\\so.txt");  
+			        byte data[] = new byte[1024]; 
+			        int size;  
+			        while ((size = in2.read(data)) != -1)  
+			        {  
+			            fileOut.write(data, 0, size);  
+			            fileOut.flush();
+			        }  
+			        fileOut.close();
+			        System.out.println("==== Término ====");
+				}
+				else if (mensagem.equals("enviarArquivoServ")){
+					System.out.println("==== Envia arquivo para o Servidor ====");
+					ps.println("enviarArquivoServ");
+
+					
+					DataOutputStream dadoSaida = new DataOutputStream (s.getOutputStream());
+					 /* abrir arquivo para o envio  */
+	                FileInputStream arquivoEntrada = new FileInputStream ("F:\\Diogo\\so.txt");
+	                DataInputStream dadoEntrada = new DataInputStream (arquivoEntrada);
+
+	                /* cria um buffer de 1024 bytes para o envio */
+	                byte buffer[] = new byte[1024];            
+
+	                /* envia os dados :) */
+	                while (dadoEntrada.read(buffer) != -1)
+	                	dadoSaida.write(buffer,0,buffer.length);
+	                dadoSaida.close();
+	                arquivoEntrada.close();
+	                //in2.close();
 					System.out.println("==== Término ====");
+				}
+				else{
+					System.out.println("Opcao invalida! Digite novamente:");
 				}
 				mensagem = in.readLine();
 				//ps.println(mensagem);
