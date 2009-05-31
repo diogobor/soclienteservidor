@@ -12,6 +12,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 import br.ufrj.dcc.so.vista.BarraDeMenu;
+import br.ufrj.dcc.so.vista.Comecar;
+import br.ufrj.dcc.so.vista.PainelPrincipal;
 
 /**
  * Classe do Cliente
@@ -63,6 +65,10 @@ public class Cliente extends Thread {
             String mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
             ps.println(mensagem);
             ps.println("Conectado !");
+            
+            PainelPrincipal.situacaoServidor = "Conectado !";
+            Comecar.painelFundo.repaint();
+            BarraDeMenu.menuConectarServidor.setEnabled(false);
             
             mensagem = in.readLine();
             //ps.println(mensagem);
@@ -159,7 +165,10 @@ public class Cliente extends Thread {
         //Trata possiveis excecoes  
         }catch(IOException e){  
               
-            System.out.println("Algum problema ocorreu ao criar ou enviar dados pelo socket.");  
+            System.out.println("Algum problema ocorreu ao criar ou enviar dados pelo socket.");
+            PainelPrincipal.situacaoServidor = "Erro na conexao !";
+            Comecar.painelFundo.repaint();
+            BarraDeMenu.menuConectarServidor.setEnabled(true);
           
         }finally{  
               
