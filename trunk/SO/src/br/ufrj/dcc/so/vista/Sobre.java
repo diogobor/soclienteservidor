@@ -1,6 +1,7 @@
 package br.ufrj.dcc.so.vista;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -46,8 +47,12 @@ public class Sobre extends JFrame implements WindowListener{
 		//Adiciona Titulo no painel
 		titulo.setBounds(155, 10, 500, 20);
 		painel.add(titulo);
+	    int style = Font.BOLD;  
+	    int size = 11;  
+	    Font fonte = new java.awt.Font("Arial", style, size);  
 		
 		desenvolvedores.setBounds(10, 30, 500, 20);
+		desenvolvedores.setFont(fonte);
 		painel.add(desenvolvedores);
 		
 		professor.setBounds(160, 50, 500, 20);
