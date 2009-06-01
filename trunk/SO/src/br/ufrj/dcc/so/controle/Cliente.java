@@ -62,9 +62,7 @@ public class Cliente extends Thread {
             //Imprime uma linha para a stream de sa�da de dados 
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
            
-            String mensagem = "Cliente: " +  s.getInetAddress();// imprime o endere�o do cliente
-            ps.println(mensagem);
-            ps.println("Conectado !");
+            String mensagem = "";
             
             PainelPrincipal.situacaoServidor = "Conectado !";
             Comecar.painelFundo.repaint();

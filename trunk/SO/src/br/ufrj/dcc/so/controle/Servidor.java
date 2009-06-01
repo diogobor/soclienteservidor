@@ -92,6 +92,7 @@ public class Servidor extends Thread{
 			//Cria um BufferedReader para o canal da stream de entrada de dados do socket s (conexao) 
 			entrada = new BufferedReader(new InputStreamReader(conexao.getInputStream()));  
 			String mensagem ="";
+			System.out.println("Cliente:" + conexao.getInetAddress().getHostName());
 			  
 			//Aguarda por algum dado e imprime a linha recebida quando recebe  
 				try {

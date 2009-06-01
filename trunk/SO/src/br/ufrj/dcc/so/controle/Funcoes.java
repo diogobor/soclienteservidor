@@ -8,7 +8,7 @@ import java.lang.String;
 
 public class Funcoes {	
 	
-	public static final String ENDERECOSERVIDOR = "/home/diogobor/public_html";
+	public static final String ENDERECOSERVIDOR = "./filesServer";
 	
 	public static void detectarFuncao(int funcao, String secParameter, String thParameter){
 		
@@ -51,6 +51,7 @@ public class Funcoes {
         }    
     }
 	
+	
 	public static void enviarArquivo(){
 			
 	}
@@ -64,8 +65,9 @@ public class Funcoes {
         File arquivo1 = new File(ENDERECOSERVIDOR + "\\" + nomeAntigo);
     
         File arquivo2 = new File(ENDERECOSERVIDOR + "\\" + nomeNovo);
-    
+
         boolean ok = arquivo1.renameTo(arquivo2);
+
         if(ok){
             System.out.println("Arquivo renomeado com sucesso.");
         }
