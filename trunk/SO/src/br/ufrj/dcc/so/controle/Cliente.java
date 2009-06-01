@@ -62,7 +62,7 @@ public class Cliente extends Thread {
             //Imprime uma linha para a stream de saï¿½da de dados 
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
            
-            String mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereço do cliente
+            String mensagem = "Cliente: " +  s.getInetAddress();// imprime o endereï¿½o do cliente
             ps.println(mensagem);
             ps.println("Conectado !");
             
@@ -78,43 +78,43 @@ public class Cliente extends Thread {
 				
 				if (mensagem.equals("listarDir")){
 					System.out.println("==== Lista Diretorio Local ====");
-					Funcoes.detectarFuncao(0, "F:\\Diogo", null);
-					System.out.println("==== Término ====");
+					Funcoes.detectarFuncao(0, "/home/diogobor", null);
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("listarDirServ")){
 					System.out.println("==== Lista Diretorio do Servidor ====");
 					ps.println("listarDir");
-					System.out.println("==== Término ====");
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("enviarArquivo")){
 					System.out.println("==== Envia arquivo para Servidor ====");
 					Funcoes.detectarFuncao(1, "F:\\DVD", null);
-					System.out.println("==== Término ====");
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("apagarArquivo")){
 					System.out.println("==== Apaga arquivo no Servidor ====");
 					ps.println("apagarArquivo");
 					ps.println("teste2.txt");
-					System.out.println("==== Término ====");
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("apagarArquivoExtensao")){
 					System.out.println("==== Apaga arquivo no Servidor ====");
 					ps.println("apagarArquivoExtensao");
 					ps.println("txt");
-					System.out.println("==== Término ====");
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("infArquivo")){
 					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
 					ps.println("infArquivo");
 					ps.println("teste.fla");
-					System.out.println("==== Término ====");
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("renomearArquivo")){
 					System.out.println("==== Obtem informacao do arquivo no Servidor ====");
 					ps.println("renomearArquivo");
 					ps.println("teste.fla");
 					ps.println("funcionaaaaa.fla");
-					System.out.println("==== Término ====");
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("receberArquivo")){
 					System.out.println("==== Recebe arquivo do Servidor ====");
@@ -132,7 +132,7 @@ public class Cliente extends Thread {
 			            fileOut.flush();
 			        }  
 			        fileOut.close();
-			        System.out.println("==== Término ====");
+			        System.out.println("==== Tï¿½rmino ====");
 				}
 				else if (mensagem.equals("enviarArquivoServ")){
 					System.out.println("==== Envia arquivo para o Servidor ====");
@@ -153,7 +153,7 @@ public class Cliente extends Thread {
 	                dadoSaida.close();
 	                arquivoEntrada.close();
 	                //in2.close();
-					System.out.println("==== Término ====");
+					System.out.println("==== Tï¿½rmino ====");
 				}
 				else{
 					System.out.println("Opcao invalida! Digite novamente:");
