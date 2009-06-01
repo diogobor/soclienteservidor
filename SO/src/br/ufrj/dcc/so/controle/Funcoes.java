@@ -8,7 +8,7 @@ import java.lang.String;
 
 public class Funcoes {	
 	
-	public static final String ENDERECOSERVIDOR = "F:\\DVD";
+	public static final String ENDERECOSERVIDOR = "/home/diogobor/public_html";
 	
 	public static void detectarFuncao(int funcao, String secParameter, String thParameter){
 		
@@ -82,7 +82,7 @@ public class Funcoes {
 			System.out.println("O arquivo " + nomeArquivo + " foi deletado com sucesso !");
 		}
 		else{
-			System.out.println("Não foi possível deletar o arquivo !");
+			System.out.println("Nï¿½o foi possï¿½vel deletar o arquivo !");
 		}
 	}
 	
@@ -118,7 +118,7 @@ public class Funcoes {
 			System.out.println("O arquivo " + nomeArquivo + " tem " + tamanho/1024 + " KB.");
 		}
 		else{
-			System.out.println("Não foi possível deletar o arquivo !");
+			System.out.println("Nï¿½o foi possï¿½vel deletar o arquivo !");
 		}
 	}
 
