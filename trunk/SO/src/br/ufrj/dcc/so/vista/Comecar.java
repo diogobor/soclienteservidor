@@ -1,13 +1,17 @@
 package br.ufrj.dcc.so.vista;
 
+import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 
@@ -29,6 +33,10 @@ public class Comecar extends JFrame implements ActionListener{
 //	public static JPanel painelMemoriaControl = null;
 //	
 	public static JPanel painelOpcoes = null;
+	
+	public static JPanel painelCliente = null;
+	
+	public static JPanel painelServidor = null;
 //	
 //	public static JPanel painelControle = null;
 //	
@@ -51,6 +59,21 @@ public class Comecar extends JFrame implements ActionListener{
 //	public static boolean cliqueProximoPassoInstrucao = false;
 //	
 //	public static boolean cliqueProximoPassoMicroInstrucao = false;
+	private JRadioButton enviarArqDirButton = null;
+	
+	private JRadioButton enviarArqExtServButton = null;
+	
+	private JRadioButton recArqButton = null;
+	
+	private JRadioButton recArqExtButton = null;
+	
+	private JRadioButton renameArqButton = null;
+	
+	private JRadioButton deleteArqButton = null;
+	
+	private JRadioButton deleteArqExtButton = null;
+	
+	private JRadioButton infArqExtButton = null;
 	
 	/**
 	 * Construtor da Classe. Cria uma nova janela e coloca o Menu e a imagem do
@@ -59,7 +82,7 @@ public class Comecar extends JFrame implements ActionListener{
 	
 	public Comecar() {
 		
-		JanelaPrincipal.ProgramaLargura = 350;
+		JanelaPrincipal.ProgramaLargura = 830;
 		
 		JanelaPrincipal.ProgramaAltura = 400;
 
@@ -73,88 +96,9 @@ public class Comecar extends JFrame implements ActionListener{
 		
 		JScrollPane scrollTextPrograma = new JScrollPane(listaPrograma);
 		
-		
-		if (painelFundo == null) {
-			painelFundo = new PainelPrincipal();
-		}
-		
-		if (janela == null) {
-			janela = new JanelaPrincipal();
-		}
+		criarPaines();
+		colocarOpcoes();
 
-//		if (painelMemoria == null) {
-//			painelMemoria = new JPanel();
-//		}
-//		
-//		if (painelMemoriaControl == null) {
-//			painelMemoriaControl = new JPanel();
-//		}
-//		
-		if (painelOpcoes == null) {
-			painelOpcoes = new JPanel();
-		}
-//		
-//		if (painelControle == null) {
-//			painelControle = new JPanel();
-//		}
-		
-		painelFundo.setBounds(0, 0, 350, 330);
-		
-//		painelMemoria.setBounds(215, 255, 197, 230);
-//		
-//		painelMemoria.setBackground(corMemoria);
-//		
-//		painelMemoriaControl.setBounds(842, 300, 20, 100);
-//		
-//		painelMemoriaControl.setBackground(Color.black);
-//		
-		painelOpcoes.setBounds(10, 20, 200, 300);
-//		
-		painelOpcoes.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Opcoes"));
-//		
-//		painelControle.setBounds(10, 10, 175, 280);
-//		
-//		painelControle.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Controle"));
-		
-		PainelPrincipal.situacaoServidor = "Nao conectado !";
-
-//		painelMemoria.setLayout(null);
-//		listaMemoria.setBackground(corMemoria);
-//		scrollTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-//		scrollTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//		scrollTextArea.setBounds(0,0,197,230);
-//		painelMemoria.add(scrollTextArea);
-//		
-//		listaMemoria.setFocusable(true);
-//		
-//		painelMemoriaControl.setLayout(null);
-//		listaMemoriaControl.setBackground(corMemoriaControl);
-//		listaMemoriaControl.setBounds(3,0,122,108);
-//		listaMemoriaControl.setFocusable(false);
-//		painelMemoriaControl.add(listaMemoriaControl);
-//	
-//		
-		
-		/**
-		 * Lista que ficara no Programa
-		 */
-		
-		painelOpcoes.setLayout(null);
-//		scrollTextPrograma.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-//		scrollTextPrograma.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//		scrollTextPrograma.setBounds(0,10,155,270);
-//		painelOpcoes.add(scrollTextPrograma);
-		
-		/**
-		 * Painel Controle
-		 */
-	
-//		painelControle.setLayout(new FlowLayout(FlowLayout.CENTER,250,10));
-//		proximoPasso = new JButton("Iniciar");
-//		proximoPasso.setEnabled(false);
-//		proximoPasso.addActionListener(this);
-//		painelControle.add(proximoPasso);
-		
 		JLabel modoOperacaoTitulo = new JLabel("Modo Operacao: ");
 		modoOperacaoTitulo.setBounds(0, 0, 100, 100);
 //		painelControle.add(modoOperacaoTitulo);
@@ -188,8 +132,8 @@ public class Comecar extends JFrame implements ActionListener{
 		janela.add(painelFundo);
 //		janela.add(painelMemoria);
 		janela.add(painelOpcoes);
-//		janela.add(painelMemoriaControl);
-//		janela.add(painelControle);
+		janela.add(painelCliente);
+		janela.add(painelServidor);
 		janela.setVisible(true);
 		
 	}
@@ -218,101 +162,130 @@ public class Comecar extends JFrame implements ActionListener{
 		
 	}
 	
-//	public static int retornarIndexListMemoria(String item){
-//		
-//		int indice;
-//		int indiceAtual;
-		
-//		indiceAtual = listaMemoria.getSelectedIndex();
-		
-//		for(indice = 0; indice < listaMemoria.getItemCount(); indice++){
-//			if (listaMemoria.getItem(indice).equals(Integer.toString(indice) + ". " + item)){
-//				if(indice > indiceAtual)
-//					break;
-//			}
-//		}
-//		if (indice == listaMemoria.getItemCount()){
-//			return 0;
-//		}else{
-//			return indice;
-//		}		
-//	}
-
-//	public static int retornarIndexListMemoriaControle(String item){
-//		
-//		int indice;
-//	
-//		for(indice = 0; indice < listaMemoriaControl.getItemCount(); indice++){
-//			if (listaMemoriaControl.getItem(indice).equals(item)){
-//				break;
-//			}
-//		}
-//		
-//		
-//		
-//		
-//		if (indice == listaMemoriaControl.getItemCount()){
-//			return 0;
-//		}else{
-//			return indice;
-//		}		
-//	}
-//	
-//	public static void zeraMemoriaEPrograma(){
-//		listaPrograma.removeAll();
-//		listaPrograma.add("Programa Pronto!");
-//		status.setText("Pronto");
-//		proximoPasso.setText("Iniciar");
-//		finalizar.setEnabled(false);
-//		
-//		cliqueProximoPassoInstrucao = false;
-//		cliqueProximoPassoMicroInstrucao = false;
-//		/**
-//		 * zera PC no inicio de cada programa.
-//		 */
-//		PainelPrincipal.pc = "0";
-//		
-//		painelFundo.repaint();
-//	}
-	
 	public void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();
 
-//		if (source == proximoPasso) {
-//			
-//			if(proximoPasso.getText().equals("Iniciar")){
-//				/**
-//				 * limpa flags
-//				 */
-//				PainelPrincipal.zero = PainelPrincipal.sinal = PainelPrincipal.carry = PainelPrincipal.overflow = PainelPrincipal.paridade = "";
-//				
-//				if (!modoOperacao.getText().equals("Executar Programa")){
-//					proximoPasso.setText("Proximo Passo");
-//					finalizar.setEnabled(true);
-//				}
-//				
-//				if(cliqueMenuComecar){
-//					
-//				}
-//				
-//				if(modoOperacao.getText().equals("Executar Instrucao")){
-//					
-//				}
-//				if(modoOperacao.getText().equals("Executar MicroInstrucao")){
-//					
-//				}
-//				
-//			}else if(proximoPasso.getText().equals("Proximo Passo")){
-//				
-//			}			
-//		}
-//		else if(source == finalizar){
-//			proximoPasso.setText("Iniciar");
-//			finalizar.setEnabled(false);
-//			
-//			cliqueProximoPassoInstrucao = false;
-//			cliqueProximoPassoMicroInstrucao = false;
-//		}
-//		
+		if (source == enviarArqDirButton) {
+			
+			System.out.println("Clicando no enviar Arquivo para o Servidor");
+			
+		}
+		else if (source == infArqExtButton){
+			System.out.println("Informacao do Arquivo.");
+		}		
 	}	
+	public void criarPaines(){
+		if (painelFundo == null) {
+			painelFundo = new PainelPrincipal();
+		}
+		
+		if (janela == null) {
+			janela = new JanelaPrincipal();
+		}
+
+		if (painelOpcoes == null) {
+			painelOpcoes = new JPanel();
+		}
+		
+		if (painelCliente == null) {
+			painelCliente = new JPanel();
+		}
+		
+		if (painelServidor == null) {
+			painelServidor = new JPanel();
+		}
+
+// Painel do Fundo		
+		painelFundo.setBounds(0, 0, 350, 330);
+
+// Painel Opcoes	
+		painelOpcoes.setBounds(10, 20,250, 290);
+		painelOpcoes.setLayout(new GridLayout(8, 1));	
+		painelOpcoes.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Opcoes"));
+		
+// Painel Cliente
+	    
+	    painelCliente.setBounds(280, 20,250, 290);
+	    painelCliente.setLayout(new GridLayout(8, 1));
+	    painelCliente.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cliente"));
+	    
+// Painel Cliente
+	    
+	    painelServidor.setBounds(550, 20,250, 290);
+	    painelServidor.setLayout(new GridLayout(8, 1));	
+	    painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
+	    
+		PainelPrincipal.situacaoServidor = "Nao conectado !";
+
+
+	}
+	public void colocarOpcoes(){
+		
+		//Radio Buttons do painel Opcoes
+		
+		enviarArqDirButton = new JRadioButton("Enviar arquivo para o Servidor");
+	    enviarArqDirButton.setMnemonic(KeyEvent.VK_E);
+	    enviarArqDirButton.setActionCommand("Enviar arquivo para o Servidor");
+
+	    enviarArqExtServButton = new JRadioButton("Enviar arquivos por extensao");
+	    enviarArqExtServButton.setMnemonic(KeyEvent.VK_N);
+	    enviarArqExtServButton.setActionCommand("Enviar arquivos por extensao");
+	    enviarArqExtServButton.setSelected(true);	    
+
+	    recArqButton = new JRadioButton("Receber arquivo do Servidor");
+	    recArqButton.setMnemonic(KeyEvent.VK_R);
+	    recArqButton.setActionCommand("Receber arquivo do Servidor");
+	    
+	    recArqExtButton = new JRadioButton("Receber arquivos por extensao");
+	    recArqExtButton.setMnemonic(KeyEvent.VK_C);
+	    recArqExtButton.setActionCommand("Receber arquivos por extensao");
+
+	    renameArqButton = new JRadioButton("Renomear arquivo no Servidor");
+	    renameArqButton.setMnemonic(KeyEvent.VK_P);
+	    renameArqButton.setActionCommand("Renomear arquivo no Servidor");
+	    
+	    deleteArqButton = new JRadioButton("Deletar arquivo no Servidor");
+	    deleteArqButton.setMnemonic(KeyEvent.VK_D);
+	    deleteArqButton.setActionCommand("Deletar arquivo no Servidor");
+	    
+	    deleteArqExtButton = new JRadioButton("Deletar arquivos por extensao");
+	    deleteArqExtButton.setMnemonic(KeyEvent.VK_L);
+	    deleteArqExtButton.setActionCommand("Deletar arquivos por extensao");
+	    
+	    infArqExtButton = new JRadioButton("Dados do arquivo");
+	    infArqExtButton.setMnemonic(KeyEvent.VK_O);
+	    infArqExtButton.setActionCommand("Dados do arquivo");
+	    
+
+	    //Juntar os Radio Buttons.
+	    ButtonGroup radioOpcoes = new ButtonGroup();
+	    radioOpcoes.add(enviarArqDirButton);
+	    radioOpcoes.add(enviarArqExtServButton);
+	    radioOpcoes.add(recArqButton);
+	    radioOpcoes.add(recArqExtButton);
+	    radioOpcoes.add(renameArqButton);
+	    radioOpcoes.add(deleteArqButton);
+	    radioOpcoes.add(deleteArqExtButton);
+	    radioOpcoes.add(infArqExtButton);
+
+	    //Listener dos RadioButtons
+	    enviarArqDirButton.addActionListener(this);
+	    enviarArqExtServButton.addActionListener(this);
+	    recArqButton.addActionListener(this);
+	    recArqExtButton.addActionListener(this);
+	    renameArqButton.addActionListener(this);
+	    deleteArqButton.addActionListener(this);
+	    deleteArqExtButton.addActionListener(this);
+	    infArqExtButton.addActionListener(this);
+	    
+	    //Adicionando no painel Opcoes
+	    painelOpcoes.add(enviarArqDirButton);
+	    painelOpcoes.add(enviarArqExtServButton);
+	    painelOpcoes.add(recArqButton);
+	    painelOpcoes.add(recArqExtButton);
+	    painelOpcoes.add(renameArqButton);
+	    painelOpcoes.add(enviarArqDirButton);
+	    painelOpcoes.add(deleteArqButton);
+	    painelOpcoes.add(infArqExtButton);
+	}
 }
