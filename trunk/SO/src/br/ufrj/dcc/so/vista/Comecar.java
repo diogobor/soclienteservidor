@@ -230,7 +230,7 @@ public class Comecar extends JFrame implements ActionListener{
 	    enviarArqExtServButton = new JRadioButton("Enviar arquivos por extensao");
 	    enviarArqExtServButton.setMnemonic(KeyEvent.VK_N);
 	    enviarArqExtServButton.setActionCommand("Enviar arquivos por extensao");
-	    enviarArqExtServButton.setSelected(true);	    
+	    //enviarArqExtServButton.setSelected(true);	    
 
 	    recArqButton = new JRadioButton("Receber arquivo do Servidor");
 	    recArqButton.setMnemonic(KeyEvent.VK_R);
@@ -284,8 +284,8 @@ public class Comecar extends JFrame implements ActionListener{
 	    painelOpcoes.add(recArqButton);
 	    painelOpcoes.add(recArqExtButton);
 	    painelOpcoes.add(renameArqButton);
-	    painelOpcoes.add(enviarArqDirButton);
 	    painelOpcoes.add(deleteArqButton);
+	    painelOpcoes.add(deleteArqExtButton);
 	    painelOpcoes.add(infArqExtButton);
 	}
 }
