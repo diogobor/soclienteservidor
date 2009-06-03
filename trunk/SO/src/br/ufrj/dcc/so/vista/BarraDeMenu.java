@@ -69,19 +69,19 @@ public class BarraDeMenu implements ActionListener {
 		
 		if (source == menuConectarServidor) {
 			try{
-				nomeServidor = JOptionPane.showInputDialog("Digite o endereço do Servidor:", "localhost").toLowerCase();
+				nomeServidor = JOptionPane.showInputDialog("Digite o endereï¿½o do Servidor:", "localhost").toLowerCase();
 				if (nomeServidor == null){
 					nomeServidor = "localhost";
 				}
 				System.out.println(nomeServidor);
 				inicia = new Cliente(nomeServidor, 7000);
 				//cliente nao precisa ser necessariamente uma thread
-				//inicia.start();
-				inicia.executaCliente();
+				inicia.start();
+				//inicia.executaCliente();
 				
 			}
 			catch(Exception e){
-				System.out.println("Ação Cancelar acionada !");
+				System.out.println("Aï¿½ï¿½o Cancelar acionada !");
 			}
 		}
 		else if (source == menuNovoPrograma) {
