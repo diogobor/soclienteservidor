@@ -74,8 +74,10 @@ public class BarraDeMenu implements ActionListener {
 					nomeServidor = "localhost";
 				}
 				System.out.println(nomeServidor);
-				inicia = new Cliente();
-				inicia.start();
+				inicia = new Cliente(nomeServidor, 7000);
+				//cliente nao precisa ser necessariamente uma thread
+				//inicia.start();
+				inicia.executaCliente();
 				
 			}
 			catch(Exception e){
