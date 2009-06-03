@@ -18,7 +18,7 @@ import br.ufrj.dcc.so.vista.PainelPrincipal;
 
 public class Cliente extends Thread  {
 	
-	//Variáveis
+	//Variï¿½veis
 	String servidor = "";
 	int porta = 0;
 	Conexao conexao;
@@ -29,7 +29,7 @@ public class Cliente extends Thread  {
 		this.porta = porta;
     }
 	
-	//métodos publicos
+	//mï¿½todos publicos
 	public void run() {
 		executaCliente();
 	}
@@ -41,7 +41,7 @@ public class Cliente extends Thread  {
         	socket = new Socket(servidor, porta);
         	conexao=  new Conexao(socket);
         	
-             primeiraConexao();
+            primeiraConexao();
             
             //TODO:esse metodo nao deveria esta aqui e sim na vista
             inicializarTela();
