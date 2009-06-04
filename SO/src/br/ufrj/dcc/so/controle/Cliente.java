@@ -18,10 +18,11 @@ import br.ufrj.dcc.so.vista.PainelPrincipal;
 
 public class Cliente extends Thread  {
 	
-	//Vari�veis
+	//Variaveis
 	String servidor = "";
 	int porta = 0;
 	Conexao conexao;
+	public static String mensagem = "";
 	
 	//Construtor
 	public Cliente (String servidor, int porta){
@@ -72,9 +73,10 @@ public class Cliente extends Thread  {
 	private void tratarSolicitacao()
 			throws FileNotFoundException, IOException {
 		
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
-        String mensagem = in.readLine();            
-               
+		//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
+        //String mensagem = in.readLine();            
+        //msgTela = "";
+        
 		while(!mensagem.equals("exit")){
 			
 			if (mensagem.equals("listarDir")){
@@ -107,7 +109,7 @@ public class Cliente extends Thread  {
 			else{
 				System.out.println("Opcao invalida! Digite novamente:");
 			}
-			mensagem = in.readLine();			
+			//mensagem = in.readLine();			
 		}		
 	}
 
@@ -162,40 +164,40 @@ public class Cliente extends Thread  {
 		conexao.escrever("renomearArquivo");
 		//conexao.escrever("teste.fla");
 		//conexao.escrever("funcionaaaaa.fla");
-		System.out.println("==== T�rmino ====");
+		System.out.println("==== Termino ====");
 	}
 
 	private void informacoesArquivo() {
 		System.out.println("==== Obtem informacao do arquivo no Servidor ====");
 		conexao.escrever("infArquivo");
 		//conexao.escrever("teste.fla");
-		System.out.println("==== T�rmino ====");
+		System.out.println("==== Termino ====");
 	}
 
 	private void apagarArquivoExtensao() {
 		System.out.println("==== Apaga arquivo no Servidor ====");
 		conexao.escrever("apagarArquivoExtensao");
 		//conexao.escrever("txt");
-		System.out.println("==== T�rmino ====");
+		System.out.println("==== Termino ====");
 	}
 
 	private void apagarArquivo() {
 		System.out.println("==== Apaga arquivo no Servidor ====");
 		conexao.escrever("apagarArquivo");
 		//conexao.escrever("teste2.txt");
-		System.out.println("==== T�rmino ====");
+		System.out.println("==== Termino ====");
 	}
 
 	private void listarDiretorioServidor() {
 		System.out.println("==== Lista Diretorio do Servidor ====");
 		conexao.escrever("listarDir");
-		System.out.println("==== T�rmino ====");
+		System.out.println("==== Termino ====");
 	}
 	
 	private void enviarArquivo() {
 		System.out.println("==== Envia arquivo para Servidor ====");
-		Funcoes.detectarFuncao(1, "F:\\DVD", null);
-		System.out.println("==== T�rmino ====");
+		Funcoes.detectarFuncao(1, Funcoes.ENDERECOSERVIDOR, null);
+		System.out.println("==== Termino ====");
 	}
 
 	private void listarDiretorioLocal() {
