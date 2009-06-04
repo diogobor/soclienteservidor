@@ -69,19 +69,17 @@ public class BarraDeMenu implements ActionListener {
 		
 		if (source == menuConectarServidor) {
 			try{
-				nomeServidor = JOptionPane.showInputDialog("Digite o endere�o do Servidor:", "localhost").toLowerCase();
+				nomeServidor = JOptionPane.showInputDialog("Digite o enderecoo do Servidor:", "localhost").toLowerCase();
 				if (nomeServidor == null){
 					nomeServidor = "localhost";
 				}
 				System.out.println(nomeServidor);
 				inicia = new Cliente(nomeServidor, 7000);
-				//cliente nao precisa ser necessariamente uma thread
 				inicia.start();
-				//inicia.executaCliente();
 				
 			}
 			catch(Exception e){
-				System.out.println("A��o Cancelar acionada !");
+				System.out.println("Acaoo Cancelar acionada !");
 			}
 		}
 		else if (source == menuNovoPrograma) {
@@ -91,9 +89,6 @@ public class BarraDeMenu implements ActionListener {
 			if (escolhePrograma.showOpenDialog(escolhePrograma) != JFileChooser.APPROVE_OPTION)   
 			   return;  
 			
-//			Comecar.cliqueMenuComecar = true;
-//			Comecar.proximoPasso.setEnabled(true);
-//			Comecar.zeraMemoriaEPrograma();
 			System.out.println("Arquivo selecionado: " + escolhePrograma.getSelectedFile().toString());
 			
 		}
