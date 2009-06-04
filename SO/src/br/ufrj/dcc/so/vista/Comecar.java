@@ -10,9 +10,12 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+
+import br.ufrj.dcc.so.controle.Cliente;
 
 
 public class Comecar extends JFrame implements ActionListener{
@@ -169,10 +172,33 @@ public class Comecar extends JFrame implements ActionListener{
 			
 			System.out.println("Clicando no enviar Arquivo para o Servidor");
 			
-		}
+		}	
 		else if (source == infArqExtButton){
-			System.out.println("Informacao do Arquivo.");
-		}		
+			System.out.println("Informacao do arquivo");
+		}
+		else if (source == enviarArqExtServButton){
+			try {
+				getExtensao();	
+			} catch (Exception e) {
+				System.out.println("Acao Cancelar acionada");
+			}
+		}
+		else if (source == recArqExtButton){
+			try {
+				getExtensao();	
+			} catch (Exception e) {
+				System.out.println("Acao Cancelar acionada");
+			}
+		}
+		else if (source == deleteArqExtButton){
+			try {
+				Cliente.mensagem = getExtensao();
+				
+			} catch (Exception e) {
+				System.out.println("Acao Cancelar acionada");
+			}
+		}
+		
 	}	
 	public void criarPaines(){
 		if (painelFundo == null) {
@@ -287,5 +313,13 @@ public class Comecar extends JFrame implements ActionListener{
 	    painelOpcoes.add(deleteArqButton);
 	    painelOpcoes.add(deleteArqExtButton);
 	    painelOpcoes.add(infArqExtButton);
+	}
+	
+	public String getExtensao(){
+		String extensao = JOptionPane.showInputDialog("Digite a extensao:").toLowerCase();
+		if (extensao == null){
+			extensao = "";
+		}
+		return extensao;
 	}
 }
