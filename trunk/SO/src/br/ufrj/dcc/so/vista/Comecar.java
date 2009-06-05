@@ -1,5 +1,6 @@
 package br.ufrj.dcc.so.vista;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
@@ -40,6 +41,14 @@ public class Comecar extends JFrame implements ActionListener{
 	public static JPanel painelCliente = null;
 	
 	public static JPanel painelServidor = null;
+	
+	public static JPanel painelMsg = null;
+
+	public static Font fonte = null;
+	
+	public static JLabel statusServidor = null;
+	
+	public static JLabel statusArquivo = null;
 //	
 //	public static JPanel painelControle = null;
 //	
@@ -87,7 +96,7 @@ public class Comecar extends JFrame implements ActionListener{
 		
 		JanelaPrincipal.ProgramaLargura = 830;
 		
-		JanelaPrincipal.ProgramaAltura = 400;
+		JanelaPrincipal.ProgramaAltura = 530;
 
 		BarraDeMenu menu = new BarraDeMenu();
 		
@@ -137,6 +146,7 @@ public class Comecar extends JFrame implements ActionListener{
 		janela.add(painelOpcoes);
 		janela.add(painelCliente);
 		janela.add(painelServidor);
+		janela.add(painelMsg);
 		janela.setVisible(true);
 		
 	}
@@ -220,26 +230,40 @@ public class Comecar extends JFrame implements ActionListener{
 		if (painelServidor == null) {
 			painelServidor = new JPanel();
 		}
+		
+		if (painelMsg == null) {
+			painelMsg = new JPanel();
+		}
 
 // Painel do Fundo		
 		painelFundo.setBounds(0, 0, 350, 330);
 
 // Painel Opcoes	
-		painelOpcoes.setBounds(10, 20,250, 290);
+		painelOpcoes.setBounds(10, 20, 250, 290);
 		painelOpcoes.setLayout(new GridLayout(8, 1));	
 		painelOpcoes.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Opcoes"));
 		
 // Painel Cliente
 	    
-	    painelCliente.setBounds(280, 20,250, 290);
+	    painelCliente.setBounds(280, 20, 250, 290);
 	    painelCliente.setLayout(new GridLayout(8, 1));
 	    painelCliente.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cliente"));
 	    
-// Painel Cliente
+// Painel Servidor
 	    
-	    painelServidor.setBounds(550, 20,250, 290);
+	    painelServidor.setBounds(550, 20, 250, 290);
 	    painelServidor.setLayout(new GridLayout(8, 1));	
 	    painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
+	    
+// Painel Msg
+	    
+	    painelMsg.setBounds(10, 320, 790, 100);
+	    painelMsg.setLayout(new GridLayout(8, 1));	
+	    painelMsg.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mensagens"));
+	    
+	    msgNoServidor("Nao conectado !");
+	    
+	    painelMsg.add(statusServidor);
 	    
 		PainelPrincipal.situacaoServidor = "Nao conectado !";
 
@@ -321,5 +345,15 @@ public class Comecar extends JFrame implements ActionListener{
 			extensao = "";
 		}
 		return extensao;
+	}
+	
+	public static void msgNoServidor(String texto){
+		statusServidor = new JLabel(texto);
+		fonte = new Font( "Verdana", Font.BOLD, 12 );
+		statusServidor.setFont(fonte);
+		statusServidor.setBounds(10, 20, statusServidor.WIDTH, statusServidor.HEIGHT);
+		painelMsg.removeAll();
+		painelMsg.add(statusServidor);
+		painelMsg.revalidate();
 	}
 }
