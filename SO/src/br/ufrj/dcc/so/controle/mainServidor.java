@@ -3,7 +3,6 @@ package br.ufrj.dcc.so.controle;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
-//import br.ufrj.dcc.so.controle.*;
 
 public class mainServidor {
 
@@ -16,7 +15,8 @@ public class mainServidor {
               
             //Cria o ServerSocket na porta 7000 se estiver disponivel  
             serv = new ServerSocket(7000);  
-          
+            System.out.println("Escutando porta.");
+            
             while(true){
 	            //Aguarda uma conexao na porta especificada e cria retorna o socket que ira comunicar com o cliente  
             	Socket s = serv.accept();	              
