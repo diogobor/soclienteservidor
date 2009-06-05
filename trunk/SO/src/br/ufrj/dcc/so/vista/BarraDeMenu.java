@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
 import br.ufrj.dcc.so.controle.Cliente;
+import br.ufrj.dcc.so.entidade.ConectarServidor;
 
 public class BarraDeMenu implements ActionListener {
 
@@ -73,9 +74,20 @@ public class BarraDeMenu implements ActionListener {
 				if (nomeServidor == null){
 					nomeServidor = "localhost";
 				}
-				System.out.println(nomeServidor);
-				inicia = new Cliente(nomeServidor, 7000);
+				//System.out.println(nomeServidor);
+				ConectarServidor conServidor = new ConectarServidor();
+				inicia = new Cliente(nomeServidor, 7000, conServidor);
 				inicia.start();
+				
+				if(conServidor.hasErros())
+				{				
+					PainelPrincipal.situacaoServidor = conServidor.errosString();
+	            	Comecar.painelFundo.repaint();	            	
+	            	BarraDeMenu.menuConectarServidor.setEnabled(true);
+	            }
+				else{
+					//escrever conectado na tela
+				}
 				
 			}
 			catch(Exception e){

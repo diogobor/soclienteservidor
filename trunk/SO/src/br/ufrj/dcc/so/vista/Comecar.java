@@ -192,7 +192,7 @@ public class Comecar extends JFrame implements ActionListener{
 		}
 		else if (source == deleteArqExtButton){
 			try {
-				Cliente.mensagem = getExtensao();
+				//Cliente.mensagem = getExtensao();
 				
 			} catch (Exception e) {
 				System.out.println("Acao Cancelar acionada");
