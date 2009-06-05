@@ -118,9 +118,6 @@ public class BarraDeMenu implements ActionListener {
 			menuExecutaPrograma.setSelected(true);
 			menuExecutaInstrucao.setSelected(false);
 			menuExecutaMicroInstrucao.setSelected(false);
-//			Comecar.finalizar.setEnabled(false);
-//			Comecar.modoOperacao.setText("Executar Programa");
-//			System.out.println("Executa Programa Inteiro.");
 		}
 		else if (source == menuExecutaInstrucao) {
 			
