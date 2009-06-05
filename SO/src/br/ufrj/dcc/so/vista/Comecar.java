@@ -6,6 +6,7 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -18,13 +19,16 @@ import javax.swing.JScrollPane;
 
 import br.ufrj.dcc.so.controle.Cliente;
 
-
 public class Comecar extends JFrame implements ActionListener{
 	
 	/**
 	 * Classe responsavel por iniciar a execucao do Programa.
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final String RAIZSERVIDOR ="filesServer/arquivos";
+	
+	private static final String RAIZCLIENTE ="filesClient/arquivos";
 	
 	static Thread controla = null;
 	
@@ -38,9 +42,9 @@ public class Comecar extends JFrame implements ActionListener{
 //	
 	public static JPanel painelOpcoes = null;
 	
-	public static JPanel painelCliente = null;
+	public static FileTree painelCliente = null;
 	
-	public static JPanel painelServidor = null;
+	public static FileTree painelServidor = null;
 	
 	public static JPanel painelMsg = null;
 
@@ -86,6 +90,8 @@ public class Comecar extends JFrame implements ActionListener{
 	private JRadioButton deleteArqExtButton = null;
 	
 	private JRadioButton infArqExtButton = null;
+	
+
 	
 	/**
 	 * Construtor da Classe. Cria uma nova janela e coloca o Menu e a imagem do
@@ -137,6 +143,11 @@ public class Comecar extends JFrame implements ActionListener{
 		 * Seta a janela
 		 */
 		
+		/*File f=new File(".");
+		JTree arvore = new JTree(addNodes(null, f));)*/
+		
+		
+		
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setJMenuBar(menu.getBarraMenu());
 
@@ -148,9 +159,9 @@ public class Comecar extends JFrame implements ActionListener{
 		janela.add(painelServidor);
 		janela.add(painelMsg);
 		janela.setVisible(true);
-		
-	}
 	
+	}
+
 	public static void colocarNaMemoria(){	
 		int contadorList;
 		
@@ -224,11 +235,13 @@ public class Comecar extends JFrame implements ActionListener{
 		}
 		
 		if (painelCliente == null) {
-			painelCliente = new JPanel();
+			File diretorioCliente=new File(RAIZCLIENTE);
+			painelCliente = new FileTree(diretorioCliente);
 		}
 		
 		if (painelServidor == null) {
-			painelServidor = new JPanel();
+			File diretorioServidor=new File(RAIZSERVIDOR);
+			painelServidor = new FileTree(diretorioServidor);
 		}
 		
 		if (painelMsg == null) {
@@ -246,13 +259,13 @@ public class Comecar extends JFrame implements ActionListener{
 // Painel Cliente
 	    
 	    painelCliente.setBounds(280, 20, 250, 290);
-	    painelCliente.setLayout(new GridLayout(8, 1));
+	    //painelCliente.setLayout(new GridLayout(8, 1));
 	    painelCliente.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cliente"));
 	    
 // Painel Servidor
 	    
 	    painelServidor.setBounds(550, 20, 250, 290);
-	    painelServidor.setLayout(new GridLayout(8, 1));	
+	    //painelServidor.setLayout(new GridLayout(8, 1));	
 	    painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
 	    
 // Painel Msg
