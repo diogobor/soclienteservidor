@@ -9,11 +9,11 @@ import br.ufrj.dcc.so.entidade.*;
 public class Cliente extends Thread  {
 	
 	//Variaveis
-	String servidor = "";
-	int porta = 0;
-	Conexao conexao;
-	Socket socket;
-	Requisicao requisicao;
+	private String servidor = "";
+	private int porta = 0;
+	private Conexao conexao;
+	private Socket socket;
+	private Requisicao requisicao;
 	//public static String mensagem = "";
 	
 	//Construtor

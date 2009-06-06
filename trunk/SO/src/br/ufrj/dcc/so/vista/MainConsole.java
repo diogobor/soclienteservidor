@@ -73,9 +73,9 @@ public class MainConsole {
 		}
 	}
 	
-	private static Requisicao executarRequisicao(Requisicao req) throws InterruptedException {
+	public static Requisicao executarRequisicao(Requisicao req, String enderecoServidor) throws InterruptedException {
 		
-		Cliente cliente = new Cliente("localhost", 7000, req);
+		Cliente cliente = new Cliente(enderecoServidor, 7000, req);
 		cliente.start();
 		//espera fim da execucao da thread
 		cliente.join();		
@@ -83,24 +83,24 @@ public class MainConsole {
 		return cliente.getRequisicao();
 	}
 
-	private static void desconectarServidor() throws InterruptedException{
+	public static void desconectarServidor() throws InterruptedException{
 		
 		DesconectarServidor desconectar = new DesconectarServidor();
 		
-		desconectar = (DesconectarServidor)executarRequisicao(desconectar);
+		desconectar = (DesconectarServidor)executarRequisicao(desconectar, null);
 		
 		if(desconectar.hasErros()){
 			System.out.println(desconectar.errosString());
 			return;			
 		}		
-		System.out.println("Cliente conectado");		
+		System.out.println("Cliente desconectado");		
 	}	
 
-	private static void conectarServidor() throws InterruptedException{
+	public static void conectarServidor() throws InterruptedException{
 		
 		ConectarServidor conectar = new ConectarServidor();
 		
-		conectar = (ConectarServidor)executarRequisicao(conectar);
+		conectar = (ConectarServidor)executarRequisicao(conectar, null);
 		
 		if(conectar.hasErros()){
 			System.out.println(conectar.errosString());
@@ -108,12 +108,17 @@ public class MainConsole {
 		}		
 		System.out.println("Cliente conectado");		
 	}
+	
+	public static void apagarArquivo(String nomeArquivo) throws IOException{
+		ApagarArquivo deletaArquivo = new ApagarArquivo();
+		deletaArquivo.setNomeArquivo(nomeArquivo);
+	}
 
-	private static void listarDiretorio() throws InterruptedException {
+	public static void listarDiretorio() throws InterruptedException {
 		LerDiretorio lerDiretorio = new LerDiretorio();
 		lerDiretorio.setCaminho("");
 		
-		lerDiretorio = (LerDiretorio)executarRequisicao(lerDiretorio);
+		lerDiretorio = (LerDiretorio)executarRequisicao(lerDiretorio, null);
 		
 		if(lerDiretorio.hasErros()){
 			System.out.println(lerDiretorio.errosString());
@@ -122,7 +127,7 @@ public class MainConsole {
 		exibirLeituraDiretorio(lerDiretorio);
 	}
 	
-	private static void exibirLeituraDiretorio(Requisicao requisicao) {
+	public static void exibirLeituraDiretorio(Requisicao requisicao) {
 		
 		System.out.println("==== Lista Diretorio do Servidor ====");
 		
