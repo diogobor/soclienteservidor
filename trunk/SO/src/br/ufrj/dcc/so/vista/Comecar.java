@@ -1,5 +1,6 @@
 package br.ufrj.dcc.so.vista;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.List;
@@ -192,21 +193,29 @@ public class Comecar extends JFrame implements ActionListener{
 		if (source == enviarArqDirButton) {
 			
 			System.out.println("Clicando no enviar Arquivo para o Servidor");
-			
+			desbloqueiaPainelCliente();
+			bloqueiaPainelServidor();
 		}	
 		else if (source == infArqExtButton){
 			System.out.println("Informacao do arquivo");
+			
+		}
+		else if (source == deleteArqButton){
+			MainConsole.apagarArquivo("");
+			bloqueiaPainelCliente();
 		}
 		else if (source == enviarArqExtServButton){
 			try {
 				getExtensao();	
+				bloqueiaPainelServidor();
 			} catch (Exception e) {
 				System.out.println("Acao Cancelar acionada");
 			}
 		}
 		else if (source == recArqExtButton){
 			try {
-				getExtensao();	
+				getExtensao();
+				bloqueiaPainelCliente();
 			} catch (Exception e) {
 				System.out.println("Acao Cancelar acionada");
 			}
@@ -215,6 +224,7 @@ public class Comecar extends JFrame implements ActionListener{
 			try {
 				//Cliente.mensagem = getExtensao();
 				getExtensao();
+				bloqueiaPainelCliente();
 			} catch (Exception e) {
 				System.out.println("Acao Cancelar acionada");
 			}
@@ -237,11 +247,14 @@ public class Comecar extends JFrame implements ActionListener{
 		if (painelCliente == null) {
 			File diretorioCliente = new File(RAIZCLIENTE);
 			painelCliente = new FileTree(diretorioCliente);
+			painelCliente.setEnabled(false);
+			bloqueiaPainelCliente();
 		}
 		
 		if (painelServidor == null) {
 			File diretorioServidor = new File(RAIZSERVIDOR);
 			painelServidor = new FileTree(diretorioServidor);
+			bloqueiaPainelServidor();
 		}
 		
 		if (painelMsg == null) {
@@ -255,7 +268,7 @@ public class Comecar extends JFrame implements ActionListener{
 		painelOpcoes.setBounds(10, 20, 250, 290);
 		painelOpcoes.setLayout(new GridLayout(8, 1));	
 		painelOpcoes.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Opcoes"));
-		
+		 
 // Painel Cliente
 	    
 	    painelCliente.setBounds(280, 20, 250, 290);
@@ -368,5 +381,18 @@ public class Comecar extends JFrame implements ActionListener{
 		painelMsg.removeAll();
 		painelMsg.add(statusServidor);
 		painelMsg.revalidate();
+	}
+	
+	public static void bloqueiaPainelCliente(){
+		painelCliente.setEnabled(false);
+	}
+	public static void bloqueiaPainelServidor(){
+		painelServidor.setEnabled(false);
+	}
+	public static void desbloqueiaPainelCliente(){
+		painelCliente.setEnabled(true);
+	}
+	public static void desbloqueiaPainelServidor(){
+		painelServidor.setEnabled(true);
 	}
 }

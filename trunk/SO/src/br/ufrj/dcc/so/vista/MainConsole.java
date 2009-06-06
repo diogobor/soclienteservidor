@@ -109,7 +109,7 @@ public class MainConsole {
 		System.out.println("Cliente conectado");		
 	}
 	
-	public static void apagarArquivo(String nomeArquivo) throws IOException{
+	public static void apagarArquivo(String nomeArquivo){
 		ApagarArquivo deletaArquivo = new ApagarArquivo();
 		deletaArquivo.setNomeArquivo(nomeArquivo);
 	}

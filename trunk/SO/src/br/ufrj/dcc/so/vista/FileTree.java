@@ -1,15 +1,10 @@
 package br.ufrj.dcc.so.vista;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.io.File;
 import java.util.Collections;
 import java.util.Vector;
 
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -19,6 +14,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class FileTree extends JPanel implements TreeSelectionListener{
   
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JScrollPane scroll;
 	private JTree arvoreArquivos;
 	
@@ -75,9 +74,9 @@ public class FileTree extends JPanel implements TreeSelectionListener{
   }
   
   public void valueChanged(TreeSelectionEvent e) {
-      DefaultMutableTreeNode no = (DefaultMutableTreeNode) e
-          .getPath().getLastPathComponent();
+      DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
       System.out.println("Voce selecionou: " + no);
   }
+  
 }
 
