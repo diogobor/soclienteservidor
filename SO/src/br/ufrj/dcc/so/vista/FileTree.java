@@ -77,7 +77,7 @@ public class FileTree extends JPanel implements TreeSelectionListener{
   public void valueChanged(TreeSelectionEvent e) {
       DefaultMutableTreeNode no = (DefaultMutableTreeNode) e
           .getPath().getLastPathComponent();
-      System.out.println("You selected " + no);
+      System.out.println("Voce selecionou: " + no);
   }
 }
 

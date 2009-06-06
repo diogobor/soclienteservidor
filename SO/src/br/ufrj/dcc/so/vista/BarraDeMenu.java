@@ -70,15 +70,15 @@ public class BarraDeMenu implements ActionListener {
 		
 		if (source == menuConectarServidor) {
 			try{
-				nomeServidor = JOptionPane.showInputDialog("Digite o enderecoo do Servidor:", "localhost").toLowerCase();
+				nomeServidor = JOptionPane.showInputDialog("Digite o endereco do Servidor:", "localhost").toLowerCase();
 				if (nomeServidor == null){
 					nomeServidor = "localhost";
 				}
 				//System.out.println(nomeServidor);
 				ConectarServidor conServidor = new ConectarServidor();
-				inicia = new Cliente(nomeServidor, 7000, conServidor);
-				inicia.start();
-				
+//				inicia = new Cliente(nomeServidor, 7000, conServidor);
+//				inicia.start();
+				MainConsole.conectarServidor();
 				if(conServidor.hasErros())
 				{				
 					PainelPrincipal.situacaoServidor = conServidor.errosString();
@@ -91,7 +91,7 @@ public class BarraDeMenu implements ActionListener {
 				
 			}
 			catch(Exception e){
-				System.out.println("Acaoo Cancelar acionada !");
+				System.out.println("Acao Cancelar acionada !");
 			}
 		}
 		else if (source == menuNovoPrograma) {
