@@ -20,8 +20,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 public class Comecar extends JFrame implements ActionListener,TreeSelectionListener{
 	
@@ -51,6 +54,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	public static Font fonte = null;
 	
 	public static JLabel statusServidor = null;
+	
+	public static JLabel nomeStatusServidor = null;
 	
 	public static JLabel statusArquivo = null;
 
@@ -92,8 +97,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		criarPaines();
 		colocarOpcoes();
 
-		this.painelCliente.addComecarListener(this);
-		this.painelServidor.addComecarListener(this);
+		painelCliente.addComecarListener(this);
+		painelServidor.addComecarListener(this);
 		
 		JLabel modoOperacaoTitulo = new JLabel("Modo Operacao: ");
 		modoOperacaoTitulo.setBounds(0, 0, 100, 100);
@@ -158,7 +163,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			try {
 				String extensao;
 				extensao=getExtensao();
-				Comecar.msgNoServidor("arquivos do servidor com extensão "+extensao+" bloqueados");
+				Comecar.msgNoServidor("arquivos do servidor com extensao "+extensao+" bloqueados");
 				bloqueiaPainelCliente();
 			} catch (Exception e) {
 				System.out.println("Acao Cancelar acionada");
@@ -168,8 +173,15 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}	
 	
 	public void valueChanged(TreeSelectionEvent e) {
-	      //DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-	      //System.out.println("Voce selecionou: " + no);
+	      DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+	      JTree treeSource = (JTree) e.getSource();
+	        TreePath path = treeSource.getSelectionPath();
+	        System.out.println(path);
+	        System.out.println(path.getPath());
+	        System.out.println(path.getParentPath());
+	        System.out.println(((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
+	        System.out.println(path.getPathCount());
+	      System.out.println("Diretorio: " + e.getPath() + "  " + no);
 		/*	String diretorio;
 			if(e.getPath().getParentPath().getLastPathComponent().toString()!=null){
 				diretorio=e.getPath().getParentPath().getLastPathComponent().toString();
@@ -254,12 +266,10 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 // Painel Msg
 	    
 	    painelMsg.setBounds(10, 320, 790, 100);
-	    painelMsg.setLayout(new GridLayout(4, 1));	
+	    painelMsg.setLayout(null);	
 	    painelMsg.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mensagens"));
 	    
-	    msgNoServidor("Nao conectado !");
-	    
-	    painelMsg.add(statusServidor);
+	    msgNoServidor("Olaaa");
 	    
 		PainelPrincipal.situacaoServidor = "Nao conectado !";
 
@@ -343,11 +353,18 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void msgNoServidor(String texto){
+		//Titulo -Status-
+		nomeStatusServidor = new JLabel("Servidor:");
+		fonte = new Font( "Verdana", Font.BOLD, 15 );
+		nomeStatusServidor.setFont(fonte);
+		nomeStatusServidor.setBounds(10, 20, 70, 15);
+		painelMsg.add(nomeStatusServidor);
+		
 		statusServidor = new JLabel(texto);
 		fonte = new Font( "Verdana", Font.BOLD, 12 );
 		statusServidor.setFont(fonte);
-		statusServidor.setBounds(10, 20, statusServidor.WIDTH, statusServidor.HEIGHT);
-		painelMsg.removeAll();
+		statusServidor.setBounds(83, 21, 100, 15);
+		//painelMsg.removeAll();
 		painelMsg.add(statusServidor);
 		painelMsg.revalidate();
 	}
