@@ -12,7 +12,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class FileTree extends JPanel implements TreeSelectionListener{
+public class FileTree extends JPanel{
   
 	/**
 	 * 
@@ -20,13 +20,14 @@ public class FileTree extends JPanel implements TreeSelectionListener{
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scroll;
 	private JTree arvoreArquivos;
+	private Comecar comecar;
 	
   public FileTree(File dir) {
     
     arvoreArquivos = new JTree(adicionarNos(null, dir));
     scroll = new JScrollPane();
     
-    arvoreArquivos.addTreeSelectionListener(this);
+    //arvoreArquivos.addTreeSelectionListener(this);
     scroll.getViewport().add(arvoreArquivos);
     setLayout(new BorderLayout());
     add(BorderLayout.CENTER, scroll);
@@ -72,11 +73,10 @@ public class FileTree extends JPanel implements TreeSelectionListener{
     
     return diretorioAtual;
   }
-  
-  public void valueChanged(TreeSelectionEvent e) {
-      DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-      System.out.println("Voce selecionou: " + no);
+ 
+  public void addComecarListener(Comecar comecar){
+	  this.comecar=comecar;
+	  arvoreArquivos.addTreeSelectionListener(this.comecar);
   }
-  
 }
 

@@ -6,7 +6,11 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -16,17 +20,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 
-public class Comecar extends JFrame implements ActionListener{
+public class Comecar extends JFrame implements ActionListener,TreeSelectionListener{
 	
 	/**
 	 * Classe responsavel por iniciar a execucao do Programa.
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final String RAIZSERVIDOR ="filesServer/arquivos";
+	private static final String RAIZSERVIDOR ="filesServer";
 	
-	private static final String RAIZCLIENTE ="filesClient/arquivos";
+	private static final String RAIZCLIENTE ="filesClient";
 	
 	static Thread controla = null;
 	
@@ -86,11 +92,16 @@ public class Comecar extends JFrame implements ActionListener{
 		criarPaines();
 		colocarOpcoes();
 
+		this.painelCliente.addComecarListener(this);
+		this.painelServidor.addComecarListener(this);
+		
 		JLabel modoOperacaoTitulo = new JLabel("Modo Operacao: ");
 		modoOperacaoTitulo.setBounds(0, 0, 100, 100);
 		
 		JLabel statusTitulo = new JLabel("Status: ");
 		statusTitulo.setBounds(0, 0, 100, 100);
+		
+		
 		
 		
 		/**
@@ -155,6 +166,43 @@ public class Comecar extends JFrame implements ActionListener{
 		}
 		
 	}	
+	
+	public void valueChanged(TreeSelectionEvent e) {
+	      //DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+	      //System.out.println("Voce selecionou: " + no);
+		/*	String diretorio;
+			if(e.getPath().getParentPath().getLastPathComponent().toString()!=null){
+				diretorio=e.getPath().getParentPath().getLastPathComponent().toString();
+			}
+			else
+			{
+				diretorio=e.getPath().getParentPath().toString();
+			}
+			
+			System.out.println(diretorio);
+			
+			String caminhoArquivo=e.getPath().getLastPathComponent().toString();
+			System.out.println(caminhoArquivo);
+			
+			String nomeArquivo=diretorio+'/'+caminhoArquivo;
+			File arquivo=new File(nomeArquivo);
+			
+			try{
+			BufferedReader br= new BufferedReader(new FileReader(arquivo));
+				try{
+					String linha=br.readLine();
+					System.out.println(linha);
+					
+				}catch(IOException ioeo){
+					System.out.println("erro de leitura");
+				}
+			
+			}catch(FileNotFoundException fnfe){
+				System.out.println("nao encontrado");
+			}
+			
+		*/	
+	}
 	public void criarPaines(){
 		if (painelFundo == null) {
 			painelFundo = new PainelPrincipal();
