@@ -62,7 +62,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 
 	public static List listaPrograma = new List();
 
-	private JRadioButton enviarArqDirButton = null;
+	private JRadioButton enviarArqServButton = null;
 	
 	private JRadioButton enviarArqExtServButton = null;
 	
@@ -77,6 +77,12 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	private JRadioButton deleteArqExtButton = null;
 	
 	private JRadioButton infArqExtButton = null;
+	
+	private String nomeArquivoSelecionado;
+	
+	private String nomeDiretorio;
+	
+	private String caminhoArquivoSelecionado;
 	
 
 	
@@ -130,9 +136,12 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	public void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();
 
-		if (source == enviarArqDirButton) {
+		if (source == enviarArqServButton) {
 			
-			System.out.println("Clicando no enviar Arquivo para o Servidor");
+			/*gravar arquivo cujo nome é caminhoArquivoSelecionado
+			 * e gravar no servdor*/
+			
+			//System.out.println("Clicando no enviar Arquivo para o Servidor");
 			desbloqueiaPainelCliente();
 			bloqueiaPainelServidor();
 		}	
@@ -174,7 +183,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}	
 	
 	public void valueChanged(TreeSelectionEvent e) {
-	      DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+	     /* DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 	      JTree treeSource = (JTree) e.getSource();
 	        TreePath path = treeSource.getSelectionPath();
 	        System.out.println(path);
@@ -182,39 +191,28 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	        System.out.println(path.getParentPath());
 	        System.out.println(((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
 	        System.out.println(path.getPathCount());
-	      System.out.println("Diretorio: " + e.getPath() + "  " + no);
-		/*	String diretorio;
-			if(e.getPath().getParentPath().getLastPathComponent().toString()!=null){
-				diretorio=e.getPath().getParentPath().getLastPathComponent().toString();
-			}
-			else
-			{
-				diretorio=e.getPath().getParentPath().toString();
-			}
-			
-			System.out.println(diretorio);
-			
-			String caminhoArquivo=e.getPath().getLastPathComponent().toString();
-			System.out.println(caminhoArquivo);
-			
-			String nomeArquivo=diretorio+'/'+caminhoArquivo;
-			File arquivo=new File(nomeArquivo);
-			
-			try{
-			BufferedReader br= new BufferedReader(new FileReader(arquivo));
-				try{
-					String linha=br.readLine();
-					System.out.println(linha);
-					
-				}catch(IOException ioeo){
-					System.out.println("erro de leitura");
-				}
-			
-			}catch(FileNotFoundException fnfe){
-				System.out.println("nao encontrado");
-			}
-			
-		*/	
+	      System.out.println("Diretorio: " + e.getPath() + "  " + no);*/
+		
+		 nomeArquivoSelecionado=e.getPath().getLastPathComponent().toString();
+	     nomeDiretorio=e.getPath().getParentPath().getLastPathComponent().toString();
+	     caminhoArquivoSelecionado=nomeDiretorio+'/'+nomeArquivoSelecionado;
+	     
+	     /*
+	     File teste=new File(caminhoArquivoSelecionado);
+	     
+	     try{
+	    	 BufferedReader br=new BufferedReader(new FileReader(teste));
+	    	 
+	    	 try{
+	    		System.out.println(br.readLine());
+	    	 }catch(IOException ioe){
+	    		 
+	    	 }
+	    	 
+	     }catch(FileNotFoundException fnfe){
+	    	 
+	     }*/
+		
 	}
 	public void criarPaines(){
 		if (painelFundo == null) {
@@ -280,9 +278,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 		//Radio Buttons do painel Opcoes
 		
-		enviarArqDirButton = new JRadioButton("Enviar arquivo para o Servidor");
-	    enviarArqDirButton.setMnemonic(KeyEvent.VK_E);
-	    enviarArqDirButton.setActionCommand("Enviar arquivo para o Servidor");
+		enviarArqServButton = new JRadioButton("Enviar arquivo para o Servidor");
+	    enviarArqServButton.setMnemonic(KeyEvent.VK_E);
+	    enviarArqServButton.setActionCommand("Enviar arquivo para o Servidor");
 
 	    enviarArqExtServButton = new JRadioButton("Enviar arquivos por extensao");
 	    enviarArqExtServButton.setMnemonic(KeyEvent.VK_N);
@@ -315,7 +313,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 
 	    //Juntar os Radio Buttons.
 	    ButtonGroup radioOpcoes = new ButtonGroup();
-	    radioOpcoes.add(enviarArqDirButton);
+	    radioOpcoes.add(enviarArqServButton);
 	    radioOpcoes.add(enviarArqExtServButton);
 	    radioOpcoes.add(recArqButton);
 	    radioOpcoes.add(recArqExtButton);
@@ -325,7 +323,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	    radioOpcoes.add(infArqExtButton);
 
 	    //Listener dos RadioButtons
-	    enviarArqDirButton.addActionListener(this);
+	    enviarArqServButton.addActionListener(this);
 	    enviarArqExtServButton.addActionListener(this);
 	    recArqButton.addActionListener(this);
 	    recArqExtButton.addActionListener(this);
@@ -335,7 +333,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	    infArqExtButton.addActionListener(this);
 	    
 	    //Adicionando no painel Opcoes
-	    painelOpcoes.add(enviarArqDirButton);
+	    painelOpcoes.add(enviarArqServButton);
 	    painelOpcoes.add(enviarArqExtServButton);
 	    painelOpcoes.add(recArqButton);
 	    painelOpcoes.add(recArqExtButton);
