@@ -1,5 +1,6 @@
 package br.ufrj.dcc.so.vista;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.List;
@@ -269,7 +270,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	    painelMsg.setLayout(null);	
 	    painelMsg.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mensagens"));
 	    
-	    msgNoServidor("Olaaa");
+	    msgNoServidor("Nao Conectado !");
 	    
 		PainelPrincipal.situacaoServidor = "Nao conectado !";
 
@@ -363,8 +364,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		statusServidor = new JLabel(texto);
 		fonte = new Font( "Verdana", Font.BOLD, 12 );
 		statusServidor.setFont(fonte);
-		statusServidor.setBounds(83, 21, 100, 15);
-		//painelMsg.removeAll();
+		statusServidor.setForeground(Color.red);
+		statusServidor.setBounds(83, 21, 120, texto.length());
 		painelMsg.add(statusServidor);
 		painelMsg.revalidate();
 	}
