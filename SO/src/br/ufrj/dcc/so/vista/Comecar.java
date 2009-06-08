@@ -145,7 +145,9 @@ public class Comecar extends JFrame implements ActionListener{
 		}
 		else if (source == deleteArqExtButton){
 			try {
-				getExtensao();
+				String extensao;
+				extensao=getExtensao();
+				Comecar.msgNoServidor("arquivos do servidor com extensão "+extensao+" bloqueados");
 				bloqueiaPainelCliente();
 			} catch (Exception e) {
 				System.out.println("Acao Cancelar acionada");
@@ -194,19 +196,17 @@ public class Comecar extends JFrame implements ActionListener{
 // Painel Cliente
 	    
 	    painelCliente.setBounds(280, 20, 250, 290);
-	    //painelCliente.setLayout(new GridLayout(8, 1));
 	    painelCliente.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cliente"));
 	    
 // Painel Servidor
 	    
 	    painelServidor.setBounds(550, 20, 250, 290);
-	    //painelServidor.setLayout(new GridLayout(8, 1));	
 	    painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
 	    
 // Painel Msg
 	    
 	    painelMsg.setBounds(10, 320, 790, 100);
-	    painelMsg.setLayout(new GridLayout(8, 1));	
+	    painelMsg.setLayout(new GridLayout(4, 1));	
 	    painelMsg.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mensagens"));
 	    
 	    msgNoServidor("Nao conectado !");

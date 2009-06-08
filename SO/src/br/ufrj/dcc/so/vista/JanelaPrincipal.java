@@ -31,8 +31,6 @@ public class JanelaPrincipal extends JFrame implements WindowListener {
 	 */
 	public JanelaPrincipal() {
 
-//		icone.setImagem("./imagens/icone.png");
-//		setIconImage(icone.getImagem());
 		setTitle("Trabalho de Sistemas Operacionais I");
 		setSize(tamanhoPrograma);
 		setResizable(false);
@@ -40,38 +38,17 @@ public class JanelaPrincipal extends JFrame implements WindowListener {
 				(screenSize.height - ProgramaAltura) / 2);
 	}
 
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 
 	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowDeactivated(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowOpened(WindowEvent e) {}
+	public void windowActivated(WindowEvent e){}
 }

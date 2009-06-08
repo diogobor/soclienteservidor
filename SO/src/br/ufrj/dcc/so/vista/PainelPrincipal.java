@@ -28,12 +28,8 @@ public class PainelPrincipal extends Component{
 			grafico = graficoPrincipal;
 		}
 		
-		//fundoMenu.setImagem("./imagens/arquiteturanovo.png");
-		//grafico.drawImage(fundoMenu.getImagem(), 0, 0, null);
-		
 		grafico.setColor(Color.black); // define a cor do painel
-		grafico.setFont(new Font("Arial", Font.BOLD, 12)); // a fonte a ser usada
-		
+		grafico.setFont(new Font("Arial", Font.BOLD, 12)); // a fonte a ser usada	
 		grafico.drawString(situacaoServidor, 0, 20);
 		
 	}
