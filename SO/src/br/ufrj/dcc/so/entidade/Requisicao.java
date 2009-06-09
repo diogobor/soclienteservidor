@@ -17,9 +17,6 @@ public abstract class Requisicao implements Serializable {
 	/*
 	 *  Construtor
 	 */
-	public Requisicao()
-	{		
-	}
 	
 	public abstract void executar(ControleArquivo controleArquivo);
 	
