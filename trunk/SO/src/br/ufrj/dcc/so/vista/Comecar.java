@@ -8,9 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
@@ -21,11 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 public class Comecar extends JFrame implements ActionListener,TreeSelectionListener{
 	
@@ -37,6 +36,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	private static final String RAIZSERVIDOR ="filesServer";
 	
 	private static final String RAIZCLIENTE ="filesClient";
+	
+	private static final int IP_SERVIDOR =0;
 	
 	static Thread controla = null;
 	
@@ -84,8 +85,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	private String caminhoArquivoSelecionado;
 	
-
-	
 	/**
 	 * Construtor da Classe. Cria uma nova janela e coloca o Menu e a imagem do
 	 * Menu.
@@ -113,9 +112,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		JLabel statusTitulo = new JLabel("Status: ");
 		statusTitulo.setBounds(0, 0, 100, 100);
 		
-		
-		
-		
 		/**
 		 * Seta a janela
 		 */
@@ -138,8 +134,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 
 		if (source == enviarArqServButton) {
 			
-			/*gravar arquivo cujo nome é caminhoArquivoSelecionado
-			 * e gravar no servdor*/
+			/*pedir diretorio de destino*/
+			
+			File arquivoEntrada=new File(caminhoArquivoSelecionado);
 			
 			//System.out.println("Clicando no enviar Arquivo para o Servidor");
 			desbloqueiaPainelCliente();

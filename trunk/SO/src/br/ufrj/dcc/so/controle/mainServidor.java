@@ -19,7 +19,7 @@ public class mainServidor {
             
             while(true){
 	            //Aguarda uma conexao na porta especificada e cria retorna o socket que ira comunicar com o cliente  
-            	Socket s = serv.accept();	              
+            	Socket s = serv.accept();
 	            Thread t = new Servidor(s);
 	            t.start();
             }
