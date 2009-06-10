@@ -7,13 +7,7 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -349,6 +343,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void msgNoServidor(String texto){
+		painelMsg.removeAll();
 		//Titulo -Status-
 		nomeStatusServidor = new JLabel("Servidor:");
 		fonte = new Font( "Verdana", Font.BOLD, 15 );
@@ -362,7 +357,29 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		statusServidor.setForeground(Color.red);
 		statusServidor.setBounds(83, 21, 120, texto.length());
 		painelMsg.add(statusServidor);
+		
 		painelMsg.revalidate();
+		painelMsg.repaint();
+	}
+	
+	public static void msgIP(String texto){
+		painelMsg.removeAll();
+		//Titulo -Status-
+		nomeStatusServidor = new JLabel("Servidor:");
+		fonte = new Font( "Verdana", Font.BOLD, 15 );
+		nomeStatusServidor.setFont(fonte);
+		nomeStatusServidor.setBounds(10, 20, 70, 15);
+		painelMsg.add(nomeStatusServidor);
+		
+		statusServidor = new JLabel(texto);
+		fonte = new Font( "Verdana", Font.BOLD, 12 );
+		statusServidor.setFont(fonte);
+		statusServidor.setForeground(Color.red);
+		statusServidor.setBounds(83, 21, 120, texto.length());
+		painelMsg.add(statusServidor);
+		
+		painelMsg.revalidate();
+		painelMsg.repaint();
 	}
 	
 	public static void bloqueiaPainelCliente(){

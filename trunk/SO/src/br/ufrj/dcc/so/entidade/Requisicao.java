@@ -55,7 +55,7 @@ public abstract class Requisicao implements Serializable {
 	}
 	
 	public boolean hasErros(){
-		return (erros != null && erros.size()!= 0);	
+		return ((erros != null) && (erros.size()!= 0));	
 	}
 	
 	protected void mensagemFimTarefa(String tarefa) {
