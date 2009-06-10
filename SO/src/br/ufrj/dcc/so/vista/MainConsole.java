@@ -25,7 +25,7 @@ public class MainConsole {
 			{			
         	
 	        	if (mensagem.equals("conectar")){
-	        		conectarServidor();
+	        		conectarServidor("");
 	        	}
 				else if (mensagem.equals("desconectar")){
 					desconectarServidor();	
@@ -96,11 +96,11 @@ public class MainConsole {
 		System.out.println("Cliente desconectado");		
 	}	
 
-	public static void conectarServidor() throws InterruptedException{
+	public static void conectarServidor(String caminhoServidor) throws InterruptedException{
 		
 		ConectarServidor conectar = new ConectarServidor();
 		
-		conectar = (ConectarServidor)executarRequisicao(conectar, null);
+		conectar = (ConectarServidor)executarRequisicao(conectar, caminhoServidor);
 		
 		if(conectar.hasErros()){
 			System.out.println(conectar.errosString());

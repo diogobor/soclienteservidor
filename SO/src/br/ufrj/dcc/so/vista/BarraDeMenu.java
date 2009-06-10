@@ -65,10 +65,12 @@ public class BarraDeMenu implements ActionListener {
 	/**
 	 * Executa as funcoes para cada parte do Menu.
 	 */
-	public void actionPerformed(ActionEvent evt) {
+	public synchronized void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();
 		
 		if (source == menuConectarServidor) {
+			menuConectarServidor.setEnabled(false);
+			
 			try{
 				nomeServidor = JOptionPane.showInputDialog("Digite o endereco do Servidor:", "localhost").toLowerCase();
 				if (nomeServidor == null){
@@ -76,18 +78,8 @@ public class BarraDeMenu implements ActionListener {
 				}
 				//System.out.println(nomeServidor);
 				ConectarServidor conServidor = new ConectarServidor();
-//				inicia = new Cliente(nomeServidor, 7000, conServidor);
-//				inicia.start();
-				MainConsole.conectarServidor();
-				if(conServidor.hasErros())
-				{				
-					PainelPrincipal.situacaoServidor = conServidor.errosString();
-	            	Comecar.painelFundo.repaint();	            	
-	            	BarraDeMenu.menuConectarServidor.setEnabled(true);
-	            }
-				else{
-					//escrever conectado na tela
-				}
+				inicia = new Cliente(nomeServidor, 7000, conServidor);
+				inicia.start();
 				
 			}
 			catch(Exception e){
