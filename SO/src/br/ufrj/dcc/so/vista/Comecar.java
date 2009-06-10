@@ -41,19 +41,25 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static FileTree painelCliente = null;
 	
-	public static FileTree painelServidor = null;
+	public static JPanel painelServidor = null;
 	
 	public static JPanel painelOpcoes = null;
 	
 	public static JPanel painelMsg = null;
 
-	public static Font fonte = null;
+	public static Font fontePrincipal = null;
 	
-	public static JLabel statusServidor = null;
+	public static Font fonteSecundaria = null;
 	
-	public static JLabel nomeStatusServidor = null;
+	public static JLabel statusServidor = new JLabel("");
 	
-	public static JLabel statusArquivo = null;
+	public static JLabel nomeStatusServidor = new JLabel("");
+	
+	public static JLabel statusIP = new JLabel("");
+	
+	public static JLabel nomeStatusIP = new JLabel("");
+	
+	public static JLabel statusArquivo = new JLabel("");
 
 	public static List listaPrograma = new List();
 
@@ -98,7 +104,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		colocarOpcoes();
 
 		painelCliente.addComecarListener(this);
-		painelServidor.addComecarListener(this);
+		//painelServidor.addComecarListener(this);
 		
 		JLabel modoOperacaoTitulo = new JLabel("Modo Operacao: ");
 		modoOperacaoTitulo.setBounds(0, 0, 100, 100);
@@ -221,14 +227,13 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		if (painelCliente == null) {
 			File diretorioCliente = new File(RAIZCLIENTE);
 			painelCliente = new FileTree(diretorioCliente);
-			painelCliente.setEnabled(false);
-			bloqueiaPainelCliente();
+//			painelCliente.setEnabled(false);
+//			bloqueiaPainelCliente();
 		}
 		
 		if (painelServidor == null) {
-			File diretorioServidor = new File(RAIZSERVIDOR);
-			painelServidor = new FileTree(diretorioServidor);
-			bloqueiaPainelServidor();
+			painelServidor = new JPanel();
+			
 		}
 		
 		if (painelMsg == null) {
@@ -260,9 +265,10 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	    painelMsg.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mensagens"));
 	    
 	    msgNoServidor("Nao Conectado !");
+	    msgIP("Null");
 	    
 		PainelPrincipal.situacaoServidor = "Nao conectado !";
-
+	
 
 	}
 	public void colocarOpcoes(){
@@ -343,45 +349,51 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void msgNoServidor(String texto){
-		painelMsg.removeAll();
-		//Titulo -Status-
-		nomeStatusServidor = new JLabel("Servidor:");
-		fonte = new Font( "Verdana", Font.BOLD, 15 );
-		nomeStatusServidor.setFont(fonte);
-		nomeStatusServidor.setBounds(10, 20, 70, 15);
-		painelMsg.add(nomeStatusServidor);
-		
 		statusServidor = new JLabel(texto);
-		fonte = new Font( "Verdana", Font.BOLD, 12 );
-		statusServidor.setFont(fonte);
-		statusServidor.setForeground(Color.red);
-		statusServidor.setBounds(83, 21, 120, texto.length());
-		painelMsg.add(statusServidor);
-		
-		painelMsg.revalidate();
-		painelMsg.repaint();
+		pintarMsgs();
 	}
 	
 	public static void msgIP(String texto){
+		statusIP = new JLabel(texto);
+		pintarMsgs();		
+	}
+	
+	public static void pintarMsgs(){
 		painelMsg.removeAll();
-		//Titulo -Status-
+		fontePrincipal = new Font( "Verdana", Font.BOLD, 15 );
+		fonteSecundaria = new Font( "Verdana", Font.BOLD, 12 );
+		//Status -Server-
 		nomeStatusServidor = new JLabel("Servidor:");
-		fonte = new Font( "Verdana", Font.BOLD, 15 );
-		nomeStatusServidor.setFont(fonte);
-		nomeStatusServidor.setBounds(10, 20, 70, 15);
+		nomeStatusServidor.setFont(fontePrincipal);
+		nomeStatusServidor.setBounds(10, 20, 80, 15);
 		painelMsg.add(nomeStatusServidor);
-		
-		statusServidor = new JLabel(texto);
-		fonte = new Font( "Verdana", Font.BOLD, 12 );
-		statusServidor.setFont(fonte);
+		statusServidor.setFont(fonteSecundaria);
 		statusServidor.setForeground(Color.red);
-		statusServidor.setBounds(83, 21, 120, texto.length());
+		statusServidor.setBounds(103, 21, 120, 15);
 		painelMsg.add(statusServidor);
+		
+		// -IP-
+		nomeStatusIP = new JLabel("IP:");
+		nomeStatusIP.setFont(fontePrincipal);
+		nomeStatusIP.setBounds(10, 40, 80, 15);
+		painelMsg.add(nomeStatusIP);
+		statusIP.setFont(fonteSecundaria);
+		statusIP.setForeground(Color.red);
+		statusIP.setBounds(103, 41, 120, 15);
+		painelMsg.add(statusIP);
 		
 		painelMsg.revalidate();
 		painelMsg.repaint();
 	}
 	
+	public static void criaPainelServer(){
+		File diretorioServidor = new File("filesServer");
+		painelServidor = new FileTree(diretorioServidor);
+		painelServidor.setBounds(550, 20, 250, 290);
+		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
+		janela.add(painelServidor);
+		janela.validate();
+	}
 	public static void bloqueiaPainelCliente(){
 		painelCliente.setEnabled(false);
 	}

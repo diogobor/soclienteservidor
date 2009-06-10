@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import br.ufrj.dcc.so.entidade.*;
+import br.ufrj.dcc.so.entidade.Conexao;
+import br.ufrj.dcc.so.entidade.Requisicao;
 import br.ufrj.dcc.so.vista.BarraDeMenu;
 import br.ufrj.dcc.so.vista.Comecar;
 
-public class Cliente extends Thread  {
+public class Cliente extends Thread {
 	
 	//Variaveis
 	private String servidor = "";
@@ -71,6 +72,8 @@ public class Cliente extends Thread  {
 		ip = requisicao.getCliente();
 		Comecar.msgNoServidor("Conectado !");
 		Comecar.msgIP(ip);
+		//Criar a Jtree do Servidor
+		Comecar.criaPainelServer();
 	}
 	
 	/*
