@@ -22,16 +22,16 @@ public class FileTree extends JPanel{
 	private JTree arvoreArquivos;
 	private Comecar comecar;
 	
-  public FileTree(File dir) {
-    
-    arvoreArquivos = new JTree(adicionarNos(null, dir));
-    scroll = new JScrollPane();
-    
-    //arvoreArquivos.addTreeSelectionListener(this);
-    scroll.getViewport().add(arvoreArquivos);
-    setLayout(new BorderLayout());
-    add(BorderLayout.CENTER, scroll);
-  }
+	public FileTree(File dir) {
+	    
+	    arvoreArquivos = new JTree(adicionarNos(null, dir));
+	    scroll = new JScrollPane();
+	    
+	    //arvoreArquivos.addTreeSelectionListener(this);
+	    scroll.getViewport().add(arvoreArquivos);
+	    setLayout(new BorderLayout());
+	    add(BorderLayout.CENTER, scroll);
+	  }
 
   /** Add nodes from under "dir" into curTop. Highly recursive. */
   private DefaultMutableTreeNode adicionarNos(DefaultMutableTreeNode raizAtual, File dir) {
