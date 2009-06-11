@@ -20,6 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
+import br.ufrj.dcc.so.entidade.LerArquivo;
+import br.ufrj.dcc.so.entidade.LerDiretorio;
+
 public class Comecar extends JFrame implements ActionListener,TreeSelectionListener{
 	
 	/**
@@ -39,7 +42,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static PainelPrincipal painelFundo = null;
 	
-	public static FileTree painelCliente = null;
+	public static JPanel painelCliente = null;
 	
 	public static JPanel painelServidor = null;
 	
@@ -103,7 +106,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		criarPaines();
 		colocarOpcoes();
 
-		painelCliente.addComecarListener(this);
+//		painelCliente.addComecarListener(this);
 		//painelServidor.addComecarListener(this);
 		
 		JLabel modoOperacaoTitulo = new JLabel("Modo Operacao: ");
@@ -227,19 +230,21 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		if (painelCliente == null) {
 			File diretorioCliente = new File(RAIZCLIENTE);
 			painelCliente = new FileTree(diretorioCliente);
+			
 //			painelCliente.setEnabled(false);
 //			bloqueiaPainelCliente();
+
 		}
 		
 		if (painelServidor == null) {
 			painelServidor = new JPanel();
-			
+
 		}
 		
 		if (painelMsg == null) {
 			painelMsg = new JPanel();
 		}
-
+		
 // Painel do Fundo		
 		painelFundo.setBounds(0, 0, 350, 330);
 
@@ -268,7 +273,11 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	    msgIP("Null");
 	    
 		PainelPrincipal.situacaoServidor = "Nao conectado !";
-	
+
+//		painelCliente.setEnabled(false);
+//		bloqueiaPainelCliente();
+//		bloqueiaPainelServidor();
+
 
 	}
 	public void colocarOpcoes(){
@@ -387,15 +396,24 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void criaPainelServer(){
-		File diretorioServidor = new File("filesServer");
-		painelServidor = new FileTree(diretorioServidor);
+		LerDiretorio diretorio = new LerDiretorio();
+		diretorio.setDiretorio(new File(""));
+
+		painelServidor = new FileTree(diretorio.getDiretorio());
 		painelServidor.setBounds(550, 20, 250, 290);
 		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
 		janela.add(painelServidor);
 		janela.validate();
+		
+	}
+	
+	public static void listarDiretorio(){
+		
 	}
 	public static void bloqueiaPainelCliente(){
-		painelCliente.setEnabled(false);
+//		painelCliente.setEnabled(false);
+//		painelCliente.removeAll();
+//		painelCliente.revalidate();
 	}
 	public static void bloqueiaPainelServidor(){
 		painelServidor.setEnabled(false);
