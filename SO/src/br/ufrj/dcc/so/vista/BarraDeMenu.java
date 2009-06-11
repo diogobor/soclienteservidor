@@ -83,6 +83,7 @@ public class BarraDeMenu implements ActionListener {
 				
 			}
 			catch(Exception e){
+				menuConectarServidor.setEnabled(true);
 				System.out.println("Acao Cancelar acionada !");
 			}
 		}
