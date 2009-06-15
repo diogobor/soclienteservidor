@@ -4,7 +4,7 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class ConectarServidor extends Requisicao{
 	
-	private String tarefa = "conectando como servidor";
+	private String tarefa = "conectando com o servidor";
 	
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
@@ -12,21 +12,15 @@ public class ConectarServidor extends Requisicao{
 		mensagemInicioTarefa(tarefa);
 		
 		try {
-			controleArquivo.fecharAcessoListaCliente();
-				
-			if(!controleArquivo.isClienteConectado(getCliente())){
-				controleArquivo.conectarCliente(getCliente());			
-			}
-			else{
-				getErros().add("Cliente ja esta conectado com o servidor");
-			}
+			controleArquivo.fecharAcessoListaCliente();			
+			
+			controleArquivo.adicionarCliente(this);			
 			
 			controleArquivo.abrirAcessoListaCliente();
 		
 		} catch (InterruptedException e) {
 			getErros().add("Ocorreu um erro na execucao do semaforo.");
-		}
-		//fim exclusao mutua
+		}		
 		
 		mensagemFimTarefa(tarefa);
 		

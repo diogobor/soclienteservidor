@@ -8,6 +8,7 @@ import java.io.File;
 import br.ufrj.dcc.so.controle.Cliente;
 
 import br.ufrj.dcc.so.entidade.*;
+import br.ufrj.dcc.so.entidade.Requisicao.TipoArquivo;
 
 public class MainConsole {
 
@@ -33,6 +34,9 @@ public class MainConsole {
 				else if (mensagem.equals("listarDirServ")){				
 					listarDiretorio();					
 				}
+				else if (mensagem.equals("lerArquivo")){
+					lerArquivo();
+				}
 				else if (mensagem.equals("listarDir")){
 					//listarDiretorioLocal();
 				}
@@ -50,10 +54,7 @@ public class MainConsole {
 				}
 				else if (mensagem.equals("renomearArquivo")){
 					//renomearArquivo();
-				}
-				else if (mensagem.equals("receberArquivo")){
-					//receberArquivo();
-				}
+				}				
 				else if (mensagem.equals("enviarArquivoServ")){
 					//enviarArquivoServidor();
 				}
@@ -72,7 +73,7 @@ public class MainConsole {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static Requisicao executarRequisicao(Requisicao req, String enderecoServidor) throws InterruptedException {
 		
 		Cliente cliente = new Cliente(enderecoServidor, 7000, req);
@@ -116,7 +117,7 @@ public class MainConsole {
 
 	public static void listarDiretorio() throws InterruptedException {
 		LerDiretorio lerDiretorio = new LerDiretorio();
-		lerDiretorio.setCaminho("");
+		lerDiretorio.setCaminho("./filesServer/arquivos");
 		
 		lerDiretorio = (LerDiretorio)executarRequisicao(lerDiretorio, null);
 		
@@ -125,6 +126,21 @@ public class MainConsole {
 			return;
 		}		
 		exibirLeituraDiretorio(lerDiretorio);
+	}
+	
+	private static void lerArquivo() throws InterruptedException{
+		LerArquivo lerArquivo = new LerArquivo();
+		lerArquivo.setTipo(TipoArquivo.ESCRITA);
+		lerArquivo.setCaminho("./filesServer/arquivos/alan3.txt");
+		
+		lerArquivo = (LerArquivo)executarRequisicao(lerArquivo, null);
+		
+		if(lerArquivo.hasErros()){
+			System.out.println(lerArquivo.errosString());
+			return;
+		}		
+		exibirLeituraArquivo(lerArquivo);
+		
 	}
 	
 	public static void exibirLeituraDiretorio(Requisicao requisicao) {
@@ -145,6 +161,22 @@ public class MainConsole {
 		        	System.out.println("Diretorio: " + f.getName()); 
 		        } 
 		    } 
+		}
+		System.out.println("==== Termino ====");
+	}
+	
+	public static void exibirLeituraArquivo(Requisicao requisicao) {
+		
+		System.out.println("==== Lista Arquivo do Servidor ====");
+		
+		LerArquivo lerArquivo = (LerArquivo)requisicao;
+		File arquivo = lerArquivo.getArquivo(); 
+			  
+		if(arquivo != null){
+		    			    
+		   if(arquivo.isFile()){ 
+			   System.out.println(arquivo.getName()); 
+		   }		        
 		}
 		System.out.println("==== Termino ====");
 	}
