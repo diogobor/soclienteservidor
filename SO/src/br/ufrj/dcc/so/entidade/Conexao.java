@@ -91,11 +91,13 @@ public class Conexao {
 		}
 	}
 	
-	private void criarEntradaDados() throws IOException {		
-		entrada = new ObjectInputStream(socket.getInputStream());
+	private void criarEntradaDados() throws IOException {
+		if(entrada== null)
+			entrada = new ObjectInputStream(socket.getInputStream());
 	}
 	
 	private void criarSaidaDados() throws IOException {
+		if(saida == null)
 		saida = new ObjectOutputStream(socket.getOutputStream());
 	}
 }

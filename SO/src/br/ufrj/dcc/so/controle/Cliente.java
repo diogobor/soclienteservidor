@@ -32,11 +32,11 @@ public class Cliente extends Thread {
 			socket = new Socket(servidor, porta);
 			conexao=  new Conexao(socket);
 					
-			requisicao.setCliente(socket.getInetAddress().getHostAddress());
+			requisicao.setCliente(socket.getLocalAddress().getHostAddress());
 					
 			conexao.escreverRequisicao(requisicao);			
 			requisicao = conexao.lerRequisicao();
-			sucessoConexao();
+			//sucessoConexao();
         } 
 		catch (UnknownHostException e) {        		
 			requisicao.getErros().add("Nao foi encontrado o servidor.");
@@ -51,7 +51,7 @@ public class Cliente extends Thread {
         	}
         	catch(Exception e){
                 requisicao.getErros().add("Erro ao fechar o arquivo !");
-                errosServidor();
+                //errosServidor();
             } 
         }
 	}

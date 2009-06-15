@@ -1,5 +1,6 @@
 package br.ufrj.dcc.so.controle;
 
+import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 import java.util.List;
 import br.ufrj.dcc.so.entidade.*;
@@ -9,11 +10,14 @@ public class ControleArquivo {
 	
 	public final String ENDERECO_SERVIDOR = "./filesServer";
 	
+	
 	//Listas que serao usadas para controle dos arquivos utilizados pelos clientes
 	//serao usados semaforos nelas
 	private List<String> clientes;
 	//TODO:devera ser outro objeto que contenha o cliente e o arquivo
 	private List<Requisicao> requisicoes;
+	private static Semaphore semaforoClientes;
+	private static Semaphore semaforoRequisicoes;
 	
 	private ControleArquivo()
 	{
@@ -23,7 +27,12 @@ public class ControleArquivo {
 	//Padrao Singleton: cria somente um objeto do tipo ControleArquivo;
 	public static ControleArquivo Create()
 	{		
-		if(controleArquivo == null) controleArquivo =  new ControleArquivo();
+		if(controleArquivo == null) {
+			controleArquivo =  new ControleArquivo();
+			
+			semaforoClientes = new Semaphore(1, true);
+			semaforoRequisicoes = new Semaphore(1,true);
+		}
 		return controleArquivo;
 	}
 	
@@ -60,8 +69,30 @@ public class ControleArquivo {
 	
 	//Remove cliente na lista de clientes conectados com o servidor
 	public void desconectarCliente(String cliente) {
-		getClientes().remove(cliente);
-		
+		getClientes().remove(cliente);		
 	}
 	
+	public void fecharAcessoListaCliente() throws InterruptedException{
+		semaforoClientes.acquire();
+	}	
+	
+	public void abrirAcessoListaCliente(){
+		semaforoClientes.release();
+	}
+	
+	public void fecharAcessoListaRequisicoes() throws InterruptedException{
+		semaforoRequisicoes.acquire();
+	}
+	
+	public void abrirAcessoListaRequisicoes(){
+		semaforoRequisicoes.release();
+	}
+	
+	public void limparRequisicoesAbertas(String cliente) {
+		for (Requisicao r : requisicoes) {
+			if(r.getCliente().trim() == cliente.trim())
+				requisicoes.remove(r);
+		}
+		
+	}	
 }

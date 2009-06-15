@@ -19,19 +19,19 @@ public class Servidor extends Thread{
 	 * Construtor
 	 */
 	public Servidor(Socket s) {
-		socket = s;		  
+		socket = s;
+		conexao = new Conexao(socket);
 	} 
 	
 	public void run() {
-			
-		conexao = new Conexao(socket);		
 		try 
 		{
 			Requisicao requisicao = conexao.lerRequisicao();				
 			requisicao.executar(ControleArquivo.Create());					
-			conexao.escreverRequisicao(requisicao);	
-				
-			socket.close();
+			conexao.escreverRequisicao(requisicao);
+			
+			//this.getThreadGroup().list();
+			if(!socket.isClosed()) socket.close();
 			
 		}catch(IOException e){  
 			System.out.println("Erro no encerramento do socket.");

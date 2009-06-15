@@ -11,13 +11,20 @@ public class ConectarServidor extends Requisicao{
 		
 		mensagemInicioTarefa(tarefa);
 		
-		//Usar semaforo neste ponto	
-		//exclusao mutua
-		if(!controleArquivo.isClienteConectado(getCliente())){
-			controleArquivo.conectarCliente(getCliente());			
-		}
-		else{
-			getErros().add("Cliente ja esta conectado com o servidor");
+		try {
+			controleArquivo.fecharAcessoListaCliente();
+				
+			if(!controleArquivo.isClienteConectado(getCliente())){
+				controleArquivo.conectarCliente(getCliente());			
+			}
+			else{
+				getErros().add("Cliente ja esta conectado com o servidor");
+			}
+			
+			controleArquivo.abrirAcessoListaCliente();
+		
+		} catch (InterruptedException e) {
+			getErros().add("Ocorreu um erro na execucao do semaforo.");
 		}
 		//fim exclusao mutua
 		
