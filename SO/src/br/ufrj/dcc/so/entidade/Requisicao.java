@@ -7,6 +7,10 @@ import br.ufrj.dcc.so.controle.ControleArquivo;;
 
 public abstract class Requisicao implements Serializable {
 	
+	public enum TipoArquivo{
+		LEITURA,
+		ESCRITA;
+	}
 	/*
 	 * Variaveis	 
 	 */
@@ -14,10 +18,7 @@ public abstract class Requisicao implements Serializable {
 	private String cliente;
 	private List<String> erros;
 	 
-	/*
-	 *  Construtor
-	 */
-	
+		
 	public abstract void executar(ControleArquivo controleArquivo);
 	
 	public void setCaminho(String caminho) {

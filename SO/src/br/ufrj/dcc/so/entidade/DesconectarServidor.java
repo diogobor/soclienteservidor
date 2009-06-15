@@ -4,7 +4,7 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class DesconectarServidor extends Requisicao{
 	
-	private String tarefa = "conectando como servidor";
+	private String tarefa = "desconectando com o servidor";
 	
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
@@ -13,14 +13,8 @@ public class DesconectarServidor extends Requisicao{
 		
 		try 
 		{
-			controleArquivo.fecharAcessoListaCliente();
-		
-			if(controleArquivo.isClienteConectado(getCliente())){
-				controleArquivo.desconectarCliente(getCliente());			
-			}
-			else{
-				getErros().add("Este cliente nao esta conectado com o servidor");
-			}
+			controleArquivo.fecharAcessoListaCliente();		
+			controleArquivo.removerCliente(this);			
 			controleArquivo.abrirAcessoListaCliente();
 			
 			controleArquivo.fecharAcessoListaRequisicoes();

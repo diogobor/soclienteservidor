@@ -21,8 +21,8 @@ public class ControleArquivo {
 	
 	private ControleArquivo()
 	{
-		setClientes(new ArrayList<String>());
-		setRequisicoes(new ArrayList<Requisicao>());
+		clientes = new ArrayList<String>();
+		requisicoes = new ArrayList<Requisicao>();
 	}
 	//Padrao Singleton: cria somente um objeto do tipo ControleArquivo;
 	public static ControleArquivo Create()
@@ -36,40 +36,34 @@ public class ControleArquivo {
 		return controleArquivo;
 	}
 	
-	public void setClientes(List<String> clientes) 
-	{
-		this.clientes = clientes;
-	}
-	
-	public List<String> getClientes() 
-	{
-		return clientes;
-	}
-	
-	public void setRequisicoes(List<Requisicao> requisicoes) 
-	{
-		this.requisicoes = requisicoes;
-	}
-	
-	public List<Requisicao> getRequisicoes() 
-	{
-		return requisicoes;
-	}
-	
 	//Verifica se um cliente ja esta conectado com o servidor
-	public boolean isClienteConectado(String cliente)
+	public boolean contemCliente(String cliente)
 	{
-		return getClientes().contains(cliente);
+		return clientes.contains(cliente);
 	}
 	
 	//Adiciona cliente na lista de clientes conectados com o servidor
-	public void conectarCliente(String cliente) {
-		getClientes().add(cliente);		
+	public void adicionarCliente(Requisicao req) {
+		if(!contemCliente(req.getCliente()))
+		{
+			clientes.add(req.getCliente());
+		}
+		else
+		{
+			req.getErros().add("Cliente ja esta conectado com o servidor");
+		}
+				
 	}
 	
 	//Remove cliente na lista de clientes conectados com o servidor
-	public void desconectarCliente(String cliente) {
-		getClientes().remove(cliente);		
+	public void removerCliente(Requisicao req) {
+		if(controleArquivo.contemCliente(req.getCliente())){
+			clientes.remove(req.getCliente());
+		}
+		else
+		{
+			req.getErros().add("Este cliente nao esta conectado com o servidor");
+		}		
 	}
 	
 	public void fecharAcessoListaCliente() throws InterruptedException{
@@ -90,9 +84,40 @@ public class ControleArquivo {
 	
 	public void limparRequisicoesAbertas(String cliente) {
 		for (Requisicao r : requisicoes) {
-			if(r.getCliente().trim() == cliente.trim())
+			if(r.getCliente().trim().equals(cliente.trim()))
 				requisicoes.remove(r);
+		}		
+	}
+	
+	public void adicionarRequisicao(Requisicao req) {
+		
+		if(contemRequisicaoParaCliente(req)) return;
+			
+		if(contemRequisicaoParaOutroCliente(req))
+		{
+			req.getErros().add("Este arquivo ja esta aberto para escrita com outro usuario.");
+			return;
 		}
 		
+		requisicoes.add(req);				
+	}
+	
+	public boolean contemRequisicaoParaCliente(Requisicao req) {
+		for (Requisicao r : requisicoes) {
+			if(r.getCaminho().equals(req.getCaminho()) && r.getCliente().equals(req.getCliente()))
+				return true;				
+		}
+		
+		return false;
+	}
+	
+	private boolean contemRequisicaoParaOutroCliente(Requisicao req) {
+		
+		for (Requisicao r : requisicoes) {
+			if(r.getCaminho().equals(req.getCaminho())&& !r.getCliente().equals(req.getCliente()))
+				return true;				
+		}
+		
+		return false;
 	}	
 }
