@@ -11,15 +11,25 @@ public class DesconectarServidor extends Requisicao{
 		
 		mensagemInicioTarefa(tarefa);
 		
-		//Usar semaforo neste ponto	
-		//exclusao mutua
-		if(controleArquivo.isClienteConectado(getCliente())){
-			controleArquivo.desconectarCliente(getCliente());			
+		try 
+		{
+			controleArquivo.fecharAcessoListaCliente();
+		
+			if(controleArquivo.isClienteConectado(getCliente())){
+				controleArquivo.desconectarCliente(getCliente());			
+			}
+			else{
+				getErros().add("Este cliente nao esta conectado com o servidor");
+			}
+			controleArquivo.abrirAcessoListaCliente();
+			
+			controleArquivo.fecharAcessoListaRequisicoes();
+			controleArquivo.limparRequisicoesAbertas(getCliente());
+			controleArquivo.abrirAcessoListaRequisicoes();
+		
+		} catch (InterruptedException e) {
+			getErros().add("Ocorreu um erro na execucao do semaforo.");
 		}
-		else{
-			getErros().add("Este cliente nao esta conectado com o servidor");
-		}
-		//fim exclusao mutua
 		
 		mensagemFimTarefa(tarefa);
 		

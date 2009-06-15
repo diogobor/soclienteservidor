@@ -12,6 +12,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.ConectarServidor;
+import br.ufrj.dcc.so.entidade.Requisicao;
 
 public class BarraDeMenu implements ActionListener {
 
@@ -69,23 +70,8 @@ public class BarraDeMenu implements ActionListener {
 		Object source = evt.getSource();
 		
 		if (source == menuConectarServidor) {
-			menuConectarServidor.setEnabled(false);
+			conectarServidor();
 			
-			try{
-				nomeServidor = JOptionPane.showInputDialog("Digite o endereco do Servidor:", "localhost").toLowerCase();
-				if (nomeServidor == null){
-					nomeServidor = "localhost";
-				}
-				//System.out.println(nomeServidor);
-				ConectarServidor conServidor = new ConectarServidor();
-				inicia = new Cliente(nomeServidor, 7000, conServidor);
-				inicia.start();
-				
-			}
-			catch(Exception e){
-				menuConectarServidor.setEnabled(true);
-				System.out.println("Acao Cancelar acionada !");
-			}
 		}
 		else if (source == menuNovoPrograma) {
 			
@@ -129,6 +115,61 @@ public class BarraDeMenu implements ActionListener {
 //			Comecar.modoOperacao.setText("Executar MicroInstrucao");
 			System.out.println("Executa MicroInstrucao do Programa.");
 		}
+	}
+
+	private void conectarServidor() {
+		
+		menuConectarServidor.setEnabled(false);
+		
+		try{
+			nomeServidor = JOptionPane.showInputDialog("Digite o endereco do Servidor:", "localhost").toLowerCase();
+			if (nomeServidor == null){
+				nomeServidor = "localhost";
+			}
+			//System.out.println(nomeServidor);
+			ConectarServidor conServidor = new ConectarServidor();
+			
+			//inicia = new Cliente(nomeServidor, 7000, conServidor);
+			//inicia.start();
+			conServidor = (ConectarServidor)executarRequisicao(conServidor, nomeServidor);
+			
+			if(conServidor.hasErros()){
+				errosServidor(conServidor);
+				menuConectarServidor.setEnabled(true);
+				return;			
+			}
+			
+			sucessoConexao(conServidor);
+							
+		}
+		catch(Exception e){
+			menuConectarServidor.setEnabled(true);
+			System.out.println("Acao Cancelar acionada !");
+		}
+	}
+	
+	public Requisicao executarRequisicao(Requisicao req, String enderecoServidor) throws InterruptedException {
+		
+		Cliente cliente = new Cliente(enderecoServidor, 7000, req);
+		cliente.start();
+		//espera fim da execucao da thread
+		cliente.join();		
+		
+		return cliente.getRequisicao();
+	}
+	
+	public void sucessoConexao(Requisicao requisicao){
+		String ip = "";
+		ip = requisicao.getCliente();
+		Comecar.msgNoServidor("Conectado !");
+		Comecar.msgIP(ip);
+		//Criar a Jtree do Servidor
+		Comecar.criaPainelServer();
+	}
+	
+	public void errosServidor(Requisicao requisicao){
+		menuConectarServidor.setEnabled(true);
+		Comecar.msgNoServidor(requisicao.errosString());
 	}
 
 	/**
