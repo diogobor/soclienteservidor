@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import br.ufrj.dcc.so.entidade.LerArquivo;
+import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.LerDiretorio;
 
 public class Comecar extends JFrame implements ActionListener,TreeSelectionListener{
@@ -396,10 +396,36 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void criaPainelServer(){
-		LerDiretorio diretorio = new LerDiretorio();
-		diretorio.setDiretorio(new File(""));
+//		Crio o objeto lerDiretório
+		LerDiretorio lerDiretorio = new LerDiretorio();
+//		Preciso do caminho do diretório passado na tela e setar no objeto lerDiretorio
+		lerDiretorio.setCaminho("filesServer");
+		
+//		Crio o objeto cliente passando o lerDiretorio como parâmetro. Passo também o endereço do servidor e a porta.
+		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerDiretorio);
+//		 executo a thread cliente
+		cliente.start();
+//		espera fim da execucao da thread
+		try {
+			cliente.join(); 	
+		} catch (Exception e) {
+			System.out.println("erro criar painel Server");
+		}
+		
+		lerDiretorio = (LerDiretorio)cliente.getRequisicao();
 
-		painelServidor = new FileTree(diretorio.getDiretorio());
+//		 Verifico se ocorreu algum erro de leitura no servidor
+		if(lerDiretorio.hasErros()){
+		            // Exibo o erro na tela
+		            System.out.println(lerDiretorio.errosString());
+		            // Para a execução do evento ler diretorio
+		        } 
+
+//		 Se nao ocorreu erro algum entao foi lido os arquivos do diretório com sucesso
+		File diretorio = lerDiretorio.getDiretorio();
+		
+
+		painelServidor = new FileTree(diretorio);
 		painelServidor.setBounds(550, 20, 250, 290);
 		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
 		janela.add(painelServidor);

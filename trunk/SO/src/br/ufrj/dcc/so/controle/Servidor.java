@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import br.ufrj.dcc.so.entidade.Conexao;
+import br.ufrj.dcc.so.entidade.LerDiretorio;
 import br.ufrj.dcc.so.entidade.Requisicao;
  
 
