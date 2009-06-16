@@ -12,6 +12,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.ConectarServidor;
+import br.ufrj.dcc.so.entidade.DesconectarServidor;
 import br.ufrj.dcc.so.entidade.Requisicao;
 
 public class BarraDeMenu implements ActionListener {
@@ -87,6 +88,19 @@ public class BarraDeMenu implements ActionListener {
 			clicaNovoPrograma = new CriaPrograma();
 		}
 		else if (source == menuSair) {
+			DesconectarServidor desconectar = new DesconectarServidor();
+			try {
+				desconectar = (DesconectarServidor)executarRequisicao(desconectar, null);
+			} catch (Exception e) {
+				System.out.println("Erro ao desconectar o Cliente!\nCliente nao desconectado.");
+			}
+			
+			
+			if(desconectar.hasErros()){
+				System.out.println(desconectar.errosString());
+				return;			
+			}		
+			System.out.println("Cliente desconectado");
 			System.exit(0);
 		}
 		else if (source == menuSobre) {
@@ -135,8 +149,7 @@ public class BarraDeMenu implements ActionListener {
 			
 			if(conServidor.hasErros()){
 				errosServidor(conServidor);
-				menuConectarServidor.setEnabled(true);
-				return;			
+				menuConectarServidor.setEnabled(true);	
 			}
 			
 			sucessoConexao(conServidor);
@@ -144,7 +157,7 @@ public class BarraDeMenu implements ActionListener {
 		}
 		catch(Exception e){
 			menuConectarServidor.setEnabled(true);
-			System.out.println("Acao Cancelar acionada !");
+			System.out.println("Erro no IP do servidor.");
 		}
 	}
 	
