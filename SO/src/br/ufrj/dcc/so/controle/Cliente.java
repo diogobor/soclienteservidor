@@ -36,7 +36,6 @@ public class Cliente extends Thread {
 					
 			conexao.escreverRequisicao(requisicao);			
 			requisicao = conexao.lerRequisicao();
-			//sucessoConexao();
         } 
 		catch (UnknownHostException e) {        		
 			requisicao.getErros().add("Nao foi encontrado o servidor.");
@@ -65,15 +64,6 @@ public class Cliente extends Thread {
 	public void errosServidor(){
 		BarraDeMenu.menuConectarServidor.setEnabled(true);
 		Comecar.msgNoServidor("Erro na Conexao !");
-	}
-	
-	public void sucessoConexao(){
-		String ip = "";
-		ip = requisicao.getCliente();
-		Comecar.msgNoServidor("Conectado !");
-		Comecar.msgIP(ip);
-		//Criar a Jtree do Servidor
-		Comecar.criaPainelServer();
 	}
 	
 	/*

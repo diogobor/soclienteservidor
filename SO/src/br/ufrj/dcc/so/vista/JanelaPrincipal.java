@@ -7,6 +7,8 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
+import br.ufrj.dcc.so.entidade.DesconectarServidor;
+
 /**
  * Classe da Janela Principal do Programa
  */
@@ -34,18 +36,31 @@ public class JanelaPrincipal extends JFrame implements WindowListener {
 		setTitle("Trabalho de Sistemas Operacionais I");
 		setSize(tamanhoPrograma);
 		setResizable(false);
+		addWindowListener(this);
 		setLocation((screenSize.width - ProgramaLargura) / 2,
 				(screenSize.height - ProgramaAltura) / 2);
 	}
 
-	public void windowClosed(WindowEvent e) {
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
+	
 
 	public void windowClosing(WindowEvent e) {
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		if(!BarraDeMenu.menuConectarServidor.isEnabled()){
+			DesconectarServidor desconectar = new DesconectarServidor();
+			try {
+				desconectar = (DesconectarServidor)BarraDeMenu.executarRequisicao(desconectar, BarraDeMenu.nomeServidor);
+			} catch (Exception evento) {
+				System.out.println("Erro ao desconectar o Cliente!\nCliente nao desconectado.");
+			}
+			
+			
+			if(desconectar.hasErros()){
+				System.out.println(desconectar.errosString());
+				return;			
+			}		
+			System.out.println("Cliente desconectado");
+		}
 	}
-
+	public void windowClosed(WindowEvent e) {}
 	public void windowDeactivated(WindowEvent e) {}
 	public void windowDeiconified(WindowEvent e) {}
 	public void windowIconified(WindowEvent e) {}
