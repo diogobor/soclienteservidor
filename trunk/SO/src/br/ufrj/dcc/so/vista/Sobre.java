@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.ufrj.dcc.so.entidade.DesconectarServidor;
+
 public class Sobre extends JFrame implements WindowListener{
 	/**
 	 * Janela das Sobre
@@ -62,6 +64,7 @@ public class Sobre extends JFrame implements WindowListener{
 		add(painel);
 		setSize(tamanhoPrograma);
 		setResizable(false);
+		addWindowListener(this);
 		setLocation((screenSize.width - JanelaLargura) / 2,(screenSize.height - JanelaAltura) / 2);
 		setTitle("Sobre");
 		setVisible(true);
@@ -69,38 +72,15 @@ public class Sobre extends JFrame implements WindowListener{
 	}
 	
 
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		BarraDeMenu.menuSobre.setEnabled(true);
 	}
-
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+		BarraDeMenu.menuSobre.setEnabled(false);
 	}
+	public void windowClosed(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e){}
 }

@@ -59,7 +59,7 @@ public class BarraDeMenu implements ActionListener {
 
 	private JMenuItem menuInstrucoes = new JMenuItem();
 
-	private JMenuItem menuSobre = new JMenuItem();
+	public static JMenuItem menuSobre = new JMenuItem();
 	
 	public static String nomeServidor = "";
 
@@ -88,19 +88,21 @@ public class BarraDeMenu implements ActionListener {
 			clicaNovoPrograma = new CriaPrograma();
 		}
 		else if (source == menuSair) {
-			DesconectarServidor desconectar = new DesconectarServidor();
-			try {
-				desconectar = (DesconectarServidor)executarRequisicao(desconectar, null);
-			} catch (Exception e) {
-				System.out.println("Erro ao desconectar o Cliente!\nCliente nao desconectado.");
+			if(!menuConectarServidor.isEnabled()){
+				DesconectarServidor desconectar = new DesconectarServidor();
+				try {
+					desconectar = (DesconectarServidor)executarRequisicao(desconectar, BarraDeMenu.nomeServidor);
+				} catch (Exception e) {
+					System.out.println("Erro ao desconectar o Cliente!\nCliente nao desconectado.");
+				}
+				
+				
+				if(desconectar.hasErros()){
+					System.out.println(desconectar.errosString());
+					return;			
+				}		
+				System.out.println("Cliente desconectado");
 			}
-			
-			
-			if(desconectar.hasErros()){
-				System.out.println(desconectar.errosString());
-				return;			
-			}		
-			System.out.println("Cliente desconectado");
 			System.exit(0);
 		}
 		else if (source == menuSobre) {
@@ -146,22 +148,22 @@ public class BarraDeMenu implements ActionListener {
 			//inicia = new Cliente(nomeServidor, 7000, conServidor);
 			//inicia.start();
 			conServidor = (ConectarServidor)executarRequisicao(conServidor, nomeServidor);
-			
-			if(conServidor.hasErros()){
+//			System.out.println("Erro servidor: " + conServidor.getErros().get(0));
+//			System.out.println("Tamanho Erro: " + conServidor.getErros().size());
+//			System.out.println("Erro: " + conServidor.hasErros());
+			if(conServidor.hasErros())
 				errosServidor(conServidor);
-				menuConectarServidor.setEnabled(true);	
-			}
-			
-			sucessoConexao(conServidor);
+			else
+				sucessoConexao(conServidor);
 							
 		}
 		catch(Exception e){
 			menuConectarServidor.setEnabled(true);
-			System.out.println("Erro no IP do servidor.");
+			System.out.println("Erro ao conectar o servidor.");
 		}
 	}
 	
-	public Requisicao executarRequisicao(Requisicao req, String enderecoServidor) throws InterruptedException {
+	public static Requisicao executarRequisicao(Requisicao req, String enderecoServidor) throws InterruptedException {
 		
 		Cliente cliente = new Cliente(enderecoServidor, 7000, req);
 		cliente.start();
@@ -177,12 +179,16 @@ public class BarraDeMenu implements ActionListener {
 		Comecar.msgNoServidor("Conectado !");
 		Comecar.msgIP(ip);
 		//Criar a Jtree do Servidor
+		//Comecar painel = new Comecar("");
+		//painel.criaPainelServer();
 		Comecar.criaPainelServer();
 	}
 	
 	public void errosServidor(Requisicao requisicao){
 		menuConectarServidor.setEnabled(true);
-		Comecar.msgNoServidor(requisicao.errosString());
+		System.out.println(requisicao.errosString());
+		Comecar.msgNoServidor("Erro na conexao com o Servidor.");
+		Comecar.msgIP("Null");
 	}
 
 	/**

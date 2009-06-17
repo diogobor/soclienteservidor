@@ -17,8 +17,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.LerDiretorio;
@@ -42,9 +46,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static PainelPrincipal painelFundo = null;
 	
-	public static JPanel painelCliente = null;
+	public static FileTree painelCliente = null;
 	
-	public static JPanel painelServidor = null;
+	public static FileTree painelServidor = null;
 	
 	public static JPanel painelOpcoes = null;
 	
@@ -93,6 +97,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	 * Menu.
 	 */
 	
+	public Comecar(String teste){
+		
+	}
 	public Comecar() {
 		
 		JanelaPrincipal.ProgramaLargura = 830;
@@ -106,9 +113,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		criarPaines();
 		colocarOpcoes();
 
-//		painelCliente.addComecarListener(this);
-		//painelServidor.addComecarListener(this);
-		
 		JLabel modoOperacaoTitulo = new JLabel("Modo Operacao: ");
 		modoOperacaoTitulo.setBounds(0, 0, 100, 100);
 		
@@ -183,8 +187,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}	
 	
 	public void valueChanged(TreeSelectionEvent e) {
-	     /* DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-	      JTree treeSource = (JTree) e.getSource();
+	      DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+	     /* JTree treeSource = (JTree) e.getSource();
 	        TreePath path = treeSource.getSelectionPath();
 	        System.out.println(path);
 	        System.out.println(path.getPath());
@@ -192,10 +196,11 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	        System.out.println(((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
 	        System.out.println(path.getPathCount());
 	      System.out.println("Diretorio: " + e.getPath() + "  " + no);*/
-		
+		System.out.println("arquivo: " + no);
 		 nomeArquivoSelecionado=e.getPath().getLastPathComponent().toString();
 	     nomeDiretorio=e.getPath().getParentPath().getLastPathComponent().toString();
 	     caminhoArquivoSelecionado=nomeDiretorio+'/'+nomeArquivoSelecionado;
+	     System.out.println(caminhoArquivoSelecionado);
 	     
 	     /*
 	     File teste=new File(caminhoArquivoSelecionado);
@@ -230,15 +235,16 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		if (painelCliente == null) {
 			File diretorioCliente = new File(RAIZCLIENTE);
 			painelCliente = new FileTree(diretorioCliente);
-			
+			painelCliente.addComecarListener(this);
+
 //			painelCliente.setEnabled(false);
 //			bloqueiaPainelCliente();
 
 		}
 		
 		if (painelServidor == null) {
-			painelServidor = new JPanel();
-
+			painelServidor = new FileTree(new File(RAIZCLIENTE));
+			painelServidor.addComecarListener(this);
 		}
 		
 		if (painelMsg == null) {
@@ -378,7 +384,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		painelMsg.add(nomeStatusServidor);
 		statusServidor.setFont(fonteSecundaria);
 		statusServidor.setForeground(Color.red);
-		statusServidor.setBounds(103, 21, 120, 15);
+		statusServidor.setBounds(103, 21, 230, 15);
 		painelMsg.add(statusServidor);
 		
 		// -IP-
@@ -396,12 +402,12 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void criaPainelServer(){
-//		Crio o objeto lerDiretório
+//		Crio o objeto lerDiretorio
 		LerDiretorio lerDiretorio = new LerDiretorio();
 //		Preciso do caminho do diretório passado na tela e setar no objeto lerDiretorio
 		lerDiretorio.setCaminho("filesServer");
 		
-//		Crio o objeto cliente passando o lerDiretorio como parâmetro. Passo também o endereço do servidor e a porta.
+//		Crio o objeto cliente passando o lerDiretorio como parametro. Passo tambem o endereco do servidor e a porta.
 		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerDiretorio);
 //		 executo a thread cliente
 		cliente.start();
@@ -418,18 +424,23 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		if(lerDiretorio.hasErros()){
 		            // Exibo o erro na tela
 		            System.out.println(lerDiretorio.errosString());
-		            // Para a execução do evento ler diretorio
+		            // Para a execucao do evento ler diretorio
 		        } 
 
 //		 Se nao ocorreu erro algum entao foi lido os arquivos do diretório com sucesso
 		File diretorio = lerDiretorio.getDiretorio();
 		
-
+		janela.remove(painelServidor);
+		janela.validate();
+		painelServidor = null;
 		painelServidor = new FileTree(diretorio);
+		painelServidor.addComecarListener(new Comecar(""));
 		painelServidor.setBounds(550, 20, 250, 290);
 		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
+		painelServidor.revalidate(); 
 		janela.add(painelServidor);
 		janela.validate();
+		
 		
 	}
 	
