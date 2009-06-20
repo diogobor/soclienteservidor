@@ -21,11 +21,13 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.tree.TreePath;
 
 import br.ufrj.dcc.so.controle.Cliente;
+import br.ufrj.dcc.so.entidade.ApagarArquivo;
+import br.ufrj.dcc.so.entidade.InformacoesArquivo;
 import br.ufrj.dcc.so.entidade.LerDiretorio;
+import br.ufrj.dcc.so.entidade.RenomearArquivo;
 
 public class Comecar extends JFrame implements ActionListener,TreeSelectionListener{
 	
@@ -69,6 +71,12 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	public static JLabel statusArquivo = new JLabel("");
 
 	public static List listaPrograma = new List();
+	
+	public static String nomeArquivoSelecionado;
+	
+	public static String nomeDiretorio;
+	
+	public static String caminhoArquivoSelecionado;
 
 	private JRadioButton enviarArqServButton = null;
 	
@@ -85,12 +93,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	private JRadioButton deleteArqExtButton = null;
 	
 	private JRadioButton infArqExtButton = null;
-	
-	private String nomeArquivoSelecionado;
-	
-	private String nomeDiretorio;
-	
-	private String caminhoArquivoSelecionado;
 	
 	/**
 	 * Construtor da Classe. Cria uma nova janela e coloca o Menu e a imagem do
@@ -138,24 +140,28 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();
-
+		verificaRadioButtonSelecionado(null, evt);
 		if (source == enviarArqServButton) {
 			
 			/*pedir diretorio de destino*/
 			
-			File arquivoEntrada=new File(caminhoArquivoSelecionado);
-			
-			//System.out.println("Clicando no enviar Arquivo para o Servidor");
-			desbloqueiaPainelCliente();
-			bloqueiaPainelServidor();
+//			File arquivoEntrada=new File(caminhoArquivoSelecionado);
+//			
+//			//System.out.println("Clicando no enviar Arquivo para o Servidor");
+//			desbloqueiaPainelCliente();
+//			bloqueiaPainelServidor();
 		}	
 		else if (source == infArqExtButton){
-			System.out.println("Informacao do arquivo");
+			obterInformacoesArquivo();
 			
 		}
+		else if (source == renameArqButton){
+			renomeiaArquivo();
+			
+		}
+			
 		else if (source == deleteArqButton){
-			//MainConsole.apagarArquivo("");
-			bloqueiaPainelCliente();
+			apagarArquivo();
 		}
 		else if (source == enviarArqExtServButton){
 			try {
@@ -186,22 +192,54 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 	}	
 	
+	public String getCaminhoArquivo(String caminho){
+		String[] temp = caminho.split(",");
+		caminho = temp[temp.length-2];
+		caminho = caminho.replaceAll(" ", "");
+		caminho = caminho.replaceAll("\\\\", "\\\\\\\\");
+		return caminho;
+	}
+	
 	public void valueChanged(TreeSelectionEvent e) {
-	      DefaultMutableTreeNode no = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-	     /* JTree treeSource = (JTree) e.getSource();
-	        TreePath path = treeSource.getSelectionPath();
-	        System.out.println(path);
-	        System.out.println(path.getPath());
-	        System.out.println(path.getParentPath());
-	        System.out.println(((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
-	        System.out.println(path.getPathCount());
-	      System.out.println("Diretorio: " + e.getPath() + "  " + no);*/
-		System.out.println("arquivo: " + no);
-		 nomeArquivoSelecionado=e.getPath().getLastPathComponent().toString();
-	     nomeDiretorio=e.getPath().getParentPath().getLastPathComponent().toString();
-	     caminhoArquivoSelecionado=nomeDiretorio+'/'+nomeArquivoSelecionado;
-	     System.out.println(caminhoArquivoSelecionado);
-	     
+	    if (BarraDeMenu.menuConectarServidor.isEnabled()){
+	    	JOptionPane.showMessageDialog(null, "Cliente NAO esta conectado com o Servidor!", "ERRO", JOptionPane.INFORMATION_MESSAGE);
+	    }
+	    else{
+			JTree treeSource = (JTree) e.getSource();
+			TreePath path = treeSource.getSelectionPath();
+			if(path != null){
+				caminhoArquivoSelecionado = getCaminhoArquivo(path.toString());
+				nomeArquivoSelecionado = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+//			System.out.println("1 - " + path);
+//	        System.out.println("1.1 - " + getCaminhoArquivo(path.toString()));
+//	        System.out.println("2 - " + path.getPath());
+//	        //System.out.println(path.getParentPath());
+//	        System.out.println("3 - " + ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
+//	        System.out.println("3.1 - " + ((DefaultMutableTreeNode) path.getLastPathComponent()));
+//	        System.out.println("4 - " + path.getPathCount());
+	      //System.out.println("Diretorio: " + e.getPath() + "  " + no);
+		//System.out.println("arquivo: " + no);
+//		 nomeArquivoSelecionado=e.getPath().getLastPathComponent().toString();
+//	     nomeDiretorio=e.getPath().getParentPath().getLastPathComponent().toString();
+//	     caminhoArquivoSelecionado=nomeDiretorio+'/'+nomeArquivoSelecionado;
+//	     System.out.println(caminhoArquivoSelecionado);
+//	     
 	     /*
 	     File teste=new File(caminhoArquivoSelecionado);
 	     
@@ -217,7 +255,25 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	     }catch(FileNotFoundException fnfe){
 	    	 
 	     }*/
+	    }
+	}
+	
+	public void verificaRadioButtonSelecionado(TreeSelectionEvent evtTree, ActionEvent evtRB){
 		
+		if(evtTree != null)
+		{
+			Object sourceTree = evtTree.getSource();
+			System.out.println(sourceTree.toString());
+				System.out.println("servidorrrrrrr...");
+			System.out.println(evtTree.getSource());
+		}
+		if(evtRB != null)
+		{
+			Object source = evtRB.getSource();
+			
+			if(source == infArqExtButton);
+		}
+			
 	}
 	public void criarPaines(){
 		if (painelFundo == null) {
@@ -423,7 +479,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 //		 Verifico se ocorreu algum erro de leitura no servidor
 		if(lerDiretorio.hasErros()){
 		            // Exibo o erro na tela
-		            System.out.println(lerDiretorio.errosString());
+					mensagemDeErro(lerDiretorio.errosString());
 		            // Para a execucao do evento ler diretorio
 		        } 
 
@@ -461,4 +517,138 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	public static void desbloqueiaPainelServidor(){
 		painelServidor.setEnabled(true);
 	}
+	
+	public static void mensagemDeErro(String mensagem){
+		JOptionPane.showMessageDialog(null, 
+				mensagem, // mensagem
+				"Erro", //titulo
+				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void obterInformacoesArquivo(){
+		InformacoesArquivo informArquivo = new InformacoesArquivo();
+		informArquivo.setCaminho(caminhoArquivoSelecionado);
+		informArquivo.setNomeArquivo(nomeArquivoSelecionado);
+		
+		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, informArquivo);
+		cliente.start();
+		try {
+			cliente.join(); 	
+		} catch (Exception e) {
+			System.out.println("erro ao ler arquivo");
+		}
+		
+		informArquivo = (InformacoesArquivo)cliente.getRequisicao();
+
+		if(informArquivo.hasErros()){
+		            // Exibo o erro na tela
+				mensagemDeErro(informArquivo.errosString());
+		}else{
+			JOptionPane.showMessageDialog(null, 
+					"Nome Arquivo: " + informArquivo.getNomeArquivo() + "\n" + //mensagem
+					"Tamanho Arquivo: " + informArquivo.getTamanhoArquivo() + " byte(s) \n" +
+					"Data do Arquivo: " + informArquivo.getDataModificacao(),
+					"Dados do Arquivo", //titulo
+					JOptionPane.PLAIN_MESSAGE);	//INFORMATION_MESSAGE	
+		}
+	}
+	
+	
+	private void renomeiaArquivo(){
+		RenomearArquivo renomArquivo = new RenomearArquivo();
+		renomArquivo.setCaminho(caminhoArquivoSelecionado);
+		renomArquivo.setNomeArquivo(nomeArquivoSelecionado);
+		
+		try {
+			
+			String novoArquiv = JOptionPane.showInputDialog("Digite o novo Nome:").toLowerCase() + somenteExtensaoArquivo(nomeArquivoSelecionado);
+			
+			
+			if (novoArquiv != null){
+				renomArquivo.setNomeNovoArquivo(novoArquiv);
+				
+				
+				Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, renomArquivo);
+				cliente.start();
+				try {
+					cliente.join(); 	
+				} catch (Exception e) {
+					System.out.println("erro ao ler arquivo");
+				}
+				
+				renomArquivo = (RenomearArquivo)cliente.getRequisicao();
+
+				if(renomArquivo.hasErros()){
+				    // Exibo o erro na tela
+					mensagemDeErro(renomArquivo.errosString());
+				}else{
+					
+					sucessoRenomeaArquivo();
+					
+				}
+				
+			}
+			else{
+				JOptionPane.showMessageDialog(null, 
+						"Arquivo Nao renomeado !", // mensagem
+						"Atencao", //titulo
+						JOptionPane.WARNING_MESSAGE);
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("Renomeia Arquivo - Acao Cancelar pressionada !");
+		}
+	}
+	
+	private void sucessoRenomeaArquivo(){
+		
+		//Repinta o Painel Servidor com o novo nome do Arquivo.
+		criaPainelServer();
+		JOptionPane.showMessageDialog(null, 
+				"Arquivo Renomeado com Sucesso !", // mensagem
+				"Atencao", //titulo
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private String somenteExtensaoArquivo(String nomeArquivoSelecionado) {
+		
+		String[] temp = nomeArquivoSelecionado.split("\\.");
+		nomeArquivoSelecionado = "." + temp[temp.length-1];
+		
+		return nomeArquivoSelecionado;
+	}
+	
+	private void apagarArquivo(){
+		ApagarArquivo apagArquivo = new ApagarArquivo();
+		apagArquivo.setCaminho(caminhoArquivoSelecionado);
+		apagArquivo.setNomeArquivo(nomeArquivoSelecionado);
+		
+		int opcao = JOptionPane.showConfirmDialog(null,"Deseja Realmente Deletar o Arquivo: " + nomeArquivoSelecionado + " ?","Atencao",JOptionPane.YES_NO_OPTION);    
+        if(opcao == JOptionPane.YES_OPTION){ 
+		
+			Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, apagArquivo);
+			cliente.start();
+			try {
+				cliente.join(); 	
+			} catch (Exception e) {
+				System.out.println("erro ao ler arquivo");
+			}
+			
+			apagArquivo = (ApagarArquivo)cliente.getRequisicao();
+	
+			if(apagArquivo.hasErros()){
+			            // Exibo o erro na tela
+					mensagemDeErro(apagArquivo.errosString());
+			}else{
+				//Repinta o Painel Servidor com o novo nome do Arquivo.
+				criaPainelServer();
+				JOptionPane.showMessageDialog(null, 
+						"Arquivo Deletado com Sucesso !", //mensagem
+						"Apagar Arquivo", //titulo
+						JOptionPane.INFORMATION_MESSAGE);	
+			}
+        }
+	}
+	
 }

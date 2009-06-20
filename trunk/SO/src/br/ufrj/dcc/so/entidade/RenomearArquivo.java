@@ -6,6 +6,10 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class RenomearArquivo extends Requisicao{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tarefa = "renomeando arquivo.";
 	private String nomeArquivo;
 	private String nomeNovoArquivo;
