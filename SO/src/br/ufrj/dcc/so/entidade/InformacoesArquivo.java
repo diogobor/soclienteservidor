@@ -9,6 +9,10 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class InformacoesArquivo extends Requisicao{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tarefa = "esta obtendo informacoes do arquivo";
 	private Date dataCriacao;
 	private Date dataModificacao;
@@ -63,8 +67,7 @@ public class InformacoesArquivo extends Requisicao{
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
 		
-		mensagemInicioTarefa(tarefa);		
-		
+		mensagemInicioTarefa(tarefa);
 		File arquivo = new File(getCaminhoCompleto());		
 		if (arquivo.exists()){
 						

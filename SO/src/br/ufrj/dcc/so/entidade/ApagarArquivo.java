@@ -6,6 +6,10 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class ApagarArquivo extends Requisicao{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tarefa= "apagando arquivo";
 	private String nomeArquivo;
 	
