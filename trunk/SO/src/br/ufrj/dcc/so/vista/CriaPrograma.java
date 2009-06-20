@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import br.ufrj.dcc.so.controle.ArquivoTexto;
 import br.ufrj.dcc.so.controle.LerEscreverArquivo;
 
 
@@ -43,7 +45,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 	@SuppressWarnings("unused")
 	private LerEscreverArquivo arquivoLido;
 
-	public CriaPrograma (){
+	public CriaPrograma (File arquivoAntigo){
 		
 		/**
 		 * Variavel para saber o tamanho da janela
@@ -52,9 +54,10 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 
 		Dimension tamanhoPrograma = new Dimension(ProgramaLargura, ProgramaAltura);
 		
-		titulo = new JLabel("Digite seu programa na area abaixo:");
+		titulo = new JLabel("Altere o programa na area abaixo:");
 		
-		areaTexto = new JTextArea("Digite aqui...");
+		//areaTexto = new JTextArea("Digite aqui...\ndiogo");
+		areaTexto = new JTextArea(insereArquivoNoText(arquivoAntigo));
 		
 		painel = new JPanel();
 		
@@ -63,6 +66,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		botaoCarrega = new JButton("Carregar Programa");
 		
 		painel.setLayout(null);
+		
 		
 		/**
 		 * Adiciona item no painel
@@ -86,7 +90,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		setSize(tamanhoPrograma);
 		setResizable(false);
 		setLocation((screenSize.width - ProgramaLargura) / 2,(screenSize.height - ProgramaAltura) / 2);
-		setTitle("Cria Programa");
+		setTitle("Alterar Programa");
 		setVisible(true);
 		
 	}
@@ -115,39 +119,26 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 			}		
 		}
 	}
-
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+	
+	private String insereArquivoNoText(File arquivo){
+		String conteudoArquivo = "";
+		try {
+			
+			ArquivoTexto arquivoVelho = new ArquivoTexto(arquivo.getPath());
+			while(arquivoVelho.maisLinhas()){
+				conteudoArquivo += "\n" + arquivoVelho.getLinha();
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao ler Arquivo no Programa");
+		} 
+		return conteudoArquivo;
 	}
 
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
-
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowClosing(WindowEvent e) {}
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e){}
 }

@@ -11,26 +11,14 @@ import java.awt.Graphics;
 public class PainelPrincipal extends Component{
 	private static final long serialVersionUID = 1L;
 
-	private Figura fundoMenu = new Figura();
-
 	public static Graphics grafico;
 
-	String temp = new String();
-	
-	public static String situacaoServidor = new String();
-	
-	
-	
-	
 	public void paint(Graphics graficoPrincipal) {
 		
 		if (graficoPrincipal != null) {
 			grafico = graficoPrincipal;
 		}
 		
-		grafico.setColor(Color.black); // define a cor do painel
-		grafico.setFont(new Font("Arial", Font.BOLD, 12)); // a fonte a ser usada	
-		grafico.drawString(situacaoServidor, 0, 20);
 		
 	}
 }

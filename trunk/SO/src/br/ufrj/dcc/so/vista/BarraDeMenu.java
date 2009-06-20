@@ -85,7 +85,7 @@ public class BarraDeMenu implements ActionListener {
 			
 		}
 		else if (source == menuFazerPrograma) {
-			clicaNovoPrograma = new CriaPrograma();
+			//clicaNovoPrograma = new CriaPrograma(new File(""));
 		}
 		else if (source == menuSair) {
 			if(!menuConectarServidor.isEnabled()){
