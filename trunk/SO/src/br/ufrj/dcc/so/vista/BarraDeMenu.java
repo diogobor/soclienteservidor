@@ -2,6 +2,7 @@ package br.ufrj.dcc.so.vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -62,8 +63,12 @@ public class BarraDeMenu implements ActionListener {
 	public static JMenuItem menuSobre = new JMenuItem();
 	
 	public static String nomeServidor = "";
+	
+	private Comecar comecar;
 
-
+	public BarraDeMenu(Comecar comecar){
+		this.comecar=comecar;
+	}
 	/**
 	 * Executa as funcoes para cada parte do Menu.
 	 */
@@ -182,6 +187,13 @@ public class BarraDeMenu implements ActionListener {
 		//Comecar painel = new Comecar("");
 		//painel.criaPainelServer();
 		Comecar.criaPainelServer();
+		
+		File diretorioCliente = new File(Comecar.RAIZCLIENTE);
+		
+		comecar.painelCliente.setVisible(true);
+		comecar.painelServidor.setVisible(true);
+		comecar.painelOpcoes.setVisible(true);
+		comecar.janela.validate();
 	}
 	
 	public void errosServidor(Requisicao requisicao){

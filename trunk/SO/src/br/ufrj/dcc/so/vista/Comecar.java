@@ -1,5 +1,6 @@
 package br.ufrj.dcc.so.vista;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -36,9 +37,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final String RAIZSERVIDOR ="filesServer";
+	public static final String RAIZSERVIDOR ="filesServer";
 	
-	private static final String RAIZCLIENTE ="filesClient";
+	public static final String RAIZCLIENTE ="filesClient";
 	
 	private static final int IP_SERVIDOR =0;
 	
@@ -106,7 +107,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 		JanelaPrincipal.ProgramaAltura = 530;
 
-		BarraDeMenu menu = new BarraDeMenu();
+		BarraDeMenu menu = new BarraDeMenu(this);
 		
 		
 		criarPaines();
@@ -127,10 +128,13 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 
 		janela.setLayout(null);
 		janela.add(painelFundo);
-		janela.add(painelOpcoes);
+		janela.add(BorderLayout.WEST,painelOpcoes);
 		janela.add(painelCliente);
 		janela.add(painelServidor);
-		janela.add(painelMsg);
+		janela.add(BorderLayout.SOUTH,painelMsg);
+		painelCliente.setVisible(false);
+		painelServidor.setVisible(false);
+		painelOpcoes.setVisible(false);
 		janela.setVisible(true);
 	
 	}
@@ -291,8 +295,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			painelCliente = new FileTree(diretorioCliente);
 			painelCliente.addComecarListener(this);
 
-//			painelCliente.setEnabled(false);
-//			bloqueiaPainelCliente();
+			/*painelCliente.setEnabled(false);
+		    bloqueiaPainelCliente();*/
 
 		}
 		
@@ -492,9 +496,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
 		painelServidor.revalidate(); 
 		janela.add(painelServidor);
-		janela.validate();
-		
-		
+		janela.validate();	
 	}
 	
 	public static void listarDiretorio(){
