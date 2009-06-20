@@ -4,6 +4,10 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class DesconectarServidor extends Requisicao{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tarefa = "desconectando com o servidor";
 	
 	@Override
