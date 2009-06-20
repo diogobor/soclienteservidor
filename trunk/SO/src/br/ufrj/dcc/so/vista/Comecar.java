@@ -223,8 +223,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			
 			
 			
-			
-			
 //			System.out.println("1 - " + path);
 //	        System.out.println("1.1 - " + getCaminhoArquivo(path.toString()));
 //	        System.out.println("2 - " + path.getPath());
@@ -480,7 +478,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		            // Exibo o erro na tela
 					System.out.println(lerDiretorio.errosString());
 					mensagemDeErro(lerDiretorio.errosString());
-		            // Para a execucao do evento ler diretorio
 		        } 
 
 //		 Se nao ocorreu erro algum entao foi lido os arquivos do diretório com sucesso
@@ -696,18 +693,13 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	private String getCaminhoArquivo(String caminho){
-		System.out.println("caminho Antigo: " + caminho);
 		String[] temp = caminho.split(",");
 		
-		if(temp.length > 1)caminho = temp[temp.length-2];
-		else{
-			caminho = caminho.replaceAll("\\[", "");
-			caminho = caminho.replaceAll("\\]", "");
-		}
+		caminho = temp[temp.length-2];
+		if(temp.length < 3)caminho = caminho.replaceAll("\\[", "");
 		
 		caminho = caminho.replaceAll(" ", "");
 		caminho = caminho.replaceAll("\\\\", "\\\\\\\\");
-		System.out.println("Caminho: " + caminho);
 		return caminho;
 	}
 	
