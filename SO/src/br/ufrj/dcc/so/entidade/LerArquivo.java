@@ -6,6 +6,10 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class LerArquivo extends Requisicao{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nomeArquivo;
 	private TipoArquivo tipo;
 	private File arquivo;

@@ -3,7 +3,6 @@ package br.ufrj.dcc.so.vista;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -27,6 +25,7 @@ import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.ApagarArquivo;
 import br.ufrj.dcc.so.entidade.ApagarExtensao;
 import br.ufrj.dcc.so.entidade.InformacoesArquivo;
+import br.ufrj.dcc.so.entidade.LerArquivo;
 import br.ufrj.dcc.so.entidade.LerDiretorio;
 import br.ufrj.dcc.so.entidade.RenomearArquivo;
 
@@ -70,8 +69,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	public static JLabel nomeStatusIP = new JLabel("");
 	
 	public static JLabel statusArquivo = new JLabel("");
-
-	public static List listaPrograma = new List();
 	
 	public static String nomeArquivoSelecionado;
 	
@@ -111,7 +108,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 
 		BarraDeMenu menu = new BarraDeMenu();
 		
-		JScrollPane scrollTextPrograma = new JScrollPane(listaPrograma);
 		
 		criarPaines();
 		colocarOpcoes();
@@ -169,6 +165,11 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 		else if (source == deleteArqExtButton){
 			apagarArquivoExtensao();
+			
+		}
+		
+		else if (source == recArqButton){
+			lerArquivoServidor();
 			
 		}
 		
@@ -331,7 +332,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	    msgNoServidor("Nao Conectado !");
 	    msgIP("Null");
 	    
-		PainelPrincipal.situacaoServidor = "Nao conectado !";
 
 //		painelCliente.setEnabled(false);
 //		bloqueiaPainelCliente();
@@ -701,6 +701,31 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		caminho = caminho.replaceAll(" ", "");
 		caminho = caminho.replaceAll("\\\\", "\\\\\\\\");
 		return caminho;
+	}
+	
+	private void lerArquivoServidor(){
+		LerArquivo lerArquivoServ = new LerArquivo();
+		lerArquivoServ.setCaminho(caminhoArquivoSelecionado);
+		lerArquivoServ.setNomeArquivo(nomeArquivoSelecionado);
+		
+		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerArquivoServ);
+		cliente.start();
+		try {
+			cliente.join(); 	
+		} catch (Exception e) {
+			System.out.println("erro ao ler arquivo");
+		}
+		
+		lerArquivoServ = (LerArquivo)cliente.getRequisicao();
+
+		if(lerArquivoServ.hasErros()){
+		            // Exibo o erro na tela
+				System.out.println(lerArquivoServ.errosString());
+				mensagemDeErro(lerArquivoServ.errosString());
+		}else{
+			File meuArquivo = lerArquivoServ.getArquivo();
+			new CriaPrograma(meuArquivo);
+		}
 	}
 	
 }
