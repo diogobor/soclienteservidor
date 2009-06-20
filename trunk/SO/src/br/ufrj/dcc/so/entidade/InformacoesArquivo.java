@@ -19,6 +19,10 @@ public class InformacoesArquivo extends Requisicao{
 		
 	}
 	
+	private String getCaminhoCompleto() {		
+		return getCaminho() + "\\" + getNomeArquivo();
+	}
+	
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;		
 	}
@@ -50,17 +54,19 @@ public class InformacoesArquivo extends Requisicao{
 	public Date getDataModificacao() {
 		return dataModificacao;
 	}
+	
+	public String getDataModificacaoString() {
+		DateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");
+		return formatData.format(dataModificacao);  
+	}
 
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
 		
-		mensagemInicioTarefa(tarefa);
+		mensagemInicioTarefa(tarefa);		
 		
-		String completePath = getCaminho() + "\\" + nomeArquivo;
-		File arquivo = new File(completePath);		
+		File arquivo = new File(getCaminhoCompleto());		
 		if (arquivo.exists()){
-			//DateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");			
-			//String data = formatData.format(new Date(arquivo.lastModified()));  
 						
 			dataModificacao = new Date(arquivo.lastModified());			
 			tamanhoArquivo = String.valueOf(arquivo.length());

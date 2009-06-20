@@ -13,13 +13,13 @@ public class DesconectarServidor extends Requisicao{
 		
 		try 
 		{
-			controleArquivo.fecharAcessoListaCliente();		
-			controleArquivo.removerCliente(this);			
+			controleArquivo.fecharAcessoListaCliente();	
+			removerCliente(controleArquivo);						
 			controleArquivo.abrirAcessoListaCliente();
 			
-			controleArquivo.fecharAcessoListaRequisicoes();
-			controleArquivo.limparRequisicoesAbertas(getCliente());
-			controleArquivo.abrirAcessoListaRequisicoes();
+			controleArquivo.fecharAcessoListaArquivoUtilizado();
+			controleArquivo.removerArquivosUtilizados(getCliente());
+			controleArquivo.abrirAcessoListaArquivoUtilizado();
 		
 		} catch (InterruptedException e) {
 			getErros().add("Ocorreu um erro na execucao do semaforo.");
@@ -27,6 +27,16 @@ public class DesconectarServidor extends Requisicao{
 		
 		mensagemFimTarefa(tarefa);
 		
+	}
+
+	private void removerCliente(ControleArquivo controleArquivo) {
+		if(controleArquivo.contemCliente(getCliente())){
+			controleArquivo.removerCliente(getCliente());				
+		}
+		else
+		{
+			getErros().add("Este cliente nao esta conectado com o servidor");
+		}
 	}
 
 }

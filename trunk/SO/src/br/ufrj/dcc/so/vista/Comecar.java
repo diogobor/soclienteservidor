@@ -154,7 +154,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			
 		}
 		else if (source == deleteArqButton){
-			MainConsole.apagarArquivo("");
+			//MainConsole.apagarArquivo("");
 			bloqueiaPainelCliente();
 		}
 		else if (source == enviarArqExtServButton){

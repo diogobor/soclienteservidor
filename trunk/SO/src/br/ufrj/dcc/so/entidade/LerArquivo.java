@@ -12,6 +12,10 @@ public class LerArquivo extends Requisicao{
 	
 	private String tarefa = "lendo arquivo";
 	
+	private String getCaminhoCompleto() {		
+		return getCaminho() + "\\" + getNomeArquivo();
+	}
+	
 	public void setNomeArquivo(String nomeArquivo) {
 		this.nomeArquivo = nomeArquivo;
 	}
@@ -38,34 +42,50 @@ public class LerArquivo extends Requisicao{
 
 	@Override
 	public void executar(ControleArquivo controleArquivo) {		
-		mensagemInicioTarefa(tarefa);
+		mensagemInicioTarefa(tarefa);		
 		
-		try 
-		{			
-			arquivo = new File(getCaminho());
-			
-			if(arquivo.exists()){
-				if(isEscrita())
-				{
-					controleArquivo.fecharAcessoListaRequisicoes();					
-					controleArquivo.adicionarRequisicao(this);					
-					controleArquivo.abrirAcessoListaRequisicoes();
-				}
-			}
-			else
-			{
-				getErros().add("Não existe este arquivo no servidor");
-				arquivo = null;
-			}
-		}
-		catch (InterruptedException e) {
-				
-			getErros().add("Ocorreu um erro na execucao do semaforo.");
-		}			
+		lerArquivo(controleArquivo);			
 				
 		mensagemFimTarefa(tarefa);
 	}
-	
+
+	private void lerArquivo(ControleArquivo controleArquivo) {
+		try 
+		{	
+			File arq = new File(getCaminhoCompleto());			
+			
+			if(!arq.exists())
+			{
+				getErros().add("Não existe este arquivo no servidor");
+				return;
+			}
+			
+			arquivo = arq;
+			
+			if(isEscrita())
+			{
+				ArquivoUtilizado arquivoUtilizado = new ArquivoUtilizado(getCliente(), getCaminhoCompleto());
+				
+				controleArquivo.fecharAcessoListaArquivoUtilizado();
+				
+				if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
+				{
+					getErros().add("Este arquivo ja esta aberto para escrita com outro usuario.");					
+					arquivo = null;
+				}
+				else if(!controleArquivo.isArquivoUsadoPorCliente(arquivoUtilizado))
+				{
+					controleArquivo.adicionarArquivoUtilizado(arquivoUtilizado);					
+				}				
+				
+				controleArquivo.abrirAcessoListaArquivoUtilizado();
+			}
+		}
+		catch (InterruptedException e) {				
+			getErros().add("Ocorreu um erro na execucao do semaforo.");
+		}
+	}	
+
 	private boolean isEscrita(){
 		return getTipo() != null && getTipo() == TipoArquivo.ESCRITA;
 	}
