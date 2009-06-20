@@ -1,13 +1,16 @@
 package br.ufrj.dcc.so.entidade;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class ApagarExtensao extends Requisicao{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tarefa = "apagando arquivo por extensao";
 	private String nomeExtensao;	
 	

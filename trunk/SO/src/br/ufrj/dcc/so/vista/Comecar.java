@@ -25,6 +25,7 @@ import javax.swing.tree.TreePath;
 
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.ApagarArquivo;
+import br.ufrj.dcc.so.entidade.ApagarExtensao;
 import br.ufrj.dcc.so.entidade.InformacoesArquivo;
 import br.ufrj.dcc.so.entidade.LerDiretorio;
 import br.ufrj.dcc.so.entidade.RenomearArquivo;
@@ -155,6 +156,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			obterInformacoesArquivo();
 			
 		}
+		
 		else if (source == renameArqButton){
 			renomeiaArquivo();
 			
@@ -162,7 +164,14 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			
 		else if (source == deleteArqButton){
 			apagarArquivo();
+			
 		}
+		
+		else if (source == deleteArqExtButton){
+			apagarArquivoExtensao();
+			
+		}
+		
 		else if (source == enviarArqExtServButton){
 			try {
 				getExtensao();	
@@ -171,6 +180,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 				System.out.println("Acao Cancelar acionada");
 			}
 		}
+		
 		else if (source == recArqExtButton){
 			try {
 				getExtensao();
@@ -179,26 +189,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 				System.out.println("Acao Cancelar acionada");
 			}
 		}
-		else if (source == deleteArqExtButton){
-			try {
-				String extensao;
-				extensao=getExtensao();
-				Comecar.msgNoServidor("arquivos do servidor com extensao "+extensao+" bloqueados");
-				bloqueiaPainelCliente();
-			} catch (Exception e) {
-				System.out.println("Acao Cancelar acionada");
-			}
-		}
 		
 	}	
 	
-	public String getCaminhoArquivo(String caminho){
-		String[] temp = caminho.split(",");
-		caminho = temp[temp.length-2];
-		caminho = caminho.replaceAll(" ", "");
-		caminho = caminho.replaceAll("\\\\", "\\\\\\\\");
-		return caminho;
-	}
 	
 	public void valueChanged(TreeSelectionEvent e) {
 	    if (BarraDeMenu.menuConectarServidor.isEnabled()){
@@ -208,8 +201,14 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			JTree treeSource = (JTree) e.getSource();
 			TreePath path = treeSource.getSelectionPath();
 			if(path != null){
-				caminhoArquivoSelecionado = getCaminhoArquivo(path.toString());
-				nomeArquivoSelecionado = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+				if(node.isLeaf()){
+					caminhoArquivoSelecionado = getCaminhoArquivo(path.toString());
+					nomeArquivoSelecionado = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+				}
+				else{
+					caminhoArquivoSelecionado = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+				}
 			}
 			
 			
@@ -479,6 +478,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 //		 Verifico se ocorreu algum erro de leitura no servidor
 		if(lerDiretorio.hasErros()){
 		            // Exibo o erro na tela
+					System.out.println(lerDiretorio.errosString());
 					mensagemDeErro(lerDiretorio.errosString());
 		            // Para a execucao do evento ler diretorio
 		        } 
@@ -542,6 +542,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 
 		if(informArquivo.hasErros()){
 		            // Exibo o erro na tela
+				System.out.println(informArquivo.errosString());
 				mensagemDeErro(informArquivo.errosString());
 		}else{
 			JOptionPane.showMessageDialog(null, 
@@ -580,6 +581,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 
 				if(renomArquivo.hasErros()){
 				    // Exibo o erro na tela
+					System.out.println(renomArquivo.errosString());
 					mensagemDeErro(renomArquivo.errosString());
 				}else{
 					
@@ -639,6 +641,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 			if(apagArquivo.hasErros()){
 			            // Exibo o erro na tela
+				System.out.println(apagArquivo.errosString());
 					mensagemDeErro(apagArquivo.errosString());
 			}else{
 				//Repinta o Painel Servidor com o novo nome do Arquivo.
@@ -649,6 +652,63 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 						JOptionPane.INFORMATION_MESSAGE);	
 			}
         }
+	}
+	
+	private void apagarArquivoExtensao(){
+		try {
+			String extensaoArquivo = getExtensao();
+			
+			
+			ApagarExtensao apagArquivoExtensao = new ApagarExtensao();
+			apagArquivoExtensao.setCaminho(caminhoArquivoSelecionado);
+			apagArquivoExtensao.setNomeExtensao(extensaoArquivo);
+			
+			int opcao = JOptionPane.showConfirmDialog(null,"Deseja Realmente Deletar todos os Arquivos *." + extensaoArquivo + " do Servidor ?","Atencao",JOptionPane.YES_NO_OPTION);    
+	        if(opcao == JOptionPane.YES_OPTION){ 
+			
+				Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, apagArquivoExtensao);
+				cliente.start();
+				try {
+					cliente.join(); 	
+				} catch (Exception e) {
+					System.out.println("erro ao ler arquivo");
+				}
+				
+				apagArquivoExtensao = (ApagarExtensao)cliente.getRequisicao();
+		
+				if(apagArquivoExtensao.hasErros()){
+				            // Exibo o erro na tela
+						System.out.println(apagArquivoExtensao.errosString());
+						mensagemDeErro(apagArquivoExtensao.errosString());
+				}else{
+					//Repinta o Painel Servidor com o novo nome do Arquivo.
+					criaPainelServer();
+					JOptionPane.showMessageDialog(null, 
+							"Arquivos *." + extensaoArquivo  + " Deletados com Sucesso !", //mensagem
+							"Apagar Arquivos", //titulo
+							JOptionPane.INFORMATION_MESSAGE);	
+				}
+	        }
+			
+		} catch (Exception e) {
+			System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
+		}
+	}
+	
+	private String getCaminhoArquivo(String caminho){
+		System.out.println("caminho Antigo: " + caminho);
+		String[] temp = caminho.split(",");
+		
+		if(temp.length > 1)caminho = temp[temp.length-2];
+		else{
+			caminho = caminho.replaceAll("\\[", "");
+			caminho = caminho.replaceAll("\\]", "");
+		}
+		
+		caminho = caminho.replaceAll(" ", "");
+		caminho = caminho.replaceAll("\\\\", "\\\\\\\\");
+		System.out.println("Caminho: " + caminho);
+		return caminho;
 	}
 	
 }
