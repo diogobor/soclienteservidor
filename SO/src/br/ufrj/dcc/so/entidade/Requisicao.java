@@ -1,5 +1,6 @@
 package br.ufrj.dcc.so.entidade;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,22 @@ public abstract class Requisicao implements Serializable {
 
 	protected void mensagemInicioTarefa(String tarefa) {
 		System.out.println(String.format("INICIO: Cliente %s %s", getCliente(), tarefa));
+	}
+	
+	protected List<String> obterListaArquivosComExtensao(File[] arquivos, String nomeExtensao) {
+		List<String> arquivosComExtensao = new ArrayList<String>();
+		
+		for(int i = 0; i < arquivos.length; ++i){ 
+		    File f = arquivos[i]; 
+		    String[] texto = f.getName().split("\\.");
+		    String extensaoArquivo = texto[texto.length-1].toLowerCase();
+		    
+		    if(extensaoArquivo.equals(nomeExtensao.toLowerCase())){
+		    	arquivosComExtensao.add(f.getName());                    
+		    } 
+		}
+		
+		return arquivosComExtensao;
 	}
 	
 }

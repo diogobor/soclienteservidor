@@ -16,8 +16,7 @@ public class Cliente extends Thread {
 	private int porta = 0;
 	private Conexao conexao;
 	private Socket socket;
-	private Requisicao requisicao;
-	//public static String mensagem = "";
+	private Requisicao requisicao;	
 	
 	//Construtor
 	public Cliente (String servidor, int porta, Requisicao requisicao){
@@ -36,22 +35,17 @@ public class Cliente extends Thread {
 					
 			conexao.escreverRequisicao(requisicao);			
 			requisicao = conexao.lerRequisicao();
+			
+			if(!socket.isClosed()) socket.close(); 
         } 
 		catch (UnknownHostException e) {        		
-			requisicao.getErros().add("Nao foi encontrado o servidor.");
-			
-        } 
+			requisicao.getErros().add("Nao foi encontrado o servidor.");			
+        }
 		catch (IOException e) {        		
         	requisicao.getErros().add("Nao foi encontrado o servidor.");
         }
-        finally{
-        	try{
-        		if(!socket.isClosed()) socket.close(); 
-        	}
-        	catch(Exception e){
-                requisicao.getErros().add("Erro ao fechar o arquivo !");
-                //errosServidor();
-            } 
+		catch(Exception e){
+            requisicao.getErros().add("Erro ao fechar o arquivo !");                
         }
 	}
 
@@ -59,13 +53,6 @@ public class Cliente extends Thread {
 	{
 		return requisicao;
 	}
-
-	
-	public void errosServidor(){
-		BarraDeMenu.menuConectarServidor.setEnabled(true);
-		Comecar.msgNoServidor("Erro na Conexao !");
-	}
-	
 	/*
 	private void enviarArquivoServidor() throws FileNotFoundException,
 			IOException {

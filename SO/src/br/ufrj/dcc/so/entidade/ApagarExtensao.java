@@ -1,12 +1,14 @@
 package br.ufrj.dcc.so.entidade;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class ApagarExtensao extends Requisicao{
 
-	private String tarefa = "esta apagando por extensao";
+	private String tarefa = "apagando arquivo por extensao";
 	private String nomeExtensao;	
 	
 	/*
@@ -25,26 +27,45 @@ public class ApagarExtensao extends Requisicao{
 		
 		mensagemInicioTarefa(tarefa);
 		
-		//Verificar se todos os arquivos estao livres
-		
-		File diretorio = new File(getCaminho()); 
-        File[] arquivos = diretorio.listFiles(); 
-        String nomeArquivo ="";
-        if(arquivos != null){ 
-            int length = arquivos.length; 
-  
-            for(int i = 0; i < length; ++i){ 
-                File f = arquivos[i]; 
-                String[] texto = f.getName().split("\\.");
-                String extensaoArquivo = texto[texto.length-1].toLowerCase();
-                nomeArquivo = f.getName();
-                if(extensaoArquivo.equals(nomeExtensao.toLowerCase())){
-                	f.delete();                    
-                } 
-            } 
-        } 
+		deletarArquivos(controleArquivo); 
         
         mensagemFimTarefa(tarefa);
 		
+	}
+
+	private void deletarArquivos(ControleArquivo controleArquivo) {
+		File diretorio = new File(getCaminho()); 
+		
+		if(!diretorio.exists()){
+			getErros().add("Diretorio inexistente no servidor!");
+			return;
+		}
+		
+        File[] arquivos = diretorio.listFiles();        
+        if(arquivos == null){        	
+        	getErros().add("Nao existe arquivo(s) no diretorio");
+        	return;
+        }
+			
+		List<String> arquivosComExtensao = obterListaArquivosComExtensao(arquivos, getNomeExtensao());
+		
+		if(arquivosComExtensao.size() == 0) getErros().add("Nao existe nenhum arquivo com esta extensao.");
+		
+		for (String nomeArquivo : arquivosComExtensao) {
+			
+			ApagarArquivo apagar = criarApagarArquivo(nomeArquivo);
+			apagar.executar(controleArquivo);
+			
+			if(apagar.hasErros()) getErros().addAll(apagar.getErros());
+			
+		}
+	}
+
+	private ApagarArquivo criarApagarArquivo(String nomeArquivo) {
+		ApagarArquivo apagar = new ApagarArquivo();
+		apagar.setCliente(getCliente());
+		apagar.setCaminho(getCaminho());
+		apagar.setNomeArquivo(nomeArquivo);
+		return apagar;
 	}
 }

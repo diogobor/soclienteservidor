@@ -14,7 +14,14 @@ public class ConectarServidor extends Requisicao{
 		try {
 			controleArquivo.fecharAcessoListaCliente();			
 			
-			controleArquivo.adicionarCliente(this);			
+			if(!controleArquivo.contemCliente(getCliente()))
+			{
+				controleArquivo.adicionarCliente(getCliente());
+			}
+			else
+			{
+				getErros().add("Cliente ja esta conectado com o servidor");
+			}		
 			
 			controleArquivo.abrirAcessoListaCliente();
 		

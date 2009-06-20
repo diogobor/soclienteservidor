@@ -6,12 +6,16 @@ import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class ApagarArquivo extends Requisicao{
 	
-	private String tarefa= "esta apagando o arquivo";
+	private String tarefa= "apagando arquivo";
 	private String nomeArquivo;
 	
 	/*
 	 * Metodos
 	 */
+	private String getCaminhoCompleto() {		
+		return getCaminho() + "\\" + getNomeArquivo();
+	}
+	
 	public void setNomeArquivo(String nomeArquivo) {
 		this.nomeArquivo = nomeArquivo;
 	}
@@ -25,19 +29,39 @@ public class ApagarArquivo extends Requisicao{
 		
 		mensagemInicioTarefa(tarefa);
 		
-		//Verificar se nao tem ninguem usando o arquivo
+		try {
+			ArquivoUtilizado arquivoUtilizado = new ArquivoUtilizado(getCliente(), getCaminhoCompleto());
+			
+			controleArquivo.fecharAcessoListaArquivoUtilizado();		
+			
+			if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
+			{
+				getErros().add(String.format("Não é possivel deletar o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));
+			}
+			else{
+				deletarArquivo();			
+				//remove requisicao se o cliente abriu o arquivo para escrita anteriormente
+				controleArquivo.removerArquivoUtilizado(arquivoUtilizado);
+			}
+			
+			controleArquivo.abrirAcessoListaArquivoUtilizado();
 		
-		String completePath = getCaminho() + "\\" + nomeArquivo;
-		File arquivo = new File(completePath);
-		if (arquivo.exists()){
-			arquivo.delete();			
-		}
-		else{
-			getErros().add("Nao foi possivel deletar o arquivo !");
+		} catch (InterruptedException e) {
+			getErros().add("Ocorreu um erro na execucao do semaforo.");
 		}
 		
 		mensagemFimTarefa(tarefa);
 		
+	}
+
+	private void deletarArquivo() {
+		File arquivo = new File(getCaminhoCompleto());
+		if (arquivo.exists()){
+			arquivo.delete();			
+		}
+		else{
+			getErros().add("Arquivo inexistente no servidor!");
+		}
 	}
 
 }

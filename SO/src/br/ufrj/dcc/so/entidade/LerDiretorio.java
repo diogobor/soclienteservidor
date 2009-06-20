@@ -26,7 +26,8 @@ public class LerDiretorio extends Requisicao {
 		
 		mensagemInicioTarefa(tarefa);
 		
-		diretorio = new File(getCaminho());
+		if(getCaminho().equals(""))diretorio = new File(controleArquivo.ENDERECO_SERVIDOR);
+		else diretorio = new File(getCaminho());
 		
 		if(!diretorio.exists()){
 			getErros().add("Não existe este diretorio no servidor");
