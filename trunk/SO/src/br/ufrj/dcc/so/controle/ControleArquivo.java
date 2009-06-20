@@ -54,7 +54,8 @@ public class ControleArquivo {
 		for (ArquivoUtilizado r : listaArquivoUtilizado) {
 			if(r.getCliente().trim().equals(cliente.trim()))
 				listaArquivoUtilizado.remove(r);
-		}		
+				break;
+		}	
 	}
 	
 	public void adicionarArquivoUtilizado(ArquivoUtilizado au ) {
