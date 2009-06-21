@@ -1,6 +1,7 @@
 package br.ufrj.dcc.so.vista;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,10 +12,12 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-public class FileTree extends JPanel{
+public class FileTree extends JPanel implements TreeSelectionListener{
   
 	/**
 	 * 
@@ -77,8 +80,8 @@ public class FileTree extends JPanel{
   }
  
 	public void addComecarListener(Comecar comecar){
-	this.comecar=comecar;
-	arvoreArquivos.addTreeSelectionListener(this.comecar);
+		this.comecar=comecar;
+		arvoreArquivos.addTreeSelectionListener(this.comecar);
 	  
 	  
 	MouseListener ml = new MouseAdapter() {
@@ -92,12 +95,17 @@ public class FileTree extends JPanel{
 			}
 		}
 	};
-	arvoreArquivos.addMouseListener(ml);
-	  
-	  
-	  
-	  
-	  
+	arvoreArquivos.addMouseListener(ml); 
   }
+	public void addComecarListenerCliente(Comecar comecar){
+		
+		arvoreArquivos.addTreeSelectionListener(this);
+	}
+
+	//Event do painelCliente
+	@Override
+	public void valueChanged(TreeSelectionEvent e) {
+		System.out.println("valendooooooooo");
+	}
 }
 
