@@ -40,6 +40,8 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 	
 	private JScrollPane scrollTextArea;
 	
+	private File arquivoAntigo = null;
+	
 	public static JButton botaoCarrega;
 	
 	@SuppressWarnings("unused")
@@ -47,6 +49,10 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 
 	public CriaPrograma (File arquivoAntigo, String tipoArquivo){
 		
+		/**
+		 * Adiciona o arquivo na variavel da classe
+		 */
+		this.arquivoAntigo = arquivoAntigo;
 		/**
 		 * Variavel para saber o tamanho da janela
 		 */
@@ -58,7 +64,6 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		else titulo = new JLabel("Visualize o arquivo na area abaixo:");
 		
 		
-		//areaTexto = new JTextArea("Digite aqui...\ndiogo");
 		areaTexto = new JTextArea(insereArquivoNoText(arquivoAntigo));
 		
 		painel = new JPanel();
@@ -105,17 +110,17 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		Object source = evt.getSource();
 
 		if (source == botaoCarrega) {
-			System.out.println(areaTexto.getText());
+			
 			try{
 				if(areaTexto.getText().equals("Digite aqui...") || areaTexto.getText().equals("")){
 					JOptionPane.showMessageDialog(null, "Falha ao carregar este programa !\nDigite um programa valido ou feche a janela!", "ERRO", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
-					arquivoLido = new LerEscreverArquivo(areaTexto.getText(),areaTexto.getText());
-					
-//					Comecar.cliqueMenuComecar = false;
-//					Comecar.proximoPasso.setEnabled(true);
-//					Comecar.zeraMemoriaEPrograma();
+					arquivoLido = new LerEscreverArquivo(areaTexto.getText(),arquivoAntigo.getPath());
+					JOptionPane.showMessageDialog(null, 
+							"Arquivo Alterado com Sucesso !", // mensagem
+							"Atencao", //titulo
+							JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);
 				}
 			}
@@ -129,7 +134,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		String conteudoArquivo = "";
 		try {
 			
-			ArquivoTexto arquivoVelho = new ArquivoTexto(arquivo.getPath());
+			ArquivoTexto arquivoVelho = new ArquivoTexto(arquivo.getPath(),"");
 			while(arquivoVelho.maisLinhas()){
 				conteudoArquivo += "\n" + arquivoVelho.getLinha();
 			}

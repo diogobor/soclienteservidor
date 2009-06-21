@@ -17,7 +17,7 @@ public class LerEscreverArquivo{
 	
 	public LerEscreverArquivo(String nome_do_arquivo){
 		try {
-			arqParser = new ArquivoTexto(nome_do_arquivo);
+			arqParser = new ArquivoTexto(nome_do_arquivo,"");
 
 			while (arqParser.maisLinhas()) {
 				
@@ -33,10 +33,11 @@ public class LerEscreverArquivo{
 		}
 	}
 	
-	public LerEscreverArquivo(String gravacao, String teste) throws IOException {
-		ArquivoTexto novoArquivo = new ArquivoTexto();
+	public LerEscreverArquivo(String gravacao, String nomeArquivo) throws IOException {
+		ArquivoTexto novoArquivo = new ArquivoTexto(nomeArquivo);
 		try{
 			novoArquivo.gravarLinha(gravacao);
+			
 		}
 		catch(Exception e){
 			System.out.println("Erro ao gravar arquivo.");
