@@ -78,11 +78,13 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static JLabel statusArquivo = new JLabel("");
 	
-	public static String nomeArquivoSelecionado;
+	public static String nomeArquivoSelecionado = "";
 	
-	public static String nomeDiretorio;
+	public static String nomeArquivoSelecionadoCliente = "";
 	
-	public static String caminhoArquivoSelecionado;
+	public static String caminhoArquivoSelecionadoCliente = "";
+	
+	public static String caminhoArquivoSelecionado = "";
 
 	private JRadioButton enviarArqServButton = null;
 	
@@ -390,11 +392,17 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public String getExtensao(){
-		String extensao = JOptionPane.showInputDialog("Digite a extensao:").toLowerCase();
-		if (extensao == null){
-			extensao = "";
+		try {
+			String extensao = JOptionPane.showInputDialog("Digite a extensao:").toLowerCase();
+			if (extensao == null){
+				extensao = "";
+			}
+			return extensao;
+		} catch (Exception e) {
+			System.out.println("Extensao - Acao Cancelar pressionada !");
+			return "";
 		}
-		return extensao;
+		
 	}
 	
 	public static void msgNoServidor(String texto){
@@ -670,7 +678,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		}
 	}
 	
-	private String getCaminhoArquivo(String caminho){
+	public static String getCaminhoArquivo(String caminho){
 		String[] temp = caminho.split(",");
 		
 		caminho = temp[temp.length-2];
@@ -703,45 +711,54 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public void salvaArquivoCliente(){
 		
-		int opcao = JOptionPane.showConfirmDialog(null,"Deseja receber o Arquivo: " + nomeArquivoSelecionado + " ?","Atencao",JOptionPane.YES_NO_OPTION);
-		if(opcao == JOptionPane.YES_OPTION){
-		
-			LerArquivo lerArquivoServ = lerArquivoServidor(null);
+		if(nomeArquivoSelecionado.equals("")){
+			JOptionPane.showMessageDialog(null, "Selecione um arquivo no Servidor!", "ERRO", JOptionPane.ERROR_MESSAGE);
 			
-			if(lerArquivoServ.hasErros()){
-			    // Exibo o erro na tela
-					System.out.println(lerArquivoServ.errosString());
-					mensagemDeErro(lerArquivoServ.errosString());
-			}else{
+		}
+		else if(caminhoArquivoSelecionadoCliente.equals("")){
+			JOptionPane.showMessageDialog(null, "Selecione um diretorio no Cliente!", "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
+		else{
+		
+			int opcao = JOptionPane.showConfirmDialog(null,"Deseja receber o Arquivo: " + nomeArquivoSelecionado + " ?","Atencao",JOptionPane.YES_NO_OPTION);
+			if(opcao == JOptionPane.YES_OPTION){
+			
+				LerArquivo lerArquivoServ = lerArquivoServidor(null);
 				
-				try {
-					FileInputStream in2 = new FileInputStream(lerArquivoServ.getArquivo());
-					FileOutputStream fileOut = new FileOutputStream(RAIZCLIENTE + "\\" + nomeArquivoSelecionado);  
-					byte data[] = new byte[1024]; 
-					int size;  
-					while ((size = in2.read(data)) != -1)  
-					{  
-					    fileOut.write(data, 0, size);  
-					    fileOut.flush();
-					}  
-					fileOut.close();
-					criaPainelClient(RAIZCLIENTE);
+				if(lerArquivoServ.hasErros()){
+				    // Exibo o erro na tela
+						System.out.println(lerArquivoServ.errosString());
+						mensagemDeErro(lerArquivoServ.errosString());
+				}else{
 					
-					System.out.println("Arquivo Recebido com Sucesso !");
-					JOptionPane.showMessageDialog(null, 
-							"Arquivo Recebido com Sucesso !", // mensagem
-							"Atencao", //titulo
-							JOptionPane.INFORMATION_MESSAGE);
-					
-				} catch (Exception e) {
-					System.out.println("Erro ao gravar arquivo no Cliente");
-					mensagemDeErro("Erro ao gravar arquivo no Cliente");
-					
+					try {
+						FileInputStream in2 = new FileInputStream(lerArquivoServ.getArquivo());
+						FileOutputStream fileOut = new FileOutputStream(caminhoArquivoSelecionadoCliente + "\\" + nomeArquivoSelecionado);  
+						byte data[] = new byte[1024]; 
+						int size;  
+						while ((size = in2.read(data)) != -1)  
+						{  
+						    fileOut.write(data, 0, size);  
+						    fileOut.flush();
+						}  
+						fileOut.close();
+						criaPainelClient(RAIZCLIENTE);
+						
+						System.out.println("Arquivo Recebido com Sucesso !");
+						JOptionPane.showMessageDialog(null, 
+								"Arquivo Recebido com Sucesso !", // mensagem
+								"Atencao", //titulo
+								JOptionPane.INFORMATION_MESSAGE);
+						
+					} catch (Exception e) {
+						System.out.println("Erro ao gravar arquivo no Cliente");
+						mensagemDeErro("Erro ao gravar arquivo no Cliente");
+						
+					}
 				}
 			}
 		}
-		
-		
+	
 	}
 	public static void abrirArquivo(){
 		LerArquivo lerArquivoServ = null;
@@ -773,37 +790,49 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public void recebeVariosArquivos(){
-		String extensaoArquivo = getExtensao();
 		
-		int opcao = JOptionPane.showConfirmDialog(null,"Deseja receber todos os Arquivos *." + extensaoArquivo + " do Servidor ?","Atencao",JOptionPane.YES_NO_OPTION);    
-        if(opcao == JOptionPane.YES_OPTION){ 
-			try {
-				
-				
-				LerArquivoExtensao lerArquivo = new LerArquivoExtensao();
-				lerArquivo.setTipo(TipoArquivo.ESCRITA);
-				lerArquivo.setCaminho(caminhoArquivoSelecionado);
-				lerArquivo.setNomeExtensao(extensaoArquivo);
-				
-				Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerArquivo);
-				cliente.start();
-				try {
-					cliente.join(); 	
-				} catch (Exception e) {
-					System.out.println("erro ao ler arquivo");
-				}
-				
-				lerArquivo = (LerArquivoExtensao)cliente.getRequisicao();
-	
-				if(lerArquivo.hasErros()){
-					System.out.println(lerArquivo.errosString());
-					mensagemDeErro(lerArquivo.errosString());
-				}else
-					exibirLeituraArquivoExtensao(lerArquivo);
-			} catch (Exception e) {
-				System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
+		if(caminhoArquivoSelecionado.equals("")){
+			JOptionPane.showMessageDialog(null, "Selecione um diretorio no Servidor!", "ERRO", JOptionPane.ERROR_MESSAGE);
+			
+		}
+		else if(caminhoArquivoSelecionadoCliente.equals("")){
+			JOptionPane.showMessageDialog(null, "Selecione um diretorio no Cliente!", "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
+		else{
+		
+			String extensaoArquivo = getExtensao();
+			if (!extensaoArquivo.equals("")){
+				int opcao = JOptionPane.showConfirmDialog(null,"Deseja receber todos os Arquivos *." + extensaoArquivo + " do Servidor ?","Atencao",JOptionPane.YES_NO_OPTION);    
+		        if(opcao == JOptionPane.YES_OPTION){ 
+					try {
+						
+						LerArquivoExtensao lerArquivo = new LerArquivoExtensao();
+						lerArquivo.setTipo(TipoArquivo.ESCRITA);
+						lerArquivo.setCaminho(caminhoArquivoSelecionado);
+						lerArquivo.setNomeExtensao(extensaoArquivo);
+						
+						Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerArquivo);
+						cliente.start();
+						try {
+							cliente.join(); 	
+						} catch (Exception e) {
+							System.out.println("erro ao ler arquivo");
+						}
+						
+						lerArquivo = (LerArquivoExtensao)cliente.getRequisicao();
+			
+						if(lerArquivo.hasErros()){
+							System.out.println(lerArquivo.errosString());
+							mensagemDeErro(lerArquivo.errosString());
+						}else
+							exibirLeituraArquivoExtensao(lerArquivo);
+						
+					} catch (Exception e) {
+						System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
+					}
+		        }
 			}
-        }
+		}
 	}	
 	public void exibirLeituraArquivoExtensao(LerArquivoExtensao lerArquivo){
 		try {
@@ -812,7 +841,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 				   if(arquivo.isFile()){ 
 					   
 					   	FileInputStream in2 = new FileInputStream(arquivo);
-						FileOutputStream fileOut = new FileOutputStream(RAIZCLIENTE + "\\" + arquivo.getName());  
+						FileOutputStream fileOut = new FileOutputStream(caminhoArquivoSelecionadoCliente + "\\" + arquivo.getName());  
 						byte data[] = new byte[1024]; 
 						int size;  
 						while ((size = in2.read(data)) != -1)  
@@ -824,7 +853,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 						criaPainelClient(RAIZCLIENTE);
 						
 						System.out.println("Arquivo "+ arquivo.getName() +" Recebido com Sucesso !");
-					   //System.out.println(arquivo.getName());
 				   }		        
 				}
 			}
