@@ -105,7 +105,18 @@ public class FileTree extends JPanel implements TreeSelectionListener{
 	//Event do painelCliente
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
-		System.out.println("valendooooooooo");
+		JTree treeSource = (JTree) e.getSource();
+		TreePath path = treeSource.getSelectionPath();
+		if(path != null){
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+			if(node.isLeaf()){
+				Comecar.caminhoArquivoSelecionadoCliente = Comecar.getCaminhoArquivo(path.toString());
+				Comecar.nomeArquivoSelecionadoCliente = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+			}
+			else{
+				Comecar.caminhoArquivoSelecionadoCliente = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+			}
+		}
 	}
 }
 
