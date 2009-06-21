@@ -45,7 +45,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 	@SuppressWarnings("unused")
 	private LerEscreverArquivo arquivoLido;
 
-	public CriaPrograma (File arquivoAntigo){
+	public CriaPrograma (File arquivoAntigo, String tipoArquivo){
 		
 		/**
 		 * Variavel para saber o tamanho da janela
@@ -54,7 +54,9 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 
 		Dimension tamanhoPrograma = new Dimension(ProgramaLargura, ProgramaAltura);
 		
-		titulo = new JLabel("Altere o programa na area abaixo:");
+		if(tipoArquivo.equals("escrita"))titulo = new JLabel("Altere o arquivo na area abaixo:");
+		else titulo = new JLabel("Visualize o arquivo na area abaixo:");
+		
 		
 		//areaTexto = new JTextArea("Digite aqui...\ndiogo");
 		areaTexto = new JTextArea(insereArquivoNoText(arquivoAntigo));
@@ -82,6 +84,8 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		botaoCarrega.setBounds(150, 360, 160, 20);
 		botaoCarrega.addActionListener(this);
 		painel.add(botaoCarrega);
+		if(tipoArquivo.equals("escrita"))botaoCarrega.setEnabled(true);
+		else botaoCarrega.setEnabled(false);
 		
 		/**
 		 * Mostra a Janela
@@ -90,7 +94,8 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		setSize(tamanhoPrograma);
 		setResizable(false);
 		setLocation((screenSize.width - ProgramaLargura) / 2,(screenSize.height - ProgramaAltura) / 2);
-		setTitle("Alterar Programa");
+		if(tipoArquivo.equals("escrita"))setTitle("Alterar " + arquivoAntigo.getName());
+		else setTitle("Visualizar " + arquivoAntigo.getName());
 		setVisible(true);
 		
 	}
