@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -22,13 +24,18 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import com.sun.corba.se.impl.orbutil.graph.NodeData;
+
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.ApagarArquivo;
 import br.ufrj.dcc.so.entidade.ApagarExtensao;
 import br.ufrj.dcc.so.entidade.InformacoesArquivo;
 import br.ufrj.dcc.so.entidade.LerArquivo;
+import br.ufrj.dcc.so.entidade.LerArquivoExtensao;
 import br.ufrj.dcc.so.entidade.LerDiretorio;
 import br.ufrj.dcc.so.entidade.RenomearArquivo;
+import br.ufrj.dcc.so.entidade.Requisicao;
+import br.ufrj.dcc.so.entidade.Requisicao.TipoArquivo;
 
 public class Comecar extends JFrame implements ActionListener,TreeSelectionListener{
 	
@@ -107,7 +114,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 		JanelaPrincipal.ProgramaAltura = 530;
 
-		BarraDeMenu menu = new BarraDeMenu(this);
+		//BarraDeMenu menu = new BarraDeMenu(this);
+		BarraDeMenu menu = new BarraDeMenu();
 		
 		
 		criarPaines();
@@ -141,7 +149,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();
-		verificaRadioButtonSelecionado(null, evt);
+
 		if (source == enviarArqServButton) {
 			
 			/*pedir diretorio de destino*/
@@ -152,6 +160,16 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 //			desbloqueiaPainelCliente();
 //			bloqueiaPainelServidor();
 		}	
+		
+		else if (source == enviarArqExtServButton){
+			try {
+				getExtensao();	
+				bloqueiaPainelServidor();
+			} catch (Exception e) {
+				System.out.println("Acao Cancelar acionada");
+			}
+		}	
+		
 		else if (source == infArqExtButton){
 			obterInformacoesArquivo();
 			
@@ -173,36 +191,29 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		}
 		
 		else if (source == recArqButton){
-			lerArquivoServidor();
+			salvaArquivoCliente();
 			
 		}
 		
-		else if (source == enviarArqExtServButton){
-			try {
-				getExtensao();	
-				bloqueiaPainelServidor();
-			} catch (Exception e) {
-				System.out.println("Acao Cancelar acionada");
-			}
-		}
-		
 		else if (source == recArqExtButton){
-			try {
-				getExtensao();
-				bloqueiaPainelCliente();
-			} catch (Exception e) {
-				System.out.println("Acao Cancelar acionada");
-			}
+			recebeVariosArquivos();
 		}
-		
-	}	
 	
+	}	
 	
 	public void valueChanged(TreeSelectionEvent e) {
 	    if (BarraDeMenu.menuConectarServidor.isEnabled()){
-	    	JOptionPane.showMessageDialog(null, "Cliente NAO esta conectado com o Servidor!", "ERRO", JOptionPane.INFORMATION_MESSAGE);
+	    	JOptionPane.showMessageDialog(null, "Cliente NAO esta conectado com o Servidor!", "ERRO", JOptionPane.ERROR_MESSAGE);
 	    }
 	    else{
+
+	    	
+	    	Object source = e.getSource();
+	    	
+	    	System.out.println(source);
+	    	System.out.println(painelCliente);
+
+	    	
 			JTree treeSource = (JTree) e.getSource();
 			TreePath path = treeSource.getSelectionPath();
 			if(path != null){
@@ -214,17 +225,11 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 				else{
 					caminhoArquivoSelecionado = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
 				}
+			
+				
+				
+				
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			
 			
 			
@@ -259,24 +264,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	     }*/
 	    }
 	}
-	
-	public void verificaRadioButtonSelecionado(TreeSelectionEvent evtTree, ActionEvent evtRB){
-		
-		if(evtTree != null)
-		{
-			Object sourceTree = evtTree.getSource();
-			System.out.println(sourceTree.toString());
-				System.out.println("servidorrrrrrr...");
-			System.out.println(evtTree.getSource());
-		}
-		if(evtRB != null)
-		{
-			Object source = evtRB.getSource();
-			
-			if(source == infArqExtButton);
-		}
-			
-	}
+
 	public void criarPaines(){
 		if (painelFundo == null) {
 			painelFundo = new PainelPrincipal();
@@ -294,7 +282,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			File diretorioCliente = new File(RAIZCLIENTE);
 			painelCliente = new FileTree(diretorioCliente);
 			painelCliente.addComecarListener(this);
-
+			
 			/*painelCliente.setEnabled(false);
 		    bloqueiaPainelCliente();*/
 
@@ -462,9 +450,10 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 //		Crio o objeto lerDiretorio
 		LerDiretorio lerDiretorio = new LerDiretorio();
 //		Preciso do caminho do diretório passado na tela e setar no objeto lerDiretorio
-		lerDiretorio.setCaminho("filesServer");
+		lerDiretorio.setCaminho(RAIZSERVIDOR);
 		
 //		Crio o objeto cliente passando o lerDiretorio como parametro. Passo tambem o endereco do servidor e a porta.
+		
 		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerDiretorio);
 //		 executo a thread cliente
 		cliente.start();
@@ -487,6 +476,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 //		 Se nao ocorreu erro algum entao foi lido os arquivos do diretório com sucesso
 		File diretorio = lerDiretorio.getDiretorio();
 		
+		
 		janela.remove(painelServidor);
 		janela.validate();
 		painelServidor = null;
@@ -496,12 +486,22 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
 		painelServidor.revalidate(); 
 		janela.add(painelServidor);
-		janela.validate();	
+		janela.validate();		
 	}
 	
-	public static void listarDiretorio(){
-		
+	public void criaPainelClient(String nomeDiretorio){
+		painelCliente.removeAll();
+		painelCliente = null;
+		painelCliente = new FileTree(new File(nomeDiretorio));
+		painelCliente.addComecarListener(new Comecar(""));
+		painelCliente.setBounds(280, 20, 250, 290);
+		painelCliente.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cliente"));
+		painelCliente.revalidate(); 
+		janela.add(painelCliente);
+		janela.validate();
 	}
+	
+	
 	public static void bloqueiaPainelCliente(){
 //		painelCliente.setEnabled(false);
 //		painelCliente.removeAll();
@@ -563,6 +563,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			
 			String novoArquiv = JOptionPane.showInputDialog("Digite o novo Nome:").toLowerCase() + somenteExtensaoArquivo(nomeArquivoSelecionado);
 			
+			while (novoArquiv.equals(somenteExtensaoArquivo(nomeArquivoSelecionado))){
+				novoArquiv = JOptionPane.showInputDialog("Nome nao preenchido, digite o novo Nome:").toLowerCase() + somenteExtensaoArquivo(nomeArquivoSelecionado);
+			}
 			
 			if (novoArquiv != null){
 				renomArquivo.setNomeNovoArquivo(novoArquiv);
@@ -705,10 +708,11 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		return caminho;
 	}
 	
-	private void lerArquivoServidor(){
+	public static LerArquivo lerArquivoServidor(Requisicao.TipoArquivo tipoReq){
 		LerArquivo lerArquivoServ = new LerArquivo();
 		lerArquivoServ.setCaminho(caminhoArquivoSelecionado);
 		lerArquivoServ.setNomeArquivo(nomeArquivoSelecionado);
+		lerArquivoServ.setTipo(tipoReq);
 		
 		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerArquivoServ);
 		cliente.start();
@@ -720,14 +724,144 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 		lerArquivoServ = (LerArquivo)cliente.getRequisicao();
 
-		if(lerArquivoServ.hasErros()){
-		            // Exibo o erro na tela
-				System.out.println(lerArquivoServ.errosString());
-				mensagemDeErro(lerArquivoServ.errosString());
-		}else{
-			File meuArquivo = lerArquivoServ.getArquivo();
-			new CriaPrograma(meuArquivo);
-		}
+		return lerArquivoServ;
+
 	}
 	
+	public void salvaArquivoCliente(){
+		
+		int opcao = JOptionPane.showConfirmDialog(null,"Deseja receber o Arquivo: " + nomeArquivoSelecionado + " ?","Atencao",JOptionPane.YES_NO_OPTION);
+		if(opcao == JOptionPane.YES_OPTION){
+		
+			LerArquivo lerArquivoServ = lerArquivoServidor(null);
+			
+			if(lerArquivoServ.hasErros()){
+			    // Exibo o erro na tela
+					System.out.println(lerArquivoServ.errosString());
+					mensagemDeErro(lerArquivoServ.errosString());
+			}else{
+				
+				try {
+					FileInputStream in2 = new FileInputStream(lerArquivoServ.getArquivo());
+					FileOutputStream fileOut = new FileOutputStream(RAIZCLIENTE + "\\" + nomeArquivoSelecionado);  
+					byte data[] = new byte[1024]; 
+					int size;  
+					while ((size = in2.read(data)) != -1)  
+					{  
+					    fileOut.write(data, 0, size);  
+					    fileOut.flush();
+					}  
+					fileOut.close();
+					criaPainelClient(RAIZCLIENTE);
+					
+					System.out.println("Arquivo Recebido com Sucesso !");
+					JOptionPane.showMessageDialog(null, 
+							"Arquivo Recebido com Sucesso !", // mensagem
+							"Atencao", //titulo
+							JOptionPane.INFORMATION_MESSAGE);
+					
+				} catch (Exception e) {
+					System.out.println("Erro ao gravar arquivo no Cliente");
+					mensagemDeErro("Erro ao gravar arquivo no Cliente");
+					
+				}
+			}
+		}
+		
+		
+	}
+	public static void abrirArquivo(){
+		LerArquivo lerArquivoServ = null;
+		
+		if (BarraDeMenu.menuConectarServidor.isEnabled()){
+	    	JOptionPane.showMessageDialog(null, "Cliente NAO esta conectado com o Servidor!", "ERRO", JOptionPane.ERROR_MESSAGE);
+	    }
+	    else{
+		
+			int opcao = JOptionPane.showConfirmDialog(null,"Deseja Alterar o Arquivo: " + nomeArquivoSelecionado + " ?","Atencao",JOptionPane.YES_NO_OPTION);    
+	        if(opcao == JOptionPane.YES_OPTION) lerArquivoServ = lerArquivoServidor(Requisicao.TipoArquivo.ESCRITA);
+	        else lerArquivoServ = lerArquivoServidor(Requisicao.TipoArquivo.LEITURA);
+		
+			if(lerArquivoServ.hasErros()){
+			            // Exibo o erro na tela
+					System.out.println(lerArquivoServ.errosString());
+					mensagemDeErro(lerArquivoServ.errosString());
+					
+			}else{
+				
+				File novoArquivo = lerArquivoServ.getArquivo();
+				String tipo ="";
+				if (lerArquivoServ.getTipo() == TipoArquivo.ESCRITA)tipo = "escrita";
+				else tipo = "leitura";
+				
+				new CriaPrograma(novoArquivo,tipo);
+			}
+	    }	
+	}
+	
+	public void recebeVariosArquivos(){
+		String extensaoArquivo = getExtensao();
+		
+		int opcao = JOptionPane.showConfirmDialog(null,"Deseja receber todos os Arquivos *." + extensaoArquivo + " do Servidor ?","Atencao",JOptionPane.YES_NO_OPTION);    
+        if(opcao == JOptionPane.YES_OPTION){ 
+			try {
+				
+				
+				LerArquivoExtensao lerArquivo = new LerArquivoExtensao();
+				lerArquivo.setTipo(TipoArquivo.ESCRITA);
+				lerArquivo.setCaminho(caminhoArquivoSelecionado);
+				lerArquivo.setNomeExtensao(extensaoArquivo);
+				
+				Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerArquivo);
+				cliente.start();
+				try {
+					cliente.join(); 	
+				} catch (Exception e) {
+					System.out.println("erro ao ler arquivo");
+				}
+				
+				lerArquivo = (LerArquivoExtensao)cliente.getRequisicao();
+	
+				if(lerArquivo.hasErros()){
+					System.out.println(lerArquivo.errosString());
+					mensagemDeErro(lerArquivo.errosString());
+				}else
+					exibirLeituraArquivoExtensao(lerArquivo);
+			} catch (Exception e) {
+				System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
+			}
+        }
+	}	
+	public void exibirLeituraArquivoExtensao(LerArquivoExtensao lerArquivo){
+		try {
+			for (File arquivo : lerArquivo.getArquivos()) {
+				if(arquivo != null){    			    
+				   if(arquivo.isFile()){ 
+					   
+					   	FileInputStream in2 = new FileInputStream(arquivo);
+						FileOutputStream fileOut = new FileOutputStream(RAIZCLIENTE + "\\" + arquivo.getName());  
+						byte data[] = new byte[1024]; 
+						int size;  
+						while ((size = in2.read(data)) != -1)  
+						{  
+						    fileOut.write(data, 0, size);  
+						    fileOut.flush();
+						}  
+						fileOut.close();
+						criaPainelClient(RAIZCLIENTE);
+						
+						System.out.println("Arquivo "+ arquivo.getName() +" Recebido com Sucesso !");
+					   //System.out.println(arquivo.getName());
+				   }		        
+				}
+			}
+			System.out.println("Arquivos Recebidos com Sucesso !");
+			JOptionPane.showMessageDialog(null, 
+					"Arquivos Recebidos com Sucesso !", // mensagem
+					"Atencao", //titulo
+					JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			System.out.println("Erro ao ler arquivos com Extensao");
+		}
+	}
 }
