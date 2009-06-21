@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
-import br.ufrj.dcc.so.entidade.Requisicao.TipoArquivo;
 
 public class LerArquivoExtensao extends Requisicao{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tarefa = "lendo arquivo por extensao";
 	private String nomeExtensao;
 	private List<File> arquivos;
