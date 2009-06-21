@@ -75,7 +75,7 @@ public class LerArquivo extends Requisicao{
 				if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
 				{
 					getErros().add("Este arquivo ja esta aberto para escrita com outro usuario.");					
-					//arquivo = null;
+					arquivo = null;
 				}
 				else if(!controleArquivo.isArquivoUsadoPorCliente(arquivoUtilizado))
 				{
@@ -84,6 +84,7 @@ public class LerArquivo extends Requisicao{
 				
 				controleArquivo.abrirAcessoListaArquivoUtilizado();
 			}
+			
 		}
 		catch (InterruptedException e) {				
 			getErros().add("Ocorreu um erro na execucao do semaforo.");
