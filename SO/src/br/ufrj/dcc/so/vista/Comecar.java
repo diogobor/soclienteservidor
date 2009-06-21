@@ -201,18 +201,12 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	}	
 	
+	//Event do painelServidor
 	public void valueChanged(TreeSelectionEvent e) {
 	    if (BarraDeMenu.menuConectarServidor.isEnabled()){
 	    	JOptionPane.showMessageDialog(null, "Cliente NAO esta conectado com o Servidor!", "ERRO", JOptionPane.ERROR_MESSAGE);
 	    }
 	    else{
-
-	    	
-	    	Object source = e.getSource();
-	    	
-	    	System.out.println(source);
-	    	System.out.println(painelCliente);
-
 	    	
 			JTree treeSource = (JTree) e.getSource();
 			TreePath path = treeSource.getSelectionPath();
@@ -225,10 +219,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 				else{
 					caminhoArquivoSelecionado = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
 				}
-			
-				
-				
-				
 			}
 			
 			
@@ -281,7 +271,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		if (painelCliente == null) {
 			File diretorioCliente = new File(RAIZCLIENTE);
 			painelCliente = new FileTree(diretorioCliente);
-			painelCliente.addComecarListener(this);
+			painelCliente.addComecarListenerCliente(this);
 			
 			/*painelCliente.setEnabled(false);
 		    bloqueiaPainelCliente();*/
