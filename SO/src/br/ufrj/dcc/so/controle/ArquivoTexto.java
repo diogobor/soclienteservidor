@@ -22,7 +22,7 @@ public class ArquivoTexto {
 	 * Construtor 1 da Classe. Neste construtor eh passado como parametro o
 	 * arquivo que sera lido.
 	 */
-	public ArquivoTexto(String nomeArq) throws IOException {
+	public ArquivoTexto(String nomeArq, String modoLeitura) throws IOException {
 		bf = new BufferedReader(new FileReader(nomeArq));
 	}
 
@@ -31,8 +31,8 @@ public class ArquivoTexto {
 	 * texto.
 	 */
 
-	public ArquivoTexto() throws IOException {
-		bw = new BufferedWriter(new FileWriter("./arquivo/programa.txt"));
+	public ArquivoTexto(String nomeArq) throws IOException {
+		bw = new BufferedWriter(new FileWriter(nomeArq));
 	}
 
 	/**

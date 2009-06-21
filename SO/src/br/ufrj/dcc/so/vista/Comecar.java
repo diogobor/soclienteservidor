@@ -164,7 +164,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		else if (source == enviarArqExtServButton){
 			try {
 				getExtensao();	
-				bloqueiaPainelServidor();
 			} catch (Exception e) {
 				System.out.println("Acao Cancelar acionada");
 			}
@@ -483,28 +482,12 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		painelCliente.removeAll();
 		painelCliente = null;
 		painelCliente = new FileTree(new File(nomeDiretorio));
-		painelCliente.addComecarListener(new Comecar(""));
+		painelCliente.addComecarListenerCliente(this);
 		painelCliente.setBounds(280, 20, 250, 290);
 		painelCliente.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cliente"));
 		painelCliente.revalidate(); 
 		janela.add(painelCliente);
 		janela.validate();
-	}
-	
-	
-	public static void bloqueiaPainelCliente(){
-//		painelCliente.setEnabled(false);
-//		painelCliente.removeAll();
-//		painelCliente.revalidate();
-	}
-	public static void bloqueiaPainelServidor(){
-		painelServidor.setEnabled(false);
-	}
-	public static void desbloqueiaPainelCliente(){
-		painelCliente.setEnabled(true);
-	}
-	public static void desbloqueiaPainelServidor(){
-		painelServidor.setEnabled(true);
 	}
 	
 	public static void mensagemDeErro(String mensagem){
