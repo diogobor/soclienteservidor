@@ -1,6 +1,9 @@
 package br.ufrj.dcc.so.vista;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.Collections;
 import java.util.Vector;
@@ -9,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 public class FileTree extends JPanel{
   
@@ -72,9 +76,28 @@ public class FileTree extends JPanel{
     return diretorioAtual;
   }
  
-  public void addComecarListener(Comecar comecar){
-	  this.comecar=comecar;
-	  arvoreArquivos.addTreeSelectionListener(this.comecar);
+	public void addComecarListener(Comecar comecar){
+	this.comecar=comecar;
+	arvoreArquivos.addTreeSelectionListener(this.comecar);
+	  
+	  
+	MouseListener ml = new MouseAdapter() {
+		public void mousePressed(MouseEvent e) {
+			int selRow = arvoreArquivos.getRowForLocation(e.getX(), e.getY());
+			TreePath selPath = arvoreArquivos.getPathForLocation(e.getX(), e.getY());
+			if(selRow != -1) {
+				if(e.getClickCount() == 2) {
+					Comecar.abrirArquivo();
+				}
+			}
+		}
+	};
+	arvoreArquivos.addMouseListener(ml);
+	  
+	  
+	  
+	  
+	  
   }
 }
 
