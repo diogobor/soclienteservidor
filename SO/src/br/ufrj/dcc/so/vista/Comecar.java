@@ -915,32 +915,41 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	private void enviarArquivoExtensao(){
-		String extensaoArquivo = getExtensao();
-		SalvarArquivoExtensao salvarArquivos = new SalvarArquivoExtensao();
-		salvarArquivos.setNomeExtensao(extensaoArquivo);
-		salvarArquivos.setDiretorio(new File(caminhoArquivoSelecionadoCliente));
-		salvarArquivos.setCaminho(caminhoArquivoSelecionado);
-		
-		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, salvarArquivos);
-		cliente.start();
-		try {
-			cliente.join(); 	
-		} catch (Exception e) {
-			System.out.println("erro ao ler arquivo");
+		if(caminhoArquivoSelecionadoCliente.equals("")){
+			JOptionPane.showMessageDialog(null, "Selecione um Diretorio no Cliente!", "ERRO", JOptionPane.ERROR_MESSAGE);
+			
 		}
-		
-		salvarArquivos = (SalvarArquivoExtensao)cliente.getRequisicao();
-		if(salvarArquivos.hasErros()){
-		    // Exibo o erro na tela
-			System.out.println(salvarArquivos.errosString());
-			mensagemDeErro(salvarArquivos.errosString());
-		}else{
-//			criaPainelServer();
-//			System.out.println("Arquivo enviado com sucesso !");
-//			JOptionPane.showMessageDialog(null, 
-//					"Arquivo Enviado com Sucesso !", // mensagem
-//					"Atencao", //titulo
-//					JOptionPane.INFORMATION_MESSAGE);
+		else if(caminhoArquivoSelecionado.equals("")){
+			JOptionPane.showMessageDialog(null, "Selecione um Diretorio no Servidor!", "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
+		else{
+			String extensaoArquivo = getExtensao();
+			SalvarArquivoExtensao salvarArquivos = new SalvarArquivoExtensao();
+			salvarArquivos.setNomeExtensao(extensaoArquivo);
+			salvarArquivos.setDiretorio(new File(caminhoArquivoSelecionadoCliente));
+			salvarArquivos.setCaminho(caminhoArquivoSelecionado);
+			
+			Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, salvarArquivos);
+			cliente.start();
+			try {
+				cliente.join(); 	
+			} catch (Exception e) {
+				System.out.println("erro ao ler arquivo");
+			}
+			
+			salvarArquivos = (SalvarArquivoExtensao)cliente.getRequisicao();
+			if(salvarArquivos.hasErros()){
+			    // Exibo o erro na tela
+				System.out.println(salvarArquivos.errosString());
+				mensagemDeErro(salvarArquivos.errosString());
+			}else{
+				criaPainelServer();
+				System.out.println("Arquivo enviado com sucesso !");
+				JOptionPane.showMessageDialog(null, 
+						"Arquivos Enviados com Sucesso !", // mensagem
+						"Atencao", //titulo
+						JOptionPane.INFORMATION_MESSAGE);
+			}
 		}
 	}
 }
