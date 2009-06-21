@@ -2,7 +2,6 @@ package br.ufrj.dcc.so.vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -64,11 +63,16 @@ public class BarraDeMenu implements ActionListener {
 	
 	public static String nomeServidor = "";
 	
-	private Comecar comecar;
+	private Comecar comecar = null;
 
 	public BarraDeMenu(Comecar comecar){
 		this.comecar=comecar;
 	}
+	
+	public BarraDeMenu(){
+		
+	}
+	
 	/**
 	 * Executa as funcoes para cada parte do Menu.
 	 */
@@ -147,15 +151,10 @@ public class BarraDeMenu implements ActionListener {
 			if (nomeServidor == null){
 				nomeServidor = "localhost";
 			}
-			//System.out.println(nomeServidor);
+
 			ConectarServidor conServidor = new ConectarServidor();
-			
-			//inicia = new Cliente(nomeServidor, 7000, conServidor);
-			//inicia.start();
 			conServidor = (ConectarServidor)executarRequisicao(conServidor, nomeServidor);
-//			System.out.println("Erro servidor: " + conServidor.getErros().get(0));
-//			System.out.println("Tamanho Erro: " + conServidor.getErros().size());
-//			System.out.println("Erro: " + conServidor.hasErros());
+			
 			if(conServidor.hasErros())
 				errosServidor(conServidor);
 			else
@@ -188,12 +187,10 @@ public class BarraDeMenu implements ActionListener {
 		//painel.criaPainelServer();
 		Comecar.criaPainelServer();
 		
-		File diretorioCliente = new File(Comecar.RAIZCLIENTE);
-		
-		comecar.painelCliente.setVisible(true);
-		comecar.painelServidor.setVisible(true);
-		comecar.painelOpcoes.setVisible(true);
-		comecar.janela.validate();
+		Comecar.painelCliente.setVisible(true);
+		Comecar.painelServidor.setVisible(true);
+		Comecar.painelOpcoes.setVisible(true);
+		Comecar.janela.validate();
 	}
 	
 	public void errosServidor(Requisicao requisicao){
