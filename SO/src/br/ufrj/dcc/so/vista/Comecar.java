@@ -437,6 +437,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 //		Crio o objeto lerDiretorio
 		LerDiretorio lerDiretorio = new LerDiretorio();
 //		Preciso do caminho do diretório passado na tela e setar no objeto lerDiretorio
+
 		lerDiretorio.setCaminho(RAIZSERVIDOR);
 		
 //		Crio o objeto cliente passando o lerDiretorio como parametro. Passo tambem o endereco do servidor e a porta.
@@ -743,7 +744,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 					
 					try {
 						FileInputStream in2 = new FileInputStream(lerArquivoServ.getArquivo());
-						FileOutputStream fileOut = new FileOutputStream(caminhoArquivoSelecionadoCliente + "\\" + nomeArquivoSelecionado);  
+						FileOutputStream fileOut = new FileOutputStream(caminhoArquivoSelecionadoCliente + "/" + nomeArquivoSelecionado);  
 						byte data[] = new byte[1024]; 
 						int size;  
 						while ((size = in2.read(data)) != -1)  
@@ -886,7 +887,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		}
 		else{
 			SalvarArquivo salvarUmArquivo = new SalvarArquivo();
-			salvarUmArquivo.setArquivo(new File(caminhoArquivoSelecionadoCliente + "\\\\" + nomeArquivoSelecionadoCliente));
+			salvarUmArquivo.setArquivo(new File(caminhoArquivoSelecionadoCliente + "/" + nomeArquivoSelecionadoCliente));
 			salvarUmArquivo.setCaminho(caminhoArquivoSelecionado);
 			salvarUmArquivo.setNomeArquivo(nomeArquivoSelecionadoCliente);
 			
