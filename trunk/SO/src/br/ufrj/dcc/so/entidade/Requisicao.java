@@ -1,10 +1,13 @@
 package br.ufrj.dcc.so.entidade;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +105,31 @@ public abstract class Requisicao implements Serializable {
 	    } finally {   
 	        if (is != null) try { is.close(); } catch (IOException ex) {}   
 	    }   
-	}   
+	}  
+	
+	protected File transformaByteFile(byte[] arquivoAntigo,String caminhoCompleto) throws IOException{
+		   
+		InputStream  in = new ByteArrayInputStream (arquivoAntigo); 
+		File arquivo = new File(caminhoCompleto);  
+		FileOutputStream fout = new FileOutputStream(arquivo);  
+		
+		copy(in, fout);
+		
+		return arquivo;
+		
+	}
+	
+	protected void copy(InputStream in,OutputStream out) throws IOException{  
+		
+		byte[] buffer = new byte[1024 * 4]; //4 Kb  
+		int n = 0;  
+		while (-1 != (n = in.read(buffer))) {  
+		out.write(buffer, 0, n);  
+		}  
+		out.flush();  
+				       
+		out.close();  
+		in.close();  
+	}
 	
 }

@@ -1,11 +1,6 @@
 package br.ufrj.dcc.so.entidade;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
 
@@ -35,17 +30,22 @@ public class LerArquivo extends Requisicao{
 	}
 
 	public void setArquivo(File arquivo) {
-		this.arquivo = arquivo;
+		
+		try {
+			arquivoPrincipal = getBytesFromFile(arquivo);
+		} catch (Exception e) {
+			getErros().add("Erro ao ler arquivo no Servidor");
+			System.out.println("Erro ao ler arquivo no Servidor");
+		}
+		
 	}
 
 	public File getArquivo() {
-		System.out.println("aquiiiiiiiiiii...");
 		try {
-			arquivo = transformaByteFile(arquivoPrincipal);
+			arquivo = transformaByteFile(arquivoPrincipal, getCaminhoCompleto());
 			
 		} catch (Exception e) {
 			getErros().add("Erro ao pegar o Arquivo.");
-			System.out.println("Erro ao pegar o Arquivo.");
 		}
 		System.out.println("arquivo no cliente:" +arquivo.getPath());
 		return arquivo;
@@ -121,29 +121,6 @@ public class LerArquivo extends Requisicao{
 		return getTipo() != null && getTipo() == TipoArquivo.ESCRITA;
 	}
 	
-	private File transformaByteFile(byte[] arquivoAntigo) throws IOException{
-		   
-		InputStream  in = new ByteArrayInputStream (arquivoAntigo); 
-		File arquivo = new File(getCaminhoCompleto());  
-		FileOutputStream fout = new FileOutputStream(arquivo);  
-		
-		copy(in, fout);
-		
-		return arquivo;
-		
-	}
 	
-	private void copy(InputStream in,OutputStream out) throws IOException{  
-		
-		byte[] buffer = new byte[1024 * 4]; //4 Kb  
-		int n = 0;  
-		while (-1 != (n = in.read(buffer))) {  
-		out.write(buffer, 0, n);  
-		}  
-		out.flush();  
-				       
-		out.close();  
-		in.close();  
-	}
 
 }
