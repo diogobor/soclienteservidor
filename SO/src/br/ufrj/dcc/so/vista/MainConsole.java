@@ -159,7 +159,7 @@ public class MainConsole {
 		LerArquivo lerArquivo = new LerArquivo();
 		lerArquivo.setTipo(TipoArquivo.ESCRITA);
 		lerArquivo.setCaminho("./filesServer/arquivos");
-		lerArquivo.setNomeArquivo("alan3.txt");
+		lerArquivo.setNomeArquivo("teste.txt");
 		
 		lerArquivo = (LerArquivo)executarRequisicao(lerArquivo, null);
 		
