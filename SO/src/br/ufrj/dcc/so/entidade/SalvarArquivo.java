@@ -42,37 +42,39 @@ public class SalvarArquivo extends Requisicao{
 	}
 
 	public File getArquivo() {
-		try {
-			arquivo = transformaByteFile(arquivoPrincipal, getCaminhoCompleto());
-			
-		} catch (Exception e) {
-			getErros().add("Erro ao pegar o Arquivo.");
-		}
 		return arquivo;
 	}
 
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
 		mensagemInicioTarefa(tarefa);
-		try 
-		{	
-			File arq = new File(getCaminhoCompleto());
-			FileInputStream in2 = new FileInputStream(getArquivo());
-			FileOutputStream fileOut = new FileOutputStream(arq);  
-			byte data[] = new byte[1024]; 
-			int size;  
-			while ((size = in2.read(data)) != -1)  
-			{  
-			    fileOut.write(data, 0, size);
-			    fileOut.flush();
-			}  
-			fileOut.close();
-						
-		}
-		catch (Exception e) {				
-			getErros().add("Nao foi possivel Salvar o Arquivo no Servidor");
-		}
 		
+		try {
+			arquivo = transformaByteFile(arquivoPrincipal, getCaminhoCompleto());
+			
+		} catch (Exception e) {
+			getErros().add("Erro ao pegar o Arquivo.");
+		}
+//		try 
+//		{	
+//			File arq = new File(getCaminhoCompleto());
+//			FileInputStream in2 = new FileInputStream(getArquivo());
+//			in2.close();
+//			FileOutputStream fileOut = new FileOutputStream(arq);  
+//			byte data[] = new byte[1024]; 
+//			int size;  
+//			while ((size = in2.read(data)) != -1)  
+//			{  
+//			    fileOut.write(data, 0, size);
+//			    fileOut.flush();
+//			}  
+//			fileOut.close();
+//						
+//		}
+//		catch (Exception e) {				
+//			getErros().add("Nao foi possivel Salvar o Arquivo no Servidor");
+//		}
+//		
 		mensagemFimTarefa(tarefa);
 	}
 
