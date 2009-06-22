@@ -24,7 +24,7 @@ public class InformacoesArquivo extends Requisicao{
 	}
 	
 	private String getCaminhoCompleto() {		
-		return getCaminho() + "\\" + getNomeArquivo();
+		return getCaminho() + "/" + getNomeArquivo();
 	}
 	
 	public void setDataCriacao(Date dataCriacao) {

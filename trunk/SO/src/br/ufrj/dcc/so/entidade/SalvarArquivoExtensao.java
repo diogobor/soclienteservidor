@@ -59,7 +59,7 @@ public class SalvarArquivoExtensao extends Requisicao{
 	        if(arquivosComExtensao.size() == 0) getErros().add("Nao existe nenhum arquivo com esta extensao.");
 	        
 	        for (String nomeArquivo : arquivosComExtensao) {
-				SalvarArquivo salvar = criarSalvarArquivo(new File(diretorio.getPath() + "\\\\" + nomeArquivo));
+				SalvarArquivo salvar = criarSalvarArquivo(new File(diretorio.getPath() + "/" + nomeArquivo));
 				salvar.executar(controleArquivo);
 				
 				if(salvar.hasErros()) getErros().addAll(salvar.getErros());

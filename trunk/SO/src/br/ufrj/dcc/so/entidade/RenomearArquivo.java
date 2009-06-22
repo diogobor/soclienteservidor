@@ -15,7 +15,7 @@ public class RenomearArquivo extends Requisicao{
 	private String nomeNovoArquivo;
 	
 	private String getCaminhoCompleto() {		
-		return getCaminho() + "\\" + getNomeArquivo();
+		return getCaminho() + "/" + getNomeArquivo();
 	}
 	
 	public void setNomeArquivo(String nomeArquivo) {
@@ -52,11 +52,12 @@ public class RenomearArquivo extends Requisicao{
 			controleArquivo.fecharAcessoListaArquivoUtilizado();
 		
 			if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado)){
-				getErros().add(String.format("Não é possivel renomear o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));
+				getErros().add(String.format("No  possivel renomear o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));
 			}
 			else {
+				
 				File arquivo = new File(getCaminhoCompleto());			    
-		        File arquivoNovo = new File(getCaminho() + "\\" + nomeNovoArquivo);
+		        File arquivoNovo = new File(getCaminho() + "/" + nomeNovoArquivo);
 		        
 		        boolean ok = arquivo.renameTo(arquivoNovo);		        
 		        if(!ok) getErros().add("Nao foi possivel renomear o arquivo.");
@@ -64,7 +65,7 @@ public class RenomearArquivo extends Requisicao{
 		        //Se o arquivo estiver aberto para o cliente, remove e adiciona um novo arquivoUtilizado com o novo nome de arquivo
 		        if(controleArquivo.isArquivoUsadoPorCliente(arquivoUtilizado)){
 		        	controleArquivo.removerArquivoUtilizado(arquivoUtilizado);
-		        	arquivoUtilizado.setCaminhoArquivo(getCaminho() + "\\" + getNomeNovoArquivo());
+		        	arquivoUtilizado.setCaminhoArquivo(getCaminho() + "/" + getNomeNovoArquivo());
 		        	controleArquivo.adicionarArquivoUtilizado(arquivoUtilizado);
 				} 
 			}
