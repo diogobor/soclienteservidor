@@ -17,7 +17,7 @@ public class LerArquivo extends Requisicao{
 	private String tarefa = "lendo arquivo";
 	
 	private String getCaminhoCompleto() {		
-		return getCaminho() + "\\" + getNomeArquivo();
+		return getCaminho() + "/" + getNomeArquivo();
 	}
 	
 	public void setNomeArquivo(String nomeArquivo) {
@@ -60,7 +60,7 @@ public class LerArquivo extends Requisicao{
 			
 			if(!arq.exists())
 			{
-				getErros().add("Não existe este arquivo no servidor");
+				getErros().add("No existe este arquivo no servidor");
 				return;
 			}
 			

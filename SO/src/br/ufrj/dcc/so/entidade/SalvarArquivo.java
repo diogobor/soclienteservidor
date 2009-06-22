@@ -38,7 +38,7 @@ public class SalvarArquivo extends Requisicao{
 		mensagemInicioTarefa(tarefa);
 		try 
 		{	
-			File arq = new File(getCaminho() + "\\" + arquivo.getName());
+			File arq = new File(getCaminho() + "/" + arquivo.getName());
 			FileInputStream in2 = new FileInputStream(arquivo);
 			FileOutputStream fileOut = new FileOutputStream(arq);  
 			byte data[] = new byte[1024]; 

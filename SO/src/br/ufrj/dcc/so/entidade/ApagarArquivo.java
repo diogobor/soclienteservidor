@@ -17,7 +17,7 @@ public class ApagarArquivo extends Requisicao{
 	 * Metodos
 	 */
 	private String getCaminhoCompleto() {		
-		return getCaminho() + "\\" + getNomeArquivo();
+		return getCaminho() + "/" + getNomeArquivo();
 	}
 	
 	public void setNomeArquivo(String nomeArquivo) {
@@ -40,7 +40,7 @@ public class ApagarArquivo extends Requisicao{
 			
 			if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
 			{
-				getErros().add(String.format("Não é possivel deletar o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));
+				getErros().add(String.format("No  possivel deletar o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));
 			}
 			else{
 				deletarArquivo();			

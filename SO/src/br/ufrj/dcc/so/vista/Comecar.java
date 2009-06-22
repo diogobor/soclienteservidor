@@ -44,9 +44,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final String RAIZSERVIDOR ="filesServer";
+	public static final String RAIZSERVIDOR ="./filesServer";
 	
-	public static final String RAIZCLIENTE ="filesClient";
+	public static final String RAIZCLIENTE ="./filesClient";
 	
 	private static final int IP_SERVIDOR =0;
 	
@@ -503,7 +503,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			InformacoesArquivo informArquivo = new InformacoesArquivo();
 			informArquivo.setCaminho(caminhoArquivoSelecionado);
 			informArquivo.setNomeArquivo(nomeArquivoSelecionado);
-			
+
 			Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, informArquivo);
 			cliente.start();
 			try {
