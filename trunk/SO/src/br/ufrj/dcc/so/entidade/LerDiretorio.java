@@ -31,7 +31,8 @@ public class LerDiretorio extends Requisicao {
 		try {
 			diretorio = transformaByteFile(diretorioPrincipal);
 		} catch (Exception e) {
-			// TODO: handle exception
+			getErros().add("Erro ao pegar o Diretorio.");
+			System.out.println("Erro ao pegar o Diretorio.");
 		}
 		return diretorio;
 	}
@@ -58,6 +59,7 @@ public class LerDiretorio extends Requisicao {
 		mensagemFimTarefa(tarefa);
 		
 	}	
+	
 	
 	private File transformaByteFile(byte[] arquivoAntigo) throws IOException{
 				   
