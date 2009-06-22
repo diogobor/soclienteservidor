@@ -1,5 +1,6 @@
 package br.ufrj.dcc.so.controle;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ public class LerEscreverArquivo{
 	private static final long serialVersionUID = 1L;
 
 	public ArquivoTexto arqParser;
+	
+	public ArquivoTexto novoArquivo;
 
 	public List<String> qtdParser = new ArrayList<String>();
 	
@@ -34,15 +37,17 @@ public class LerEscreverArquivo{
 	}
 	
 	public LerEscreverArquivo(String gravacao, String nomeArquivo) throws IOException {
-		ArquivoTexto novoArquivo = new ArquivoTexto(nomeArquivo);
+		novoArquivo = new ArquivoTexto(nomeArquivo);
 		try{
 			novoArquivo.gravarLinha(gravacao);
-			
 		}
 		catch(Exception e){
 			System.out.println("Erro ao gravar arquivo.");
 		}
 		novoArquivo.fecharArquivo();
-		
+	}
+	
+	public BufferedWriter getArquivo(){
+		return novoArquivo.getBuffer();
 	}
 }
