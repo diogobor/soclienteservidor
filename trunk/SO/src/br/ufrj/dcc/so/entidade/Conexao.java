@@ -8,7 +8,7 @@ public class Conexao {
 	/*
 	 * Variaveis
 	 */
-	private Socket socket;
+	public static Socket socket;
 	//private BufferedReader tela;	
 	private ObjectInputStream entrada = null;	
 	private ObjectOutputStream saida = null;	

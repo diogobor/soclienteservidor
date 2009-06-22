@@ -1,24 +1,43 @@
 package br.ufrj.dcc.so.entidade;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public class LerDiretorio extends Requisicao {	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tarefa = "lendo diretorio";
 	private File diretorio;
+	private byte[] diretorioPrincipal;
 	
 	public LerDiretorio(){
 		
 	}
-	
+
 	public void setDiretorio(File arquivo) {
 		this.diretorio = arquivo;
 	}
 
 	public File getDiretorio() {
+		try {
+			diretorio = transformaByteFile(diretorioPrincipal);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return diretorio;
+	}
+	
+	public byte[] getDiretorioPrincipal(){
+		return diretorioPrincipal;
 	}
 
 	@Override
@@ -29,13 +48,42 @@ public class LerDiretorio extends Requisicao {
 		if(getCaminho().equals(""))diretorio = new File(controleArquivo.ENDERECO_SERVIDOR);
 		else diretorio = new File(getCaminho());
 		
-		if(!diretorio.exists()){
-			getErros().add("Não existe este diretorio no servidor");
-			diretorio = null;			
+		try {
+			diretorioPrincipal = getBytesFromFile(diretorio);
+		} catch (Exception e) {
+			getErros().add("Erro ao ler diretorio no Servidor");
+			System.out.println("Erro ao ler diretorio no Servidor");
 		}
 				
 		mensagemFimTarefa(tarefa);
 		
 	}	
+	
+	private File transformaByteFile(byte[] arquivoAntigo) throws IOException{
+				   
+		InputStream  in = new ByteArrayInputStream (arquivoAntigo);  
+				   
+		File arquivo = new File(getCaminho());  
+		FileOutputStream fout = new FileOutputStream(arquivo);  
+
+		copy(in, fout);
+		
+		return arquivo;
+		
+	}
+	
+	private void copy(InputStream in,OutputStream out) throws IOException{  
+		   
+		byte[] buffer = new byte[1024 * 4]; //4 Kb  
+		int n = 0;  
+		while (-1 != (n = in.read(buffer))) {  
+		out.write(buffer, 0, n);  
+		}  
+		out.flush();  
+				       
+		out.close();  
+		in.close();  
+	}
+	
 
 }
