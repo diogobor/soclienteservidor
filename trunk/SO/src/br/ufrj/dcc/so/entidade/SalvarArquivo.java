@@ -13,9 +13,14 @@ public class SalvarArquivo extends Requisicao{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String nomeArquivo;
-	private File arquivo;	
+	private File arquivo;
+	private byte[] arquivoPrincipal;
 
 	private String tarefa = "salvando arquivo";
+	
+	private String getCaminhoCompleto() {		
+		return getCaminho() + "/" + getNomeArquivo();
+	}
 	
 	public void setNomeArquivo(String nomeArquivo) {
 		this.nomeArquivo = nomeArquivo;
@@ -26,10 +31,23 @@ public class SalvarArquivo extends Requisicao{
 	}
 
 	public void setArquivo(File arquivo) {
-		this.arquivo = arquivo;
+
+		try {
+			arquivoPrincipal = getBytesFromFile(arquivo);
+		} catch (Exception e) {
+			getErros().add("Erro ao gravar arquivo no Servidor");
+			System.out.println("Erro ao gravar arquivo no Servidor");
+		}
+		
 	}
 
 	public File getArquivo() {
+		try {
+			arquivo = transformaByteFile(arquivoPrincipal, getCaminhoCompleto());
+			
+		} catch (Exception e) {
+			getErros().add("Erro ao pegar o Arquivo.");
+		}
 		return arquivo;
 	}
 
@@ -38,8 +56,8 @@ public class SalvarArquivo extends Requisicao{
 		mensagemInicioTarefa(tarefa);
 		try 
 		{	
-			File arq = new File(getCaminho() + "/" + arquivo.getName());
-			FileInputStream in2 = new FileInputStream(arquivo);
+			File arq = new File(getCaminhoCompleto());
+			FileInputStream in2 = new FileInputStream(getArquivo());
 			FileOutputStream fileOut = new FileOutputStream(arq);  
 			byte data[] = new byte[1024]; 
 			int size;  

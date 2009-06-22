@@ -30,13 +30,7 @@ public class LerArquivo extends Requisicao{
 	}
 
 	public void setArquivo(File arquivo) {
-		
-		try {
-			arquivoPrincipal = getBytesFromFile(arquivo);
-		} catch (Exception e) {
-			getErros().add("Erro ao ler arquivo no Servidor");
-			System.out.println("Erro ao ler arquivo no Servidor");
-		}
+		this.arquivo = arquivo;
 		
 	}
 
@@ -47,7 +41,7 @@ public class LerArquivo extends Requisicao{
 		} catch (Exception e) {
 			getErros().add("Erro ao pegar o Arquivo.");
 		}
-		System.out.println("arquivo no cliente:" +arquivo.getPath());
+
 		return arquivo;
 	}
 
