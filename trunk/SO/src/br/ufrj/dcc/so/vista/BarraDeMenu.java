@@ -26,32 +26,14 @@ public class BarraDeMenu implements ActionListener {
 	private JMenuBar barraMenu = new JMenuBar();
 	
 	public static CriaPrograma clicaNovoPrograma = null;
-	
-	public static JFileChooser escolhePrograma = null;
-	
-	private Cliente inicia = null;
 
 	// MENU PROGRAMA
 
 	private JMenu menuPrograma = new JMenu();
 	
 	public static JMenuItem menuConectarServidor = new JMenuItem();
-
-	private JMenuItem menuNovoPrograma = new JMenuItem();
-	
-	private JMenuItem menuFazerPrograma = new JMenuItem();
 	
 	private JMenuItem menuSair = new JMenuItem();
-
-	//MENU EXECUTAR
-	
-	private JMenu menuExecutar = new JMenu();
-	
-	private JMenuItem menuExecutaPrograma = new JRadioButtonMenuItem();
-	
-	private JMenuItem menuExecutaInstrucao = new JRadioButtonMenuItem();
-	
-	private JMenuItem menuExecutaMicroInstrucao = new JRadioButtonMenuItem();
 
 	// MENU AJUDA
 
@@ -83,19 +65,7 @@ public class BarraDeMenu implements ActionListener {
 			conectarServidor();
 			
 		}
-		else if (source == menuNovoPrograma) {
-			
-			escolhePrograma = new JFileChooser();  
-			escolhePrograma.setFileFilter(new ExtensionFileFilter("Arquivos texto", "txt"));  
-			if (escolhePrograma.showOpenDialog(escolhePrograma) != JFileChooser.APPROVE_OPTION)   
-			   return;  
-			
-			System.out.println("Arquivo selecionado: " + escolhePrograma.getSelectedFile().toString());
-			
-		}
-		else if (source == menuFazerPrograma) {
-			//clicaNovoPrograma = new CriaPrograma(new File(""));
-		}
+
 		else if (source == menuSair) {
 			if(!menuConectarServidor.isEnabled()){
 				DesconectarServidor desconectar = new DesconectarServidor();
@@ -116,29 +86,6 @@ public class BarraDeMenu implements ActionListener {
 		}
 		else if (source == menuSobre) {
 			new Sobre();
-		}
-		else if (source == menuExecutaPrograma) {
-			
-			menuExecutaPrograma.setSelected(true);
-			menuExecutaInstrucao.setSelected(false);
-			menuExecutaMicroInstrucao.setSelected(false);
-		}
-		else if (source == menuExecutaInstrucao) {
-			
-			
-			menuExecutaPrograma.setSelected(false);
-			menuExecutaInstrucao.setSelected(true);
-			menuExecutaMicroInstrucao.setSelected(false);
-//			Comecar.modoOperacao.setText("Executar Instrucao");
-			System.out.println("Executa Instrucao do Programa.");
-		}
-		else if (source == menuExecutaMicroInstrucao) {
-			
-			menuExecutaPrograma.setSelected(false);
-			menuExecutaInstrucao.setSelected(false);
-			menuExecutaMicroInstrucao.setSelected(true);
-//			Comecar.modoOperacao.setText("Executar MicroInstrucao");
-			System.out.println("Executa MicroInstrucao do Programa.");
 		}
 	}
 
@@ -218,8 +165,6 @@ public class BarraDeMenu implements ActionListener {
 		menuPrograma.setMnemonic('A');
 		menuPrograma.setText("Arquivo");
 		menuPrograma.add(getSubMenuConectarServidor());
-		menuPrograma.add(getSubMenuCarregarPrograma());
-		menuPrograma.add(getSubMenuNovoPrograma());
 		menuPrograma.addSeparator();
 		menuPrograma.add(getSubMenuSair());
 
@@ -236,28 +181,6 @@ public class BarraDeMenu implements ActionListener {
 
 		return menuConectarServidor;
 	}
-
-	/**
-	 * Cria o submenu Carregar Programa.
-	 */
-	private JMenuItem getSubMenuCarregarPrograma() {
-		menuNovoPrograma.setMnemonic('r');
-		menuNovoPrograma.setText("Carregar Programa");
-		menuNovoPrograma.addActionListener(this);
-
-		return menuNovoPrograma;
-	}
-	
-	/**
-	 * Cria o submenu Criar Programa.
-	 */
-	private JMenuItem getSubMenuNovoPrograma() {
-		menuFazerPrograma.setMnemonic('P');
-		menuFazerPrograma.setText("Criar Programa");
-		menuFazerPrograma.addActionListener(this);
-
-		return menuFazerPrograma;
-	}
 	
 	/**
 	 * Cria o submenu Sair.
@@ -270,52 +193,6 @@ public class BarraDeMenu implements ActionListener {
 		return menuSair;
 	}
 	
-	/**
-	 * Cria o menu Executar na barra de menu.
-	 */
-	private JMenu getMenuExecutar() {
-		menuExecutar.setMnemonic('E');
-		menuExecutar.setText("Executar");
-		menuExecutar.add(getSubMenuExecutaPrograma());
-		menuExecutar.add(getSubMenuExecutaInstrucao());
-		menuExecutar.add(getSubMenuExecutaMicroInstrucao());
-		
-		return menuExecutar;
-	}
-	
-	/**
-	 * Cria o submenu Executa Programa.
-	 */
-	private JMenuItem getSubMenuExecutaPrograma() {
-		menuExecutaPrograma.setMnemonic('P');
-		menuExecutaPrograma.setText("Executar Programa");
-		menuExecutaPrograma.setSelected(true);
-		menuExecutaPrograma.addActionListener(this);
-
-		return menuExecutaPrograma;
-	}
-	
-	/**
-	 * Cria o submenu Executa Programa Por Instrucao.
-	 */
-	private JMenuItem getSubMenuExecutaInstrucao() {
-		menuExecutaInstrucao.setMnemonic('I');
-		menuExecutaInstrucao.setText("Executar Instrucao");
-		menuExecutaInstrucao.addActionListener(this);
-
-		return menuExecutaInstrucao;
-	}
-	
-	/**
-	 * Cria o submenu Executa Programa Por MicroInstrucao.
-	 */
-	private JMenuItem getSubMenuExecutaMicroInstrucao() {
-		menuExecutaMicroInstrucao.setMnemonic('M');
-		menuExecutaMicroInstrucao.setText("Executar MicroInstrucao");
-		menuExecutaMicroInstrucao.addActionListener(this);
-
-		return menuExecutaMicroInstrucao;
-	}
 
 	/**
 	 * Cria o menu Ajuda na barra de menu.
