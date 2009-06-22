@@ -127,9 +127,10 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 							JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);
 					
+					
 					File arquivoEnviar = new File(arquivoAntigo.getPath());
 					
-					LerArquivo arquivoAEnviar = new LerArquivo();
+					SalvarArquivo arquivoAEnviar = new SalvarArquivo();
 					arquivoAEnviar.setArquivo(arquivoEnviar);
 					arquivoAEnviar.setCaminho(arquivoEnviar.getParent());
 					arquivoAEnviar.setNomeArquivo(arquivoEnviar.getName());
@@ -142,7 +143,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 						System.out.println("erro ao ler arquivo");
 					}
 					
-					arquivoAEnviar = (LerArquivo)cliente.getRequisicao();
+					arquivoAEnviar = (SalvarArquivo)cliente.getRequisicao();
 					if(arquivoAEnviar.hasErros()){
 					    // Exibo o erro na tela
 						System.out.println(arquivoAEnviar.errosString());
