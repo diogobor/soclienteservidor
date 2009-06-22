@@ -18,8 +18,6 @@ public class JanelaPrincipal extends JFrame implements WindowListener {
 	public static int ProgramaLargura;
 
 	public static int ProgramaAltura;
-	
-	Figura icone = new Figura();
 
 	// Variavel para saber o tamanho da janela
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
