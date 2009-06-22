@@ -45,11 +45,11 @@ public class SalvarArquivo extends Requisicao{
 			int size;  
 			while ((size = in2.read(data)) != -1)  
 			{  
-			    fileOut.write(data, 0, size);  
+			    fileOut.write(data, 0, size);
 			    fileOut.flush();
 			}  
 			fileOut.close();
-			
+						
 		}
 		catch (Exception e) {				
 			getErros().add("Nao foi possivel Salvar o Arquivo no Servidor");

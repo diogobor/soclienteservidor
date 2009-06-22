@@ -33,6 +33,7 @@ public class ArquivoTexto {
 
 	public ArquivoTexto(String nomeArq) throws IOException {
 		bw = new BufferedWriter(new FileWriter(nomeArq));
+		
 	}
 
 	/**
@@ -87,6 +88,10 @@ public class ArquivoTexto {
 		} catch (IOException e) {
 			System.out.println("Erro ao gravar o arquivo!");
 		}
+	}
+	
+	public BufferedWriter getBuffer(){
+		return bw;
 	}
 
 }

@@ -17,7 +17,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import br.ufrj.dcc.so.controle.ArquivoTexto;
+import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.controle.LerEscreverArquivo;
+import br.ufrj.dcc.so.entidade.LerArquivo;
+import br.ufrj.dcc.so.entidade.SalvarArquivo;
 
 
 public class CriaPrograma extends JFrame implements WindowListener, ActionListener{
@@ -46,6 +49,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 	
 	@SuppressWarnings("unused")
 	private LerEscreverArquivo arquivoLido;
+	
 
 	public CriaPrograma (File arquivoAntigo, String tipoArquivo){
 		
@@ -122,6 +126,29 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 							"Atencao", //titulo
 							JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);
+					
+					File arquivoEnviar = new File(arquivoAntigo.getPath());
+					
+					LerArquivo arquivoAEnviar = new LerArquivo();
+					arquivoAEnviar.setArquivo(arquivoEnviar);
+					
+					Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, arquivoAEnviar);
+					cliente.start();
+					try {
+						cliente.join(); 	
+					} catch (Exception e) {
+						System.out.println("erro ao ler arquivo");
+					}
+					
+					arquivoAEnviar = (LerArquivo)cliente.getRequisicao();
+					if(arquivoAEnviar.hasErros()){
+					    // Exibo o erro na tela
+						System.out.println(arquivoAEnviar.errosString());
+					
+					}else{
+						System.out.println("");
+					}
+					
 				}
 			}
 			catch(Exception e){
