@@ -29,7 +29,7 @@ public class LerDiretorio extends Requisicao {
 
 	public File getDiretorio() {
 		try {
-			diretorio = transformaByteFile(diretorioPrincipal);
+			diretorio = transformaByteFile(diretorioPrincipal,getCaminho());
 		} catch (Exception e) {
 			getErros().add("Erro ao pegar o Diretorio.");
 			System.out.println("Erro ao pegar o Diretorio.");
@@ -61,31 +61,7 @@ public class LerDiretorio extends Requisicao {
 	}	
 	
 	
-	private File transformaByteFile(byte[] arquivoAntigo) throws IOException{
-				   
-		InputStream  in = new ByteArrayInputStream (arquivoAntigo);  
-				   
-		File arquivo = new File(getCaminho());  
-		FileOutputStream fout = new FileOutputStream(arquivo);  
-
-		copy(in, fout);
-		
-		return arquivo;
-		
-	}
 	
-	private void copy(InputStream in,OutputStream out) throws IOException{  
-		   
-		byte[] buffer = new byte[1024 * 4]; //4 Kb  
-		int n = 0;  
-		while (-1 != (n = in.read(buffer))) {  
-		out.write(buffer, 0, n);  
-		}  
-		out.flush();  
-				       
-		out.close();  
-		in.close();  
-	}
 	
 
 }
