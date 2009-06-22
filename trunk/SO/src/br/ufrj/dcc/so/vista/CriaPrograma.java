@@ -131,6 +131,8 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 					
 					LerArquivo arquivoAEnviar = new LerArquivo();
 					arquivoAEnviar.setArquivo(arquivoEnviar);
+					arquivoAEnviar.setCaminho(arquivoEnviar.getParent());
+					arquivoAEnviar.setNomeArquivo(arquivoEnviar.getName());
 					
 					Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, arquivoAEnviar);
 					cliente.start();

@@ -75,7 +75,7 @@ public class LerArquivo extends Requisicao{
 			
 			if(!arq.exists())
 			{
-				getErros().add("No existe este arquivo no servidor");
+				getErros().add("Nao existe este arquivo no servidor");
 				return;
 			}
 			
