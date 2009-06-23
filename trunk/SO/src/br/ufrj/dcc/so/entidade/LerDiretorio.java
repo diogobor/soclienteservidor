@@ -50,7 +50,7 @@ public class LerDiretorio extends Requisicao {
 		else diretorio = new File(getCaminho());
 		
 		try {
-			diretorioPrincipal = getBytesFromFile(diretorio);
+			diretorioPrincipal = transformaFileByte(diretorio);
 		} catch (Exception e) {
 			getErros().add("Erro ao ler diretorio no Servidor");
 			System.out.println("Erro ao ler diretorio no Servidor");

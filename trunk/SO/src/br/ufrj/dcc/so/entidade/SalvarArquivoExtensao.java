@@ -1,7 +1,9 @@
 package br.ufrj.dcc.so.entidade;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
@@ -13,12 +15,13 @@ public class SalvarArquivoExtensao extends Requisicao{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String nomeExtensao;
-	private File diretorio;
+	//private File diretorio;
 	private List<File> arquivos;
+	private HashMap<String, byte[]> arquivosBytes;
 	private String tarefa = "salvando lista de arquivos";
 	
 	public SalvarArquivoExtensao(){
-		arquivos = new ArrayList<File>();		
+		//arquivos = new ArrayList<File>();		
 	}
 		
 	public void setNomeExtensao(String nomeExtensao) {
@@ -29,44 +32,37 @@ public class SalvarArquivoExtensao extends Requisicao{
 		return nomeExtensao;
 	}
 
-	public void setDiretorio(File diretorio) {
-		this.diretorio = diretorio;
-	}
+//	public void setDiretorio(File diretorio) {
+//		this.diretorio = diretorio;
+//	}
 	
 	public void setArquivos(List<File> arquivos) {
-		this.arquivos = arquivos;
+		try {
+			for (File file : arquivos) {
+				
+				byte[] arqByte = transformaFileByte(file);
+				arquivosBytes.put(file.getPath(), arqByte);				
+			}		
+		} catch (IOException e) {
+			getErros().add("Erro ao transformar Arquivos em bytes.");	
+		}
 	}
 
-	public List<File> getArquivos() {
-		return arquivos;
-	}
+//	public List<File> getArquivos() {
+//		return arquivos;
+//	}
 
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
 		mensagemInicioTarefa(tarefa);
 		try 
-		{	
-			
-			File[] arquivos = diretorio.listFiles();     
-
-	        if(arquivos == null){        	
-	        	getErros().add("Nao existe arquivo(s) no diretorio");
-	        	return;
-	        }
-	        
-	        List<String> arquivosComExtensao = obterListaArquivosComExtensao(arquivos, getNomeExtensao());
-			
-	        if(arquivosComExtensao.size() == 0) getErros().add("Nao existe nenhum arquivo com esta extensao.");
-	        
-	        for (String nomeArquivo : arquivosComExtensao) {
-				SalvarArquivo salvar = criarSalvarArquivo(new File(diretorio.getPath() + "/" + nomeArquivo));
+		{
+	        for (String caminhoCompleto : arquivosBytes.keySet()) {
+				SalvarArquivo salvar = criarSalvarArquivo(caminhoCompleto, arquivosBytes.get(caminhoCompleto));
 				salvar.executar(controleArquivo);
 				
 				if(salvar.hasErros()) getErros().addAll(salvar.getErros());
-				else this.arquivos.add(salvar.getArquivo());
-				
-			}
-	
+			}	
 		}
 		catch (Exception e) {				
 			getErros().add("Nao foi possivel Salvar o Arquivo no Servidor");
@@ -75,12 +71,11 @@ public class SalvarArquivoExtensao extends Requisicao{
 		mensagemFimTarefa(tarefa);
 	}
 	
-	private SalvarArquivo criarSalvarArquivo(File nomeArquivo) {
+	private SalvarArquivo criarSalvarArquivo(String caminhoCompleto, byte[] arquivoByte) {
 		SalvarArquivo salvar = new SalvarArquivo();
 		salvar.setCliente(getCliente());
-		salvar.setArquivo(nomeArquivo);
-		salvar.setCaminho(getCaminho());
-		salvar.setNomeArquivo(nomeArquivo.getName());
+		salvar.setArquivoBytes(arquivoByte);
+		salvar.setCaminho(caminhoCompleto);		
 		return salvar;
 	}
 
