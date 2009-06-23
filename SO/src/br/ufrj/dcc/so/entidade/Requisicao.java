@@ -97,7 +97,7 @@ public abstract class Requisicao implements Serializable {
 		return arquivosComExtensao;
 	}
 	
-	protected byte[] getBytesFromFile(File file) throws IOException {
+	protected byte[] transformaFileByte(File file) throws IOException {
 
 	    InputStream is = null;   
 	    try {   

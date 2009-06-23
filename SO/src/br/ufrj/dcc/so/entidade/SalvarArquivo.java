@@ -3,6 +3,7 @@ package br.ufrj.dcc.so.entidade;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
 
@@ -14,7 +15,7 @@ public class SalvarArquivo extends Requisicao{
 	private static final long serialVersionUID = 1L;
 	private String nomeArquivo;
 	private File arquivo;
-	private byte[] arquivoPrincipal;
+	private byte[] arquivoBytes;
 
 	private String tarefa = "salvando arquivo";
 	
@@ -29,11 +30,19 @@ public class SalvarArquivo extends Requisicao{
 	public String getNomeArquivo() {
 		return nomeArquivo;
 	}
+	
+	public void setArquivoBytes(byte[] arquivoBytes) {
+		this.arquivoBytes = arquivoBytes;
+	}
+
+//	public byte[] getArquivoBytes() {
+//		return arquivoBytes;
+//	}
 
 	public void setArquivo(File arquivo) {
 
 		try {
-			arquivoPrincipal = getBytesFromFile(arquivo);
+			setArquivoBytes(transformaFileByte(arquivo));
 		} catch (Exception e) {
 			getErros().add("Erro ao gravar arquivo no Servidor");
 			System.out.println("Erro ao gravar arquivo no Servidor");
@@ -41,40 +50,38 @@ public class SalvarArquivo extends Requisicao{
 		
 	}
 
-	public File getArquivo() {
-		return arquivo;
-	}
-
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
 		mensagemInicioTarefa(tarefa);
 		
+		ArquivoUtilizado arquivoUtilizado = new ArquivoUtilizado(getCliente(),getCaminhoCompleto());
+		
 		try {
-			arquivo = transformaByteFile(arquivoPrincipal, getCaminhoCompleto());
 			
-		} catch (Exception e) {
-			getErros().add("Erro ao pegar o Arquivo.");
+			controleArquivo.fecharAcessoListaArquivoUtilizado();
+			if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
+			{
+				getErros().add(String.format("Nao e possivel salvar o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));					
+				setArquivoBytes(null);
+			}
+			else
+			{
+				arquivo = transformaByteFile(arquivoBytes, getCaminhoCompleto());
+				
+				if(!controleArquivo.isArquivoUsadoPorCliente(arquivoUtilizado))
+				{					
+					controleArquivo.adicionarArquivoUtilizado(arquivoUtilizado);
+				}
+			}
+			
+			controleArquivo.abrirAcessoListaArquivoUtilizado();
+			
+		} catch (IOException e) {
+			getErros().add("Erro ao transformar bytes em Arquivo.");
+		} catch (InterruptedException e) {
+			getErros().add("Ocorreu um erro na execucao do semaforo.");
 		}
-//		try 
-//		{	
-//			File arq = new File(getCaminhoCompleto());
-//			FileInputStream in2 = new FileInputStream(getArquivo());
-//			in2.close();
-//			FileOutputStream fileOut = new FileOutputStream(arq);  
-//			byte data[] = new byte[1024]; 
-//			int size;  
-//			while ((size = in2.read(data)) != -1)  
-//			{  
-//			    fileOut.write(data, 0, size);
-//			    fileOut.flush();
-//			}  
-//			fileOut.close();
-//						
-//		}
-//		catch (Exception e) {				
-//			getErros().add("Nao foi possivel Salvar o Arquivo no Servidor");
-//		}
-//		
+
 		mensagemFimTarefa(tarefa);
 	}
 

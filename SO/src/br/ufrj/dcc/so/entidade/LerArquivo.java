@@ -72,7 +72,7 @@ public class LerArquivo extends Requisicao{
 				return;
 			}	
 			
-			arquivoBytes = getBytesFromFile(arq);
+			arquivoBytes = transformaFileByte(arq);
 			
 			if(isEscrita())
 			{
@@ -82,7 +82,7 @@ public class LerArquivo extends Requisicao{
 				
 				if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
 				{
-					getErros().add("Este arquivo ja esta aberto para escrita com outro usuario.");					
+					getErros().add(String.format("Nao e possivel ler o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));					
 					arquivoBytes = null;
 				}
 				else if(!controleArquivo.isArquivoUsadoPorCliente(arquivoUtilizado))

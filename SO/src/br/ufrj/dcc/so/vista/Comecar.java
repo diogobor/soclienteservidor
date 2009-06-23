@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -924,10 +926,17 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			JOptionPane.showMessageDialog(null, "Selecione um Diretorio no Servidor!", "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		else{
-			String extensaoArquivo = getExtensao();
+			String extensaoArquivo = getExtensao();	
+			
+//			SalvarArquivoExtensao salvarArquivos = new SalvarArquivoExtensao();
+//			salvarArquivos.setNomeExtensao(extensaoArquivo);
+//			salvarArquivos.setDiretorio(new File(caminhoArquivoSelecionadoCliente));
+//			salvarArquivos.setCaminho(caminhoArquivoSelecionado);
+			
+			List<File> arquivos = obterListaFiles(extensaoArquivo);
+			
 			SalvarArquivoExtensao salvarArquivos = new SalvarArquivoExtensao();
-			salvarArquivos.setNomeExtensao(extensaoArquivo);
-			salvarArquivos.setDiretorio(new File(caminhoArquivoSelecionadoCliente));
+			salvarArquivos.setArquivos(arquivos);
 			salvarArquivos.setCaminho(caminhoArquivoSelecionado);
 			
 			Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, salvarArquivos);
@@ -952,5 +961,25 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
+	}
+	private List<File> obterListaFiles(String nomeExtensao) 
+	{
+		List<File> arquivos = new ArrayList<File>();
+		File diretorio = new File(caminhoArquivoSelecionadoCliente);
+		
+		if(!diretorio.exists() || !diretorio.isDirectory()) return arquivos;
+		
+		File[] arquivoDiretorio = diretorio.listFiles();
+		
+		for(int i = 0; i < arquivoDiretorio.length; ++i){ 
+		    File f = arquivoDiretorio[i]; 
+		    String[] texto = f.getName().split("\\.");
+		    String extensaoArquivo = texto[texto.length-1].toLowerCase();
+		    
+		    if(extensaoArquivo.equals(nomeExtensao.toLowerCase())){
+		    	arquivos.add(f);                    
+		    } 
+		}
+		return arquivos;
 	}
 }
