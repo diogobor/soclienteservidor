@@ -491,19 +491,25 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			}else{}
 			
 		
-		
-		
-			for (File arquivo : lerDiretorio.getArquivos()) {
-				if(arquivo != null){    			    
-				   if(arquivo.isFile()){ 
-					   System.out.println("É arquivo: " + arquivo.getName());
-				   }
-				   else if (arquivo.isDirectory()){
-					   System.out.println("É diretorio: " + arquivo.getName());
-				   }
-				}
+			List<String> teste = lerDiretorio.getListaNomeArquivos();
+			
+			for (String string : teste) {
+				System.out.println("Nome:" + string);
+				File primeiroPrograma = new File(string);
+				System.out.println("Agora o arquivo:" + primeiroPrograma.getName());
 			}
-		
+			
+//			for (File arquivo : lerDiretorio.getArquivos()) {
+//				if(arquivo != null){    			    
+//				   if(arquivo.isFile()){ 
+//					   System.out.println("É arquivo: " + arquivo.getName());
+//				   }
+//				   else if (arquivo.isDirectory()){
+//					   System.out.println("É diretorio: " + arquivo.getName());
+//				   }
+//				}
+//			}
+//		
 		
 		
 		
@@ -838,6 +844,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		}
 	
 	}
+	
 	public static void abrirArquivo(){
 		LerArquivo lerArquivoServ = null;
 		

@@ -18,6 +18,7 @@ public class LerDiretorio extends Requisicao {
 	private byte[] diretorioPrincipal;
 	private ArrayList<byte[]> diretorioDescompactado;
 	private HashMap<String, byte[]> arquivosBytes;
+	private List<String> arquivosNoDiretorio;
 	
 	public LerDiretorio(){
 		
@@ -55,6 +56,10 @@ public class LerDiretorio extends Requisicao {
 		}
 		return arquivos;
 	}
+	
+	public List<String> getListaNomeArquivos(){
+		return arquivosNoDiretorio;
+	}
 
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
@@ -78,9 +83,9 @@ public class LerDiretorio extends Requisicao {
 		
 		
 		
-		File diretorio = new File("./filesServer");
-		//File diretorio = new File(getCaminho());
-		arquivosBytes = new HashMap<String, byte[]>();
+		//File diretorio = new File("./filesServer");
+		File diretorio = new File(getCaminho());
+		//arquivosBytes = new HashMap<String, byte[]>();
 		
 		if(!diretorio.exists()){
 			getErros().add("Diretorio inexistente no servidor!");
@@ -93,18 +98,18 @@ public class LerDiretorio extends Requisicao {
         	return;
         }
 			
-		List<String> arquivosComExtensao = obterListaArquivos(arquivos);
+		arquivosNoDiretorio = obterListaArquivos(arquivos);
 		
-		if(arquivosComExtensao.size() == 0) getErros().add("Nao existe nenhum arquivo com esta extensao.");
-		
-		for (String nomeArquivo : arquivosComExtensao) {
-			
-			LerArquivo ler = criarLerArquivo(nomeArquivo);
-			ler.executar(controleArquivo);
-			
-			if(ler.hasErros()) getErros().addAll(ler.getErros());
-			else arquivosBytes.put(ler.getCaminhoCompleto(), ler.getArquivoBytes());			
-		}
+//		if(arquivosComExtensao.size() == 0) getErros().add("Nao existe nenhum arquivo com esta extensao.");
+//		
+//		for (String nomeArquivo : arquivosComExtensao) {
+//			
+//			LerArquivo ler = criarLerArquivo(nomeArquivo);
+//			ler.executar(controleArquivo);
+//			
+//			if(ler.hasErros()) getErros().addAll(ler.getErros());
+//			else arquivosBytes.put(ler.getCaminhoCompleto(), ler.getArquivoBytes());			
+//		}
 	
 		mensagemFimTarefa(tarefa);
 		
