@@ -222,24 +222,24 @@ public class MainConsole {
 
 	public static void exibirLeituraDiretorio(Requisicao requisicao) {
 		
-		System.out.println("==== Lista Diretorio do Servidor ====");
-		
-		LerDiretorio lerDiretorio = (LerDiretorio)requisicao;
-		File[] arquivos = lerDiretorio.getDiretorio().listFiles(); 
-			  
-		if(arquivos != null){			
-		    for(int i = 0; i < arquivos.length; ++i){ 
-		        File f = arquivos[i]; 
-			    
-		        if(f.isFile()){ 
-		            System.out.println(f.getName());		            
-		        } 
-		        else if(f.isDirectory()){ 
-		        	System.out.println("Diretorio: " + f.getName()); 
-		        } 
-		    } 
-		}
-		System.out.println("==== Termino ====");
+//		System.out.println("==== Lista Diretorio do Servidor ====");
+//		
+//		LerDiretorio lerDiretorio = (LerDiretorio)requisicao;
+//		File[] arquivos = lerDiretorio.getDiretorio().listFiles(); 
+//			  
+//		if(arquivos != null){			
+//		    for(int i = 0; i < arquivos.length; ++i){ 
+//		        File f = arquivos[i]; 
+//			    
+//		        if(f.isFile()){ 
+//		            System.out.println(f.getName());		            
+//		        } 
+//		        else if(f.isDirectory()){ 
+//		        	System.out.println("Diretorio: " + f.getName()); 
+//		        } 
+//		    } 
+//		}
+//		System.out.println("==== Termino ====");
 	}
 	
 	public static void exibirLeituraArquivo(Requisicao requisicao) {
