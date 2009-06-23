@@ -52,7 +52,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static final String RAIZCLIENTE ="./filesClient";
 	
-	public static final String BARRA ="\\\\";
+	public static final String BARRA ="/";
 	
 	static Thread controla = null;
 	
@@ -437,7 +437,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			
 			for (String string : teste) {
 				
-				File arquivoTemp = new File(dirStringArquivo(string, lerDiretorio.getSistemaOperacional()),nomeStringArquivo(string,lerDiretorio.getSistemaOperacional()));
+				File arquivoTemp = new File(dirStringArquivo(string),nomeStringArquivo(string));
 				arquivoTemp.createNewFile();
 			}	
 		
@@ -458,7 +458,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		}
 	}
 	
-	public static String nomeStringArquivo(String nomeCompleto, String sistemaOperacional){
+	public static String nomeStringArquivo(String nomeCompleto){
 		
 		String[] temp = nomeCompleto.split(BARRA);
 		return nomeCompleto = temp[temp.length-1];
@@ -471,7 +471,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		return "\\";
 	}
 	
-	public static String dirStringArquivo(String nomeCompleto, String sistemaOperacional){
+	//public static String dirStringArquivo(String nomeCompleto, String sistemaOperacional){
+	public static String dirStringArquivo(String nomeCompleto){
 
 		String[] temp = nomeCompleto.split(BARRA);
 		nomeCompleto = temp[0];
