@@ -52,15 +52,17 @@ public class ApagarExtensao extends Requisicao{
 			
 		List<String> arquivosComExtensao = obterListaArquivosComExtensao(arquivos, getNomeExtensao());
 		
-		if(arquivosComExtensao.size() == 0) getErros().add("Nao existe nenhum arquivo com esta extensao.");
+		if(arquivosComExtensao.size() == 0) {
+			getErros().add("Nao existe nenhum arquivo com esta extensao.");
+			return;
+		}
 		
 		for (String nomeArquivo : arquivosComExtensao) {
 			
 			ApagarArquivo apagar = criarApagarArquivo(nomeArquivo);
 			apagar.executar(controleArquivo);
 			
-			if(apagar.hasErros()) getErros().addAll(apagar.getErros());
-			
+			if(apagar.hasErros()) getErros().addAll(apagar.getErros());			
 		}
 	}
 

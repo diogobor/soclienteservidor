@@ -2,6 +2,7 @@ package br.ufrj.dcc.so.entidade;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
@@ -14,11 +15,12 @@ public class LerArquivoExtensao extends Requisicao{
 	private static final long serialVersionUID = 1L;
 	private String tarefa = "lendo arquivo por extensao";
 	private String nomeExtensao;
-	private List<File> arquivos;
+	//private List<File> arquivos;
+	private HashMap<String, byte[]> arquivosBytes;
 	private TipoArquivo tipo;
 	
 	public LerArquivoExtensao(){
-		setArquivos(new ArrayList<File>());		
+	
 	}
 		
 	public void setNomeExtensao(String nomeExtensao) {
@@ -28,12 +30,19 @@ public class LerArquivoExtensao extends Requisicao{
 	public String getNomeExtensao() {
 		return nomeExtensao;
 	}
-
-	public void setArquivos(List<File> arquivos) {
-		this.arquivos = arquivos;
-	}
-
+	
 	public List<File> getArquivos() {
+		List<File> arquivos = new ArrayList<File>();
+		try {			
+			for (String caminhoCompleto : arquivosBytes.keySet()) 
+			{				
+				File arquivo = transformaByteFile(arquivosBytes.get(caminhoCompleto), caminhoCompleto);
+					
+				arquivos.add(arquivo);				
+			}
+		} catch (Exception e) {
+			getErros().add("Erro ao transformar bytes em Arquivo.");			
+		}
 		return arquivos;
 	}
 
@@ -79,8 +88,7 @@ public class LerArquivoExtensao extends Requisicao{
 			ler.executar(controleArquivo);
 			
 			if(ler.hasErros()) getErros().addAll(ler.getErros());
-			else this.arquivos.add(ler.getArquivo());
-			
+			else arquivosBytes.put(ler.getCaminhoCompleto(), ler.getArquivoBytes());			
 		}
 	}
 
