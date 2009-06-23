@@ -21,6 +21,7 @@ public abstract class Requisicao implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<byte[]> diretorioCompactado;
+	protected List<String> arquivosComExtensao = new ArrayList<String>();
 	
 	public enum TipoArquivo{
 		LEITURA,
@@ -94,6 +95,22 @@ public abstract class Requisicao implements Serializable {
 		    if(extensaoArquivo.equals(nomeExtensao.toLowerCase())){
 		    	arquivosComExtensao.add(f.getName());                    
 		    } 
+		}
+		
+		return arquivosComExtensao;
+	}
+	
+	protected List<String> obterListaArquivos(File[] arquivos) {
+		
+		for(int i = 0; i < arquivos.length; ++i){ 
+		    File f = arquivos[i]; 
+		    if(f.isFile()){
+		    	arquivosComExtensao.add(f.getPath());	
+		    }else if (f.isDirectory()){
+		    	File[] temp = arquivos[i].listFiles();
+		    	obterListaArquivos(temp);
+		    }
+		                        
 		}
 		
 		return arquivosComExtensao;

@@ -436,47 +436,110 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void criaPainelServer(){
-//		Crio o objeto lerDiretorio
-		LerDiretorio lerDiretorio = new LerDiretorio();
-//		Preciso do caminho do diretório passado na tela e setar no objeto lerDiretorio
-
-		lerDiretorio.setCaminho(RAIZSERVIDOR);
+//		
+////		Crio o objeto lerDiretorio
+//		LerDiretorio lerDiretorio = new LerDiretorio();
+////		Preciso do caminho do diretório passado na tela e setar no objeto lerDiretorio
+//
+//		lerDiretorio.setCaminho(RAIZSERVIDOR);
+//		
+////		Crio o objeto cliente passando o lerDiretorio como parametro. Passo tambem o endereco do servidor e a porta.
+//		
+//		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerDiretorio);
+////		 executo a thread cliente
+//		cliente.start();
+////		espera fim da execucao da thread
+//		try {
+//			cliente.join(); 	
+//		} catch (Exception e) {
+//			System.out.println("erro criar painel Server");
+//		}
+//		
+//		lerDiretorio = (LerDiretorio)cliente.getRequisicao();
+//
+////		 Verifico se ocorreu algum erro de leitura no servidor
+//		if(lerDiretorio.hasErros()){
+//		            // Exibo o erro na tela
+//					System.out.println(lerDiretorio.errosString());
+//					mensagemDeErro(lerDiretorio.errosString());
+//		        } 
+//
+////		 Se nao ocorreu erro algum entao foi lido os arquivos do diretório com sucesso
 		
-//		Crio o objeto cliente passando o lerDiretorio como parametro. Passo tambem o endereco do servidor e a porta.
 		
-		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerDiretorio);
-//		 executo a thread cliente
-		cliente.start();
-//		espera fim da execucao da thread
+		
+		
+		
 		try {
-			cliente.join(); 	
-		} catch (Exception e) {
-			System.out.println("erro criar painel Server");
-		}
+			
+			LerDiretorio lerDiretorio = new LerDiretorio();
+			lerDiretorio.setCaminho(RAIZSERVIDOR);
+			
+			Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerDiretorio);
+			cliente.start();
+			try {
+				cliente.join(); 	
+			} catch (Exception e) {
+				System.out.println("erro ao ler arquivo");
+			}
+			
+			lerDiretorio = (LerDiretorio)cliente.getRequisicao();
+
+			if(lerDiretorio.hasErros()){
+				System.out.println(lerDiretorio.errosString());
+				mensagemDeErro(lerDiretorio.errosString());
+			}else{}
+			
 		
-		lerDiretorio = (LerDiretorio)cliente.getRequisicao();
-
-//		 Verifico se ocorreu algum erro de leitura no servidor
-		if(lerDiretorio.hasErros()){
-		            // Exibo o erro na tela
-					System.out.println(lerDiretorio.errosString());
-					mensagemDeErro(lerDiretorio.errosString());
-		        } 
-
-//		 Se nao ocorreu erro algum entao foi lido os arquivos do diretório com sucesso
-		File diretorio = lerDiretorio.getDiretorio();
+		
+		
+			for (File arquivo : lerDiretorio.getArquivos()) {
+				if(arquivo != null){    			    
+				   if(arquivo.isFile()){ 
+					   System.out.println("� arquivo: " + arquivo.getName());
+				   }
+				   else if (arquivo.isDirectory()){
+					   System.out.println("� diretorio: " + arquivo.getName());
+				   }
+				}
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//File diretorio = lerArquivo.getArquivos();
 		
 		
 		janela.remove(painelServidor);
 		janela.validate();
 		painelServidor = null;
-		painelServidor = new FileTree(diretorio);
+//		painelServidor = new FileTree(diretorio);
+		painelServidor = new FileTree(new File(RAIZSERVIDOR));
+		
 		painelServidor.addComecarListener(new Comecar(""));
 		painelServidor.setBounds(550, 20, 250, 290);
 		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
 		painelServidor.revalidate(); 
 		janela.add(painelServidor);
 		janela.validate();		
+		
+		} catch (Exception e) {
+			System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
+		}
 	}
 	
 	public void criaPainelClient(String nomeDiretorio){

@@ -120,12 +120,6 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 				}
 				else{
 					arquivoLido = new LerEscreverArquivo(areaTexto.getText(),arquivoAntigo.getPath());
-					JOptionPane.showMessageDialog(null, 
-							"Arquivo Alterado com Sucesso !", // mensagem
-							"Atencao", //titulo
-							JOptionPane.INFORMATION_MESSAGE);
-					setVisible(false);
-					
 					
 					File arquivoEnviar = new File(arquivoAntigo.getPath());
 					
@@ -148,7 +142,12 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 						System.out.println(arquivoAEnviar.errosString());
 					
 					}else{
-						System.out.println("");
+						System.out.println("Arquivo Alterado com Sucesso !");
+						JOptionPane.showMessageDialog(null, 
+								"Arquivo Alterado com Sucesso !", // mensagem
+								"Atencao", //titulo
+								JOptionPane.INFORMATION_MESSAGE);
+						setVisible(false);
 					}
 					
 				}

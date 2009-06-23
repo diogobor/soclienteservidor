@@ -76,6 +76,7 @@ public class SalvarArquivo extends Requisicao{
 			
 			controleArquivo.abrirAcessoListaArquivoUtilizado();
 			
+			
 		} catch (IOException e) {
 			getErros().add("Erro ao transformar bytes em Arquivo.");
 		} catch (InterruptedException e) {
