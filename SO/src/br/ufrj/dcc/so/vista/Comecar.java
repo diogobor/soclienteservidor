@@ -26,6 +26,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.ApagarArquivo;
 import br.ufrj.dcc.so.entidade.ApagarExtensao;
