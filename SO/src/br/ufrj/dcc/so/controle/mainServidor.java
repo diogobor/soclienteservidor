@@ -16,7 +16,7 @@ public class mainServidor {
             //Cria o ServerSocket na porta 7000 se estiver disponivel  
             serv = new ServerSocket(7000);  
             System.out.println("Escutando porta.");
-            
+            System.out.println(System.getProperty("os.name"));
             while(true){
 	            //Aguarda uma conexao na porta especificada e cria retorna o socket que ira comunicar com o cliente  
             	Socket s = serv.accept();
