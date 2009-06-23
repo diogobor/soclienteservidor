@@ -493,48 +493,22 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 			List<String> teste = lerDiretorio.getListaNomeArquivos();
 			
+			List<File> arquivoGrande = new ArrayList<File>();
 			for (String string : teste) {
-				System.out.println("Nome:" + string);
-				File primeiroPrograma = new File(string);
-				System.out.println("Agora o arquivo:" + primeiroPrograma.getName());
-			}
-			
-//			for (File arquivo : lerDiretorio.getArquivos()) {
-//				if(arquivo != null){    			    
-//				   if(arquivo.isFile()){ 
-//					   System.out.println("É arquivo: " + arquivo.getName());
-//				   }
-//				   else if (arquivo.isDirectory()){
-//					   System.out.println("É diretorio: " + arquivo.getName());
-//				   }
-//				}
-//			}
-//		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		//File diretorio = lerArquivo.getArquivos();
-		
+				
+				File arquivoTemp = new File(dirStringArquivo(string),nomeStringArquivo(string));
+				arquivoGrande.add(arquivoTemp);
+				arquivoTemp.createNewFile();
+				System.out.println("nome arquivo:" + arquivoTemp.getPath());
+
+			}	
 		
 		janela.remove(painelServidor);
 		janela.validate();
 		painelServidor = null;
 //		painelServidor = new FileTree(diretorio);
-		painelServidor = new FileTree(new File(RAIZSERVIDOR));
+		painelServidor = new FileTree(new File("filesServer"));
+//		painelServidor = new FileTree(new File(RAIZSERVIDOR));
 		
 		painelServidor.addComecarListener(new Comecar(""));
 		painelServidor.setBounds(550, 20, 250, 290);
@@ -546,6 +520,21 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		} catch (Exception e) {
 			System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
 		}
+	}
+	
+	public static String nomeStringArquivo(String nomeCompleto){
+		
+		String[] temp = nomeCompleto.split("\\\\");
+		return nomeCompleto = temp[temp.length-1];
+	}
+	public static String dirStringArquivo(String nomeCompleto){
+		
+		String[] temp = nomeCompleto.split("\\\\");
+		nomeCompleto = temp[0];
+		for(int i =1; i < temp.length-1; i++){
+			nomeCompleto += "\\\\" + temp[i];
+		}
+		return nomeCompleto;
 	}
 	
 	public void criaPainelClient(String nomeDiretorio){
