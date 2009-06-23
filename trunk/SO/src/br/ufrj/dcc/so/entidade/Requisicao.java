@@ -42,7 +42,26 @@ public abstract class Requisicao implements Serializable {
 		this.caminho = caminho;
 	}
 
-	public String getCaminho() {
+	public String getCaminho(){
+		String barra = "\\";
+		String caminhoFinal = "";
+		String[] temp;
+		if(System.getProperty("os.name").equals("Linux")){
+			barra = "/";
+		}
+		if (caminho.contains("/"))temp = caminho.split("/");
+		else temp = caminho.split("\\");
+		
+		
+		
+		if (temp.length > 1){
+			
+			for (int i = 1; i < temp.length; i++) {
+				caminhoFinal += barra + temp[i];
+			}
+			return temp[0]+caminhoFinal;
+		}
+		
 		return caminho;
 	}
 
