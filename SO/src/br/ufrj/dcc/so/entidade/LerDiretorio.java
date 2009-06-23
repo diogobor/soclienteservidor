@@ -2,7 +2,6 @@ package br.ufrj.dcc.so.entidade;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
@@ -62,12 +61,26 @@ public class LerDiretorio extends Requisicao {
         	return;
         }
 			
-		arquivosNoDiretorio = obterListaArquivos(arquivos);
+		obterListaArquivos(arquivos);
 		
 		setSistemaOperacional(System.getProperty("os.name"));
 		
 		mensagemFimTarefa(tarefa);
 		
+	}
+	
+	private void obterListaArquivos(File[] arquivos) {
+		arquivosNoDiretorio = new ArrayList<String>();
+		for(int i = 0; i < arquivos.length; ++i){ 
+		    File f = arquivos[i]; 
+		    if(f.isFile()){
+		    	arquivosNoDiretorio.add(f.getPath());	
+		    }else if (f.isDirectory()){
+		    	File[] temp = arquivos[i].listFiles();
+		    	obterListaArquivos(temp);
+		    }
+		                        
+		}
 	}
 	
 }

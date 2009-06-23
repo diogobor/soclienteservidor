@@ -53,7 +53,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	public static final String RAIZCLIENTE ="./filesClient";
 	
 	public static final String BARRA ="\\\\"; //Windows -> \\\\, Linux -> /
-	
+
 	static Thread controla = null;
 	
 	public static JanelaPrincipal janela = null;
@@ -473,8 +473,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	//public static String dirStringArquivo(String nomeCompleto, String sistemaOperacional){
 	public static String dirStringArquivo(String nomeCompleto){
-
+		
 		String[] temp = nomeCompleto.split(BARRA);
+
 		nomeCompleto = temp[0];
 		for(int i =1; i < temp.length-1; i++){
 			nomeCompleto += BARRA + temp[i];
