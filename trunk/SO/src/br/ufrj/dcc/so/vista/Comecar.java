@@ -26,8 +26,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.entidade.ApagarArquivo;
 import br.ufrj.dcc.so.entidade.ApagarExtensao;
@@ -52,7 +50,9 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static final String RAIZCLIENTE ="./filesClient";
 	
-	public static final String BARRA ="\\\\"; //Windows -> \\\\, Linux -> /
+	public static final String BARRASERVIDOR ="\\\\"; //Windows -> \\\\, Linux -> /
+	
+	public static final String BARRACLIENTE ="/"; //Windows -> \\\\, Linux -> /
 
 	static Thread controla = null;
 	
@@ -460,7 +460,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static String nomeStringArquivo(String nomeCompleto){
 		
-		String[] temp = nomeCompleto.split(BARRA);
+		String[] temp = nomeCompleto.split(BARRASERVIDOR);
 		return nomeCompleto = temp[temp.length-1];
 	}
 	//      filesServer/trabalho.txt -> linux
@@ -474,11 +474,11 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	//public static String dirStringArquivo(String nomeCompleto, String sistemaOperacional){
 	public static String dirStringArquivo(String nomeCompleto){
 		
-		String[] temp = nomeCompleto.split(BARRA);
+		String[] temp = nomeCompleto.split(BARRASERVIDOR);
 
 		nomeCompleto = temp[0];
 		for(int i =1; i < temp.length-1; i++){
-			nomeCompleto += BARRA + temp[i];
+			nomeCompleto += BARRACLIENTE + temp[i];
 		}
 		return nomeCompleto;
 	}
