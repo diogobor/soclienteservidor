@@ -392,9 +392,23 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		painelMsg.repaint();
 	}
 	
+	public static void limparArquivos(File temp){
+		
+		if(temp.isFile()){
+			temp.delete();
+		}else if (temp.isDirectory()){
+			String[] filhos = temp.list();
+			for (int i = 0; i < filhos.length; i++) {
+				limparArquivos(new File(temp,filhos[i]));
+			}
+		}
+
+	}
+	
 	public static void criaPainelServer(){
 		
 		try {
+			limparArquivos(new File(RAIZSERVIDOR));
 			
 			LerDiretorio lerDiretorio = new LerDiretorio();
 			lerDiretorio.setCaminho(RAIZSERVIDOR);
