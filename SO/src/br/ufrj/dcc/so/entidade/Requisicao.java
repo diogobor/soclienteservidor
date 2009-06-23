@@ -121,10 +121,10 @@ public abstract class Requisicao implements Serializable {
 		File[] temp = file.listFiles();
 		for (int i = 0; i < temp.length; i++) {
 			if (temp[i].isDirectory()) {
-				System.out.println("diretorio:"+temp[i].getPath());
+				//System.out.println("diretorio:"+temp[i].getPath());
 				arquivoDiretorio(temp[i]);
 			}else{
-				System.out.println("arquivo:" + temp[i].getPath());
+				//System.out.println("arquivo:" + temp[i].getPath());
 				diretorioCompactado.add(cadaArquivo(temp[i]));
 			}
 		}
