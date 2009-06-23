@@ -19,7 +19,7 @@ public class SalvarArquivo extends Requisicao{
 
 	private String tarefa = "salvando arquivo";
 	
-	private String getCaminhoCompleto() {		
+	public String getCaminhoCompleto() {		
 		return getCaminho() + "/" + getNomeArquivo();
 	}
 	

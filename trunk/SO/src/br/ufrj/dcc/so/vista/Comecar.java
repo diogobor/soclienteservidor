@@ -653,37 +653,39 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			try {
 				String extensaoArquivo = getExtensao();
 				
+				if (!extensaoArquivo.equals("")){
 				
-				ApagarExtensao apagArquivoExtensao = new ApagarExtensao();
-				apagArquivoExtensao.setCaminho(caminhoArquivoSelecionado);
-				apagArquivoExtensao.setNomeExtensao(extensaoArquivo);
-				
-				int opcao = JOptionPane.showConfirmDialog(null,"Deseja Realmente Deletar todos os Arquivos *." + extensaoArquivo + " do Servidor ?","Atencao",JOptionPane.YES_NO_OPTION);    
-		        if(opcao == JOptionPane.YES_OPTION){ 
-				
-					Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, apagArquivoExtensao);
-					cliente.start();
-					try {
-						cliente.join(); 	
-					} catch (Exception e) {
-						System.out.println("erro ao ler arquivo");
-					}
+					ApagarExtensao apagArquivoExtensao = new ApagarExtensao();
+					apagArquivoExtensao.setCaminho(caminhoArquivoSelecionado);
+					apagArquivoExtensao.setNomeExtensao(extensaoArquivo);
 					
-					apagArquivoExtensao = (ApagarExtensao)cliente.getRequisicao();
-			
-					if(apagArquivoExtensao.hasErros()){
-					            // Exibo o erro na tela
-							System.out.println(apagArquivoExtensao.errosString());
-							mensagemDeErro(apagArquivoExtensao.errosString());
-					}else{
-						//Repinta o Painel Servidor com o novo nome do Arquivo.
-						criaPainelServer();
-						JOptionPane.showMessageDialog(null, 
-								"Arquivos *." + extensaoArquivo  + " Deletados com Sucesso !", //mensagem
-								"Apagar Arquivos", //titulo
-								JOptionPane.INFORMATION_MESSAGE);	
-					}
-		        }
+					int opcao = JOptionPane.showConfirmDialog(null,"Deseja Realmente Deletar todos os Arquivos *." + extensaoArquivo + " do Servidor ?","Atencao",JOptionPane.YES_NO_OPTION);    
+			        if(opcao == JOptionPane.YES_OPTION){ 
+					
+						Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, apagArquivoExtensao);
+						cliente.start();
+						try {
+							cliente.join(); 	
+						} catch (Exception e) {
+							System.out.println("erro ao ler arquivo");
+						}
+						
+						apagArquivoExtensao = (ApagarExtensao)cliente.getRequisicao();
+				
+						if(apagArquivoExtensao.hasErros()){
+						            // Exibo o erro na tela
+								System.out.println(apagArquivoExtensao.errosString());
+								mensagemDeErro(apagArquivoExtensao.errosString());
+						}else{
+							//Repinta o Painel Servidor com o novo nome do Arquivo.
+							criaPainelServer();
+							JOptionPane.showMessageDialog(null, 
+									"Arquivos *." + extensaoArquivo  + " Deletados com Sucesso !", //mensagem
+									"Apagar Arquivos", //titulo
+									JOptionPane.INFORMATION_MESSAGE);	
+						}
+			        }
+				}
 				
 			} catch (Exception e) {
 				System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
@@ -927,38 +929,35 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		}
 		else{
 			String extensaoArquivo = getExtensao();	
-			
-//			SalvarArquivoExtensao salvarArquivos = new SalvarArquivoExtensao();
-//			salvarArquivos.setNomeExtensao(extensaoArquivo);
-//			salvarArquivos.setDiretorio(new File(caminhoArquivoSelecionadoCliente));
-//			salvarArquivos.setCaminho(caminhoArquivoSelecionado);
-			
-			List<File> arquivos = obterListaFiles(extensaoArquivo);
-			
-			SalvarArquivoExtensao salvarArquivos = new SalvarArquivoExtensao();
-			salvarArquivos.setArquivos(arquivos);
-			salvarArquivos.setCaminho(caminhoArquivoSelecionado);
-			
-			Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, salvarArquivos);
-			cliente.start();
-			try {
-				cliente.join(); 	
-			} catch (Exception e) {
-				System.out.println("erro ao ler arquivo");
-			}
-			
-			salvarArquivos = (SalvarArquivoExtensao)cliente.getRequisicao();
-			if(salvarArquivos.hasErros()){
-			    // Exibo o erro na tela
-				System.out.println(salvarArquivos.errosString());
-				mensagemDeErro(salvarArquivos.errosString());
-			}else{
-				criaPainelServer();
-				System.out.println("Arquivo enviado com sucesso !");
-				JOptionPane.showMessageDialog(null, 
-						"Arquivos Enviados com Sucesso !", // mensagem
-						"Atencao", //titulo
-						JOptionPane.INFORMATION_MESSAGE);
+			if (!extensaoArquivo.equals("")){
+				
+				List<File> arquivos = obterListaFiles(extensaoArquivo);
+				
+				SalvarArquivoExtensao salvarArquivos = new SalvarArquivoExtensao();
+				salvarArquivos.setArquivos(arquivos);
+				salvarArquivos.setCaminho(caminhoArquivoSelecionado);
+				
+				Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, salvarArquivos);
+				cliente.start();
+				try {
+					cliente.join(); 	
+				} catch (Exception e) {
+					System.out.println("erro ao ler arquivo");
+				}
+				
+				salvarArquivos = (SalvarArquivoExtensao)cliente.getRequisicao();
+				if(salvarArquivos.hasErros()){
+				    // Exibo o erro na tela
+					System.out.println(salvarArquivos.errosString());
+					mensagemDeErro(salvarArquivos.errosString());
+				}else{
+					criaPainelServer();
+					System.out.println("Arquivo enviado com sucesso !");
+					JOptionPane.showMessageDialog(null, 
+							"Arquivos Enviados com Sucesso !", // mensagem
+							"Atencao", //titulo
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		}
 	}
