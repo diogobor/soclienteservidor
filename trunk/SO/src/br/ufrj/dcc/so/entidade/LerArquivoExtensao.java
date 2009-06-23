@@ -66,6 +66,7 @@ public class LerArquivoExtensao extends Requisicao{
 	private void lerArquivo(ControleArquivo controleArquivo) {
 		
 		File diretorio = new File(getCaminho()); 
+		arquivosBytes = new HashMap<String, byte[]>();
 		
 		if(!diretorio.exists()){
 			getErros().add("Diretorio inexistente no servidor!");

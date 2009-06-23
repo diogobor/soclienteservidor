@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
 
@@ -18,6 +19,7 @@ public class LerDiretorio extends Requisicao {
 	private String tarefa = "lendo diretorio";
 	private File diretorio;
 	private byte[] diretorioPrincipal;
+	private ArrayList<byte[]> diretorioDescompactado;
 	
 	public LerDiretorio(){
 		
@@ -29,7 +31,7 @@ public class LerDiretorio extends Requisicao {
 
 	public File getDiretorio() {
 		try {
-			diretorio = transformaByteFile(diretorioPrincipal,getCaminho());
+			diretorio = transformaByteDirectory(diretorioDescompactado,getCaminho());
 		} catch (Exception e) {
 			getErros().add("Erro ao pegar o Diretorio.");
 			System.out.println("Erro ao pegar o Diretorio.");
@@ -50,7 +52,12 @@ public class LerDiretorio extends Requisicao {
 		else diretorio = new File(getCaminho());
 		
 		try {
+
+			//diretorioPrincipal = getBytesFromFile(diretorio);
+			diretorioDescompactado = getBytesFromDirectory(diretorio);
+
 			diretorioPrincipal = transformaFileByte(diretorio);
+
 		} catch (Exception e) {
 			getErros().add("Erro ao ler diretorio no Servidor");
 			System.out.println("Erro ao ler diretorio no Servidor");
