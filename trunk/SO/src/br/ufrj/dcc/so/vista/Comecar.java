@@ -52,7 +52,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static final String RAIZCLIENTE ="./filesClient";
 	
-	public static final String BARRA ="/";
+	public static final String BARRA ="\\\\"; //Windows -> \\\\, Linux -> /
 	
 	static Thread controla = null;
 	
