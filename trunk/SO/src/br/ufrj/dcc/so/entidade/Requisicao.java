@@ -184,17 +184,5 @@ public abstract class Requisicao implements Serializable {
 				       
 		out.close();  
 		in.close();  
-	}
-	
-	protected File transformaByteDirectory(ArrayList<byte[]> listaArquivoAntigo,String caminhoCompleto) throws IOException{
-		int i = 0;
-		File[] temp=null;
-		Iterator<byte[]> iteradorLista = listaArquivoAntigo.iterator();
-		while (iteradorLista.hasNext()){
-			temp[0] = transformaByteFile(iteradorLista.next(),Integer.toString(i));
-			i++;
-		}
-		return null;
-	}
-	
+	}	
 }

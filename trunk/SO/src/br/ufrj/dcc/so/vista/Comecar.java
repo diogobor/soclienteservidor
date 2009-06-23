@@ -50,8 +50,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static final String RAIZCLIENTE ="./filesClient";
 	
-	private static final int IP_SERVIDOR =0;
-	
 	static Thread controla = null;
 	
 	public static JanelaPrincipal janela = null;
@@ -213,38 +211,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 					caminhoArquivoSelecionado = (String)((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
 				}
 			}
-			
-			
-			
-//			System.out.println("1 - " + path);
-//	        System.out.println("1.1 - " + getCaminhoArquivo(path.toString()));
-//	        System.out.println("2 - " + path.getPath());
-//	        //System.out.println(path.getParentPath());
-//	        System.out.println("3 - " + ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
-//	        System.out.println("3.1 - " + ((DefaultMutableTreeNode) path.getLastPathComponent()));
-//	        System.out.println("4 - " + path.getPathCount());
-	      //System.out.println("Diretorio: " + e.getPath() + "  " + no);
-		//System.out.println("arquivo: " + no);
-//		 nomeArquivoSelecionado=e.getPath().getLastPathComponent().toString();
-//	     nomeDiretorio=e.getPath().getParentPath().getLastPathComponent().toString();
-//	     caminhoArquivoSelecionado=nomeDiretorio+'/'+nomeArquivoSelecionado;
-//	     System.out.println(caminhoArquivoSelecionado);
-//	     
-	     /*
-	     File teste=new File(caminhoArquivoSelecionado);
-	     
-	     try{
-	    	 BufferedReader br=new BufferedReader(new FileReader(teste));
-	    	 
-	    	 try{
-	    		System.out.println(br.readLine());
-	    	 }catch(IOException ioe){
-	    		 
-	    	 }
-	    	 
-	     }catch(FileNotFoundException fnfe){
-	    	 
-	     }*/
 	    }
 	}
 
@@ -265,9 +231,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			File diretorioCliente = new File(RAIZCLIENTE);
 			painelCliente = new FileTree(diretorioCliente);
 			painelCliente.addComecarListenerCliente(this);
-			
-			/*painelCliente.setEnabled(false);
-		    bloqueiaPainelCliente();*/
 
 		}
 		
@@ -306,12 +269,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	    
 	    msgNoServidor("Nao Conectado !");
 	    msgIP("Null");
-	    
-
-//		painelCliente.setEnabled(false);
-//		bloqueiaPainelCliente();
-//		bloqueiaPainelServidor();
-
 
 	}
 	public void colocarOpcoes(){
@@ -436,39 +393,6 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	}
 	
 	public static void criaPainelServer(){
-//		
-////		Crio o objeto lerDiretorio
-//		LerDiretorio lerDiretorio = new LerDiretorio();
-////		Preciso do caminho do diretório passado na tela e setar no objeto lerDiretorio
-//
-//		lerDiretorio.setCaminho(RAIZSERVIDOR);
-//		
-////		Crio o objeto cliente passando o lerDiretorio como parametro. Passo tambem o endereco do servidor e a porta.
-//		
-//		Cliente cliente = new Cliente(BarraDeMenu.nomeServidor, 7000, lerDiretorio);
-////		 executo a thread cliente
-//		cliente.start();
-////		espera fim da execucao da thread
-//		try {
-//			cliente.join(); 	
-//		} catch (Exception e) {
-//			System.out.println("erro criar painel Server");
-//		}
-//		
-//		lerDiretorio = (LerDiretorio)cliente.getRequisicao();
-//
-////		 Verifico se ocorreu algum erro de leitura no servidor
-//		if(lerDiretorio.hasErros()){
-//		            // Exibo o erro na tela
-//					System.out.println(lerDiretorio.errosString());
-//					mensagemDeErro(lerDiretorio.errosString());
-//		        } 
-//
-////		 Se nao ocorreu erro algum entao foi lido os arquivos do diretório com sucesso
-		
-		
-		
-		
 		
 		try {
 			
@@ -493,29 +417,23 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 			List<String> teste = lerDiretorio.getListaNomeArquivos();
 			
-			List<File> arquivoGrande = new ArrayList<File>();
 			for (String string : teste) {
 				
 				File arquivoTemp = new File(dirStringArquivo(string),nomeStringArquivo(string));
-				arquivoGrande.add(arquivoTemp);
 				arquivoTemp.createNewFile();
-				System.out.println("nome arquivo:" + arquivoTemp.getPath());
-
 			}	
 		
-		janela.remove(painelServidor);
-		janela.validate();
-		painelServidor = null;
-//		painelServidor = new FileTree(diretorio);
-		painelServidor = new FileTree(new File("filesServer"));
-//		painelServidor = new FileTree(new File(RAIZSERVIDOR));
-		
-		painelServidor.addComecarListener(new Comecar(""));
-		painelServidor.setBounds(550, 20, 250, 290);
-		painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
-		painelServidor.revalidate(); 
-		janela.add(painelServidor);
-		janela.validate();		
+			janela.remove(painelServidor);
+			janela.validate();
+			painelServidor = null;
+			painelServidor = new FileTree(new File(RAIZSERVIDOR));
+			
+			painelServidor.addComecarListener(new Comecar(""));
+			painelServidor.setBounds(550, 20, 250, 290);
+			painelServidor.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Servidor"));
+			painelServidor.revalidate(); 
+			janela.add(painelServidor);
+			janela.validate();		
 		
 		} catch (Exception e) {
 			System.out.println("ApagarArquivoExtensao - Acao Cancelar acionada");
@@ -1020,6 +938,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			}
 		}
 	}
+	
 	private List<File> obterListaFiles(String nomeExtensao) 
 	{
 		List<File> arquivos = new ArrayList<File>();
