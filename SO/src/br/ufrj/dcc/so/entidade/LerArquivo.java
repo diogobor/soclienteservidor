@@ -1,6 +1,7 @@
 package br.ufrj.dcc.so.entidade;
 
 import java.io.File;
+import java.io.IOException;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
 
@@ -12,12 +13,11 @@ public class LerArquivo extends Requisicao{
 	private static final long serialVersionUID = 1L;
 	private String nomeArquivo;
 	private TipoArquivo tipo;
-	private File arquivo;
-	private byte[] arquivoPrincipal;
+	private byte[] arquivoBytes;
 	
 	private String tarefa = "lendo arquivo";
 	
-	private String getCaminhoCompleto() {		
+	public String getCaminhoCompleto() {		
 		return getCaminho() + "/" + getNomeArquivo();
 	}
 	
@@ -28,18 +28,17 @@ public class LerArquivo extends Requisicao{
 	public String getNomeArquivo() {
 		return nomeArquivo;
 	}
-
-	public void setArquivo(File arquivo) {
-		this.arquivo = arquivo;
-		
-	}
+	public byte[] getArquivoBytes() {
+		return arquivoBytes;
+	}	
 
 	public File getArquivo() {
+		File arquivo = null;
 		try {
-			arquivo = transformaByteFile(arquivoPrincipal, getCaminhoCompleto());
+			arquivo = transformaByteFile(getArquivoBytes(), getCaminhoCompleto());
 			
 		} catch (Exception e) {
-			getErros().add("Erro ao pegar o Arquivo.");
+			getErros().add("Erro ao transformar bytes em Arquivo.");
 		}
 
 		return arquivo;
@@ -71,20 +70,9 @@ public class LerArquivo extends Requisicao{
 			{
 				getErros().add("Nao existe este arquivo no servidor");
 				return;
-			}
+			}	
 			
-			arquivo = arq;
-			
-			
-			try {
-				arquivoPrincipal = getBytesFromFile(arquivo);
-			} catch (Exception e) {
-				getErros().add("Erro ao ler arquivo no Servidor");
-				System.out.println("Erro ao ler arquivo no Servidor");
-			}
-			
-			
-			
+			arquivoBytes = getBytesFromFile(arq);
 			
 			if(isEscrita())
 			{
@@ -95,7 +83,7 @@ public class LerArquivo extends Requisicao{
 				if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
 				{
 					getErros().add("Este arquivo ja esta aberto para escrita com outro usuario.");					
-					arquivo = null;
+					arquivoBytes = null;
 				}
 				else if(!controleArquivo.isArquivoUsadoPorCliente(arquivoUtilizado))
 				{
@@ -104,17 +92,17 @@ public class LerArquivo extends Requisicao{
 				
 				controleArquivo.abrirAcessoListaArquivoUtilizado();
 			}
-			
 		}
 		catch (InterruptedException e) {				
-			getErros().add("Ocorreu um erro na execucao do semaforo.");
+			getErros().add("Ocorreu um erro na execucao do semaforo.");			
+		} 
+		catch (IOException e) {
+			getErros().add("Erro ao transformar o arquivo em bytes.");
 		}
 	}	
 
 	private boolean isEscrita(){
 		return getTipo() != null && getTipo() == TipoArquivo.ESCRITA;
 	}
-	
-	
 
 }

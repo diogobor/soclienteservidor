@@ -40,7 +40,7 @@ public class ApagarArquivo extends Requisicao{
 			
 			if(controleArquivo.isArquivoUsadoPorOutroCliente(arquivoUtilizado))
 			{
-				getErros().add(String.format("No  possivel deletar o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));
+				getErros().add(String.format("Nao e possivel deletar o arquivo %s. O arquivo esta sendo utlilizado por outro cliente.", getNomeArquivo()));
 			}
 			else{
 				deletarArquivo();			
