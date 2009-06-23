@@ -17,6 +17,7 @@ public class LerDiretorio extends Requisicao {
 	private File diretorio;
 	private byte[] diretorioPrincipal;
 	private List<String> arquivosNoDiretorio;
+	private String sistemaOperacional="";
 	
 	public LerDiretorio(){
 		
@@ -33,6 +34,14 @@ public class LerDiretorio extends Requisicao {
 	public List<String> getListaNomeArquivos(){
 		return arquivosNoDiretorio;
 	}
+	
+	public void setSistemaOperacional(String sistemaOperacional) {
+		this.sistemaOperacional = sistemaOperacional;
+	}
+
+	public String getSistemaOperacional() {
+		return sistemaOperacional;
+	}	
 
 	@Override
 	public void executar(ControleArquivo controleArquivo) {
@@ -54,9 +63,11 @@ public class LerDiretorio extends Requisicao {
         }
 			
 		arquivosNoDiretorio = obterListaArquivos(arquivos);
-	
+		
+		setSistemaOperacional(System.getProperty("os.name"));
+		
 		mensagemFimTarefa(tarefa);
 		
-	}	
+	}
 	
 }

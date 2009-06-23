@@ -433,7 +433,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 			
 			for (String string : teste) {
 				
-				File arquivoTemp = new File(dirStringArquivo(string),nomeStringArquivo(string));
+				File arquivoTemp = new File(dirStringArquivo(string, lerDiretorio.getSistemaOperacional()),nomeStringArquivo(string,lerDiretorio.getSistemaOperacional()));
 				arquivoTemp.createNewFile();
 			}	
 		
@@ -454,17 +454,25 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		}
 	}
 	
-	public static String nomeStringArquivo(String nomeCompleto){
+	public static String nomeStringArquivo(String nomeCompleto, String sistemaOperacional){
 		
-		String[] temp = nomeCompleto.split("\\\\");
+		String[] temp = nomeCompleto.split(barraSO(sistemaOperacional));
 		return nomeCompleto = temp[temp.length-1];
 	}
-	public static String dirStringArquivo(String nomeCompleto){
+	//      filesServer/trabalho.txt -> linux
+	//		filesServer\\trabalho.txt -> Windows
+	
+	public static String barraSO(String sistemaOperacional){
+		if (sistemaOperacional.equals("Linux")) return "/";
+		return "\\";
+	}
+	
+	public static String dirStringArquivo(String nomeCompleto, String sistemaOperacional){
 		
-		String[] temp = nomeCompleto.split("\\\\");
+		String[] temp = nomeCompleto.split(barraSO(sistemaOperacional));
 		nomeCompleto = temp[0];
 		for(int i =1; i < temp.length-1; i++){
-			nomeCompleto += "\\\\" + temp[i];
+			nomeCompleto += barraSO(sistemaOperacional) + temp[i];
 		}
 		return nomeCompleto;
 	}
