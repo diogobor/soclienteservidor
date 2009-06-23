@@ -19,7 +19,6 @@ import javax.swing.JTextArea;
 import br.ufrj.dcc.so.controle.ArquivoTexto;
 import br.ufrj.dcc.so.controle.Cliente;
 import br.ufrj.dcc.so.controle.LerEscreverArquivo;
-import br.ufrj.dcc.so.entidade.LerArquivo;
 import br.ufrj.dcc.so.entidade.SalvarArquivo;
 
 
@@ -74,7 +73,7 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		
 		scrollTextArea = new JScrollPane(areaTexto);
 		
-		botaoCarrega = new JButton("Carregar Programa");
+		botaoCarrega = new JButton("Gravar Arquivo");
 		
 		painel.setLayout(null);
 		
@@ -116,8 +115,8 @@ public class CriaPrograma extends JFrame implements WindowListener, ActionListen
 		if (source == botaoCarrega) {
 			
 			try{
-				if(areaTexto.getText().equals("Digite aqui...") || areaTexto.getText().equals("")){
-					JOptionPane.showMessageDialog(null, "Falha ao carregar este programa !\nDigite um programa valido ou feche a janela!", "ERRO", JOptionPane.INFORMATION_MESSAGE);
+				if(areaTexto.getText().equals("")){
+					JOptionPane.showMessageDialog(null, "Nao ha conteudo no Arquivo!\nPara sair feche a janela !", "ERRO", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
 					arquivoLido = new LerEscreverArquivo(areaTexto.getText(),arquivoAntigo.getPath());

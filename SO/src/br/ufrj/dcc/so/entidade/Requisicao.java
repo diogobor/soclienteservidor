@@ -3,15 +3,16 @@ package br.ufrj.dcc.so.entidade;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import br.ufrj.dcc.so.controle.ControleArquivo;;
+
+import br.ufrj.dcc.so.controle.ControleArquivo;
 
 public abstract class Requisicao implements Serializable {
 	
@@ -19,7 +20,8 @@ public abstract class Requisicao implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private ArrayList<byte[]> diretorioCompactado;
+	
 	public enum TipoArquivo{
 		LEITURA,
 		ESCRITA;
@@ -98,19 +100,49 @@ public abstract class Requisicao implements Serializable {
 	}
 	
 	protected byte[] transformaFileByte(File file) throws IOException {
-
-	    InputStream is = null;   
+		if(file.isFile()){
+		    return cadaArquivo(file);
+		}else{
+			return null;
+		}
+	} 
+	
+	protected ArrayList<byte[]> getBytesFromDirectory(File file) throws IOException {
+		diretorioCompactado = new ArrayList<byte[]>();
+		arquivoDiretorio(file);
+		return diretorioCompactado;
+	}
+	
+	public ArrayList<byte[]> getDiretorioCompactado(){
+		return diretorioCompactado;
+	}
+	
+	protected void arquivoDiretorio(File file)throws IOException{
+		File[] temp = file.listFiles();
+		for (int i = 0; i < temp.length; i++) {
+			if (temp[i].isDirectory()) {
+				System.out.println("diretorio:"+temp[i].getPath());
+				arquivoDiretorio(temp[i]);
+			}else{
+				System.out.println("arquivo:" + temp[i].getPath());
+				diretorioCompactado.add(cadaArquivo(temp[i]));
+			}
+		}
+	}
+	
+	protected byte[] cadaArquivo(File file) throws IOException {
+		InputStream is = null;   
 	    try {   
 	        long length = file.length();   
 	        if (length > MAXLENGTH) throw new IllegalArgumentException ("File is too big");   
-	        byte[] ret = new byte [(int) length];  
-	        is = new FileInputStream (file);
+	        byte[] ret = new byte [(int) length]; 
+	        is = new FileInputStream(file);
 	        is.read (ret);   
 	        return ret;  
 	    } finally {   
 	        if (is != null) try { is.close(); } catch (IOException ex) {}   
-	    }   
-	}  
+	    } 
+	}
 	
 	protected File transformaByteFile(byte[] arquivoAntigo,String caminhoCompleto) throws IOException{
 		   
@@ -135,6 +167,17 @@ public abstract class Requisicao implements Serializable {
 				       
 		out.close();  
 		in.close();  
+	}
+	
+	protected File transformaByteDirectory(ArrayList<byte[]> listaArquivoAntigo,String caminhoCompleto) throws IOException{
+		int i = 0;
+		File[] temp=null;
+		Iterator<byte[]> iteradorLista = listaArquivoAntigo.iterator();
+		while (iteradorLista.hasNext()){
+			temp[0] = transformaByteFile(iteradorLista.next(),Integer.toString(i));
+			i++;
+		}
+		return null;
 	}
 	
 }
