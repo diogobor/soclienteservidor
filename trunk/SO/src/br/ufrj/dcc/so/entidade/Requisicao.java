@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import br.ufrj.dcc.so.controle.ControleArquivo;
@@ -21,7 +20,6 @@ public abstract class Requisicao implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<byte[]> diretorioCompactado;
-	protected List<String> arquivosComExtensao = new ArrayList<String>();
 	
 	public enum TipoArquivo{
 		LEITURA,
@@ -119,22 +117,6 @@ public abstract class Requisicao implements Serializable {
 		return arquivosComExtensao;
 	}
 	
-	protected List<String> obterListaArquivos(File[] arquivos) {
-		
-		for(int i = 0; i < arquivos.length; ++i){ 
-		    File f = arquivos[i]; 
-		    if(f.isFile()){
-		    	arquivosComExtensao.add(f.getPath());	
-		    }else if (f.isDirectory()){
-		    	File[] temp = arquivos[i].listFiles();
-		    	obterListaArquivos(temp);
-		    }
-		                        
-		}
-		
-		return arquivosComExtensao;
-	}
-	
 	protected byte[] transformaFileByte(File file) throws IOException {
 		if(file.isFile()){
 		    return cadaArquivo(file);
@@ -157,11 +139,11 @@ public abstract class Requisicao implements Serializable {
 		File[] temp = file.listFiles();
 		for (int i = 0; i < temp.length; i++) {
 			if (temp[i].isDirectory()) {
-				//System.out.println("diretorio:"+temp[i].getPath());
 				arquivoDiretorio(temp[i]);
+				
 			}else{
-				//System.out.println("arquivo:" + temp[i].getPath());
 				diretorioCompactado.add(cadaArquivo(temp[i]));
+				
 			}
 		}
 	}
