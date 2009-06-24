@@ -712,7 +712,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		if(temp.length < 3)caminho = caminho.replaceAll("\\[", "");
 		
 		caminho = caminho.replaceAll(" ", "");
-		caminho = caminho.replaceAll("\\\\", "\\\\\\\\");
+		caminho = caminho.replaceAll("\\\\", "/");
+		System.out.println(caminho);
 		return caminho;
 	}
 	
