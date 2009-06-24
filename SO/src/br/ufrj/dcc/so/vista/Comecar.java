@@ -713,7 +713,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		
 		caminho = caminho.replaceAll(" ", "");
 		caminho = caminho.replaceAll("\\\\", "/");
-		System.out.println(caminho);
+
 		return caminho;
 	}
 	
