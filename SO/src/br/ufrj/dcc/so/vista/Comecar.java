@@ -52,7 +52,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	
 	public static final String BARRASERVIDOR ="\\\\"; //Windows -> \\\\, Linux -> /
 	
-	public static final String BARRACLIENTE ="/"; //Windows -> \\\\, Linux -> /
+	//public static final String BARRACLIENTE ="/"; //Windows -> \\\\, Linux -> /
 
 	static Thread controla = null;
 	
@@ -87,6 +87,8 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 	public static String nomeArquivoSelecionadoCliente = "";
 	
 	public static String caminhoArquivoSelecionadoCliente = "";
+	
+	public static String BARRACLIENTE = "\\\\";
 	
 	public static String caminhoArquivoSelecionado = "";
 
@@ -123,7 +125,7 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		//BarraDeMenu menu = new BarraDeMenu(this);
 		BarraDeMenu menu = new BarraDeMenu();
 		
-		
+		detectaSO();
 		criarPaines();
 		colocarOpcoes();
 
@@ -151,6 +153,12 @@ public class Comecar extends JFrame implements ActionListener,TreeSelectionListe
 		painelOpcoes.setVisible(false);
 		janela.setVisible(true);
 	
+	}
+	
+	public void detectaSO(){
+		String so = System.getProperty("os.name");
+		if (so.equals("Linux")) BARRACLIENTE = "/";
+		else BARRACLIENTE = "\\\\";
 	}
 	
 	public void actionPerformed(ActionEvent evt) {
