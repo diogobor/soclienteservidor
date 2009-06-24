@@ -45,6 +45,12 @@ public class BarraDeMenu implements ActionListener {
 	
 	public static String nomeServidor = "";
 	
+	// MENU AJUDA
+
+	private JMenu menuAtualizar = new JMenu();
+	
+	private JMenuItem subMenuAtualizar = new JMenuItem();
+	
 	private Comecar comecar = null;
 
 	public BarraDeMenu(Comecar comecar){
@@ -63,6 +69,11 @@ public class BarraDeMenu implements ActionListener {
 		
 		if (source == menuConectarServidor) {
 			conectarServidor();
+			
+		}
+		
+		else if (source == subMenuAtualizar) {
+			Comecar.criaPainelServer();
 			
 		}
 
@@ -152,8 +163,8 @@ public class BarraDeMenu implements ActionListener {
 	 */
 	protected JMenuBar getBarraMenu() {
 		barraMenu.add(getMenuPrograma());
-		//barraMenu.add(getMenuExecutar());
 		barraMenu.add(getMenuAjuda());
+		barraMenu.add(getMenuAtualiza());
 
 		return barraMenu;
 	}
@@ -193,7 +204,25 @@ public class BarraDeMenu implements ActionListener {
 		return menuSair;
 	}
 	
+	/**
+	 * Cria o menu Arquivo na barra de menu.
+	 */
+	private JMenu getMenuAtualiza() {
+		menuAtualizar.setMnemonic('S');
+		menuAtualizar.setText("Atualizar Servidor");
+		menuAtualizar.add(getSubMenuAtualiza());
 
+		return menuAtualizar;
+	}
+	
+	private JMenuItem getSubMenuAtualiza() {
+		subMenuAtualizar.setMnemonic('t');
+		subMenuAtualizar.setText("Atualiza");
+		subMenuAtualizar.addActionListener(this);
+
+		return subMenuAtualizar;
+	}
+	
 	/**
 	 * Cria o menu Ajuda na barra de menu.
 	 */
