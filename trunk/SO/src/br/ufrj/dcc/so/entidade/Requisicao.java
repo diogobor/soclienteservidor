@@ -166,7 +166,8 @@ public abstract class Requisicao implements Serializable {
 		   
 		InputStream  in = new ByteArrayInputStream (arquivoAntigo); 
 		File arquivo = new File(caminhoCompleto);  
-		FileOutputStream fout = new FileOutputStream(arquivo);  
+		//FileOutputStream fout = new FileOutputStream(arquivo);
+		FileOutputStream fout = new FileOutputStream("./filesServer/diogo.txt");
 		
 		copy(in, fout);
 		
